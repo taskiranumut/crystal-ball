@@ -1,3 +1,15 @@
+:root {
+  --text-primary-color: #ffffff;
+  --text-secondary-color: #a8a29e;
+  --background-primary-color: #200f21;
+  --background-secondary-color: #382039;
+  --button-primary-color: #f638dc;
+  --button-secondary-color: #5a3d5c;
+  --tag-button-primary-color: #5c5470;
+  --tag-button-secondary-color: #352f44;
+  --error-color: #ef4444;
+}
+
 * {
   padding: 0;
   margin: 0;
