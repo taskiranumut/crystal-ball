@@ -48,11 +48,11 @@ body {
   width: 100%;
 }
 
-header {
+.header {
   grid-area: header;
 }
 
-footer {
+.footer {
   grid-area: footer;
 }
 
