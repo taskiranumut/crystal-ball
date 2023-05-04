@@ -157,6 +157,13 @@ body {
   width: 5rem;
   height: auto;
 }
+
+.header__navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 /*#endregion header*/
 
 /*#region buttons*/
