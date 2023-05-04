@@ -113,7 +113,8 @@ body {
   }
 }
 
-.header-container {
+/*#region header*/
+.header__container {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -122,21 +123,21 @@ body {
   padding: 2rem 1rem;
 }
 
-.logo-section {
+.header__logo-section {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 1.5rem;
 }
 
-.logo-section h1 {
+.header__title {
   font-size: 3.5rem;
   font-weight: 600;
   color: var(--text-primary-color);
   letter-spacing: 2px;
 }
 
-.logo {
+.header__logo {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -146,7 +147,8 @@ body {
   background-color: var(--button-secondary-color);
 }
 
-.logo img {
+.header__logo-image {
   width: 5rem;
   height: auto;
 }
+/*#endregion header*/
