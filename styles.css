@@ -417,6 +417,10 @@ body {
     scroll-behavior: smooth;
   }
 
+  .sidebar__tag-buttons::-webkit-scrollbar {
+    height: 0;
+  }
+
   .sidebar__tag-buttons button {
     font-size: 1rem;
     padding: 0.5rem 1rem;
