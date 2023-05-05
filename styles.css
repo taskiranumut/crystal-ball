@@ -409,8 +409,8 @@ body {
   margin-bottom: 1rem;
 }
 
-.sidebar__container button,
-.sidebar__tag-buttons button {
+.sidebar__container .btn,
+.sidebar__tag-buttons .btn {
   width: 100%;
 }
 
@@ -426,7 +426,7 @@ body {
     height: 0;
   }
 
-  .sidebar__tag-buttons button {
+  .sidebar__tag-buttons .btn {
     font-size: 1.25rem;
     padding: 0.5rem 1rem;
   }
