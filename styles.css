@@ -60,7 +60,7 @@ body {
     "header header"
     "sidebar main"
     "footer footer";
-  gap: 1.5rem;
+  gap: 2rem;
   height: 100vh;
   width: 100%;
 }
@@ -120,6 +120,7 @@ body {
       "sidebar"
       "main"
       "footer";
+    gap: 1.5rem;
   }
 }
 
@@ -322,7 +323,7 @@ body {
   .header__container {
     flex-direction: column;
     align-items: flex-start;
-    gap: 3.5rem;
+    gap: 3rem;
   }
 
   .header__logo-section {
@@ -354,8 +355,9 @@ body {
 
 @media (max-width: 639.99px) {
   .header__container {
-    gap: 2.5rem;
+    gap: 2rem;
   }
+
   .header__logo-section {
     gap: 1rem;
   }
@@ -382,7 +384,7 @@ body {
 
 /*#region sidebar*/
 .sidebar__container,
-.sidebar__buttons {
+.sidebar__tag-buttons {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -393,13 +395,46 @@ body {
   padding: 2rem;
 }
 
-.sidebar__buttons {
+.sidebar__tag-buttons {
   padding: unset;
   gap: 1rem;
 }
 
+.sidebar__tag-buttons .btn--tag-primary {
+  margin-bottom: 1rem;
+}
+
 .sidebar__container button,
-.sidebar__buttons button {
+.sidebar__tag-buttons button {
   width: 100%;
 }
+
+@media (max-width: 639.99px) {
+  .sidebar__tag-buttons {
+    overflow-x: auto;
+    flex-direction: row;
+    gap: 0.75rem;
+    scroll-behavior: smooth;
+  }
+
+  .sidebar__tag-buttons button {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .sidebar__tag-buttons .btn--tag-primary {
+    margin-bottom: unset;
+  }
+}
 /*#endregion sidebar*/
+
+@media (max-width: 768px) {
+  .header__container,
+  .sidebar__container {
+    padding: 0 1.5rem;
+  }
+
+  .header {
+    padding-top: 1rem;
+  }
+}
