@@ -113,7 +113,7 @@ body {
 
 @media (max-width: 640px) {
   .grid-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
     grid-template-rows: auto auto 1fr auto;
     grid-template-areas:
       "header"
@@ -352,7 +352,7 @@ body {
   }
 }
 
-@media (max-width: 639px) {
+@media (max-width: 639.99px) {
   .header__container {
     gap: 2.5rem;
   }
