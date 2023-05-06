@@ -4,7 +4,7 @@
 
 :root {
   --text-primary-color: #e5e5e5;
-  --text-secondary-color: #a8a29e;
+  --text-secondary-color: #999999;
   --background-primary-color: #200f21;
   --background-secondary-color: #382039;
   --button-primary-color: #f638dc;
@@ -559,6 +559,28 @@ body {
 
 .predictions__item-countdown {
   grid-area: countdown;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.predictions__item-countdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  font-family: "Sono", "Roboto", sans-serif;
+  letter-spacing: 0;
+  color: var(--text-secondary-color);
+}
+
+.predictions__item-countdown-item-number {
+  font-size: 1.25rem;
+}
+
+.predictions__item-countdown-item-text {
+  font-size: 0.75rem;
 }
 
 @media (min-width: 1024px) and (max-width: 1279px) {
@@ -586,6 +608,11 @@ body {
 
   .predictions__item-vote-buttons {
     flex-direction: row;
+  }
+
+  .predictions__item-countdown-item {
+    flex-direction: column;
+    gap: 0.1rem;
   }
 }
 /*#endregion prediction list*/
