@@ -508,7 +508,7 @@ body {
   justify-content: flex-start;
   gap: 0.5rem;
   width: 100%;
-  height: 2rem;
+  height: 2.5rem;
   font-family: "Sono", "Roboto", sans-serif;
   line-height: 1;
   font-size: 1.25rem;
@@ -520,6 +520,34 @@ body {
   transition: background-color 0.2s, color 0.2s;
   background-color: var(--button-secondary-color);
   color: var(--text-primary-color);
+}
+
+.predictions__item-vote-button-item:hover {
+  background-color: var(--button-primary-color);
+}
+
+.predictions__item-vote-button-item:active {
+  background-color: var(--button-primary-active-color);
+}
+
+.predictions__item-vote-button-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.predictions__item-vote-button-item .fa-solid,
+.predictions__item-vote-button-item:hover .fa-regular {
+  display: none;
+}
+
+.predictions__item-vote-button-item:hover .fa-solid,
+.predictions__item-vote-button-item .fa-regular {
+  display: var(--fa-display, inline-block);
+}
+
+.predictions__item-vote-button-item .fa-thumbs-down {
+  transform: scaleX(-1);
 }
 
 .predictions__item-vote-counter {
