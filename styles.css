@@ -4,7 +4,7 @@
 
 :root {
   --text-primary-color: #e5e5e5;
-  --text-secondary-color: #a8a29e;
+  --text-secondary-color: #999999;
   --background-primary-color: #200f21;
   --background-secondary-color: #382039;
   --button-primary-color: #f638dc;
@@ -442,9 +442,185 @@ body {
 }
 /*#endregion sidebar*/
 
+/*#region prediction list*/
+.main__container,
+.predictions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.predictions {
+  padding: unset;
+  gap: 1.25;
+}
+
+.predictions__item {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-areas:
+    "content tag buttons"
+    "countdown countdown countdown";
+  gap: 1.5rem;
+  width: 100%;
+  padding: 1.25rem 1.75rem;
+  border-radius: 0.75rem;
+  background-color: var(--background-secondary-color);
+}
+
+.predictions__item-content {
+  grid-area: content;
+  font-family: "Sono", "Roboto", sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+.predictions__item-tag-label {
+  grid-area: tag;
+  align-self: center;
+  width: max-content;
+  display: inline-block;
+  font-family: "Coiny", "Roboto", sans-serif;
+  line-height: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 1.5rem;
+  background-color: var(--tag-button-secondary-color);
+}
+
+.predictions__item-vote-buttons {
+  grid-area: buttons;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+
+.predictions__item-vote-button-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 6rem;
+  height: 2.5rem;
+  font-family: "Sono", "Roboto", sans-serif;
+  line-height: 1;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  border-radius: 1.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  background-color: var(--button-secondary-color);
+  color: var(--text-primary-color);
+}
+
+.predictions__item-vote-button-item:hover {
+  background-color: var(--button-primary-color);
+}
+
+.predictions__item-vote-button-item:active {
+  background-color: var(--button-primary-active-color);
+}
+
+.predictions__item-vote-button-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.predictions__item-vote-button-item .fa-solid,
+.predictions__item-vote-button-item:hover .fa-regular {
+  display: none;
+}
+
+.predictions__item-vote-button-item:hover .fa-solid,
+.predictions__item-vote-button-item .fa-regular {
+  display: var(--fa-display, inline-block);
+}
+
+.predictions__item-vote-button-item .fa-thumbs-down {
+  transform: scaleX(-1);
+}
+
+.predictions__item-vote-counter {
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.predictions__item-countdown {
+  grid-area: countdown;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.predictions__item-countdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  font-family: "Sono", "Roboto", sans-serif;
+  letter-spacing: 0;
+  color: var(--text-secondary-color);
+}
+
+.predictions__item-countdown-item-number {
+  font-size: 1.25rem;
+}
+
+.predictions__item-countdown-item-text {
+  font-size: 0.75rem;
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .predictions__item {
+    grid-template-columns: auto auto;
+    grid-template-areas:
+      "content buttons"
+      "tag tag"
+      "countdown countdown";
+    gap: 1.25rem 1rem;
+  }
+}
+
+@media (max-width: 1023px) {
+  .predictions__item {
+    grid-template-columns: auto;
+    grid-template-areas:
+      "content"
+      "buttons"
+      "tag"
+      "countdown";
+    gap: 1.25rem 1rem;
+    padding: 1.25rem;
+  }
+
+  .predictions__item-vote-buttons {
+    flex-direction: row;
+  }
+
+  .predictions__item-countdown-item {
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+}
+/*#endregion prediction list*/
+
 @media (max-width: 768px) {
   .header__container,
-  .sidebar__container {
+  .sidebar__container,
+  .main__container {
     padding: 0 1.5rem;
   }
 
