@@ -62,7 +62,6 @@ body {
     "header header"
     "sidebar main"
     "footer footer";
-  gap: 2rem;
   height: 100vh;
   width: 100%;
 }
@@ -110,6 +109,12 @@ body {
 @media (min-width: 1536px) {
   .container {
     max-width: 1536px;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    gap: 1.5rem;
   }
 }
 
