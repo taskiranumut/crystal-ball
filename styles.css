@@ -277,6 +277,24 @@ body {
 }
 /*#endregion buttons*/
 
+/*#region card*/
+.card {
+  padding: 1.25rem 1.75rem;
+  border-radius: 0.75rem;
+  background-color: var(--background-secondary-color);
+}
+
+.card--full {
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .predictions__item {
+    padding: 1.25rem;
+  }
+}
+/*#endregion card*/
+
 /*#region header*/
 .header__container {
   width: 100%;
@@ -466,10 +484,6 @@ body {
     "content tag buttons"
     "countdown countdown countdown";
   gap: 1.5rem;
-  width: 100%;
-  padding: 1.25rem 1.75rem;
-  border-radius: 0.75rem;
-  background-color: var(--background-secondary-color);
 }
 
 .predictions__item-content {
@@ -603,7 +617,6 @@ body {
       "tag"
       "countdown";
     gap: 1.25rem 1rem;
-    padding: 1.25rem;
   }
 
   .predictions__item-vote-buttons {
