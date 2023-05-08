@@ -722,6 +722,12 @@ textarea.form__item {
 }
 /*#endregion prediction list*/
 
+/*#region footer*/
+.footer__container {
+  padding: 1.25rem;
+}
+/*#endregion footer*/
+
 @media (max-width: 768px) {
   .header__container,
   .sidebar__container,
