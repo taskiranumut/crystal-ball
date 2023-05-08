@@ -372,6 +372,19 @@ textarea.form__item {
   color: var(--text-primary-color);
   opacity: 0.5;
 }
+
+.form__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.form__btn {
+  font-family: inherit;
+  font-weight: 600;
+}
 /*#endregion form elements*/
 
 /*#region header*/
