@@ -96,18 +96,6 @@
                         </div>
                       </div>
                       <div class="form__item-group">
-                        <label class="form__label" for="idUsername"
-                          >Username<span class="form__sub-label">*</span></label
-                        >
-                        <input
-                          type="text"
-                          id="idUsername"
-                          name="username"
-                          class="form__item"
-                          required
-                        />
-                      </div>
-                      <div class="form__item-group">
                         <label class="form__label" for="idRealizationTime"
                           >Realization Time<span class="form__sub-label"
                             >*</span
@@ -117,6 +105,34 @@
                           type="date"
                           id="idRealizationTime"
                           name="realizationTime"
+                          class="form__item"
+                          required
+                        />
+                      </div>
+                      <div class="form__item-group">
+                        <label class="form__label" for="idTag"
+                          >Tag<span class="form__sub-label">*</span></label
+                        >
+                        <select
+                          class="form__item"
+                          name="tag"
+                          id="idTag"
+                          required
+                        >
+                          <option value="technology">Technology</option>
+                          <option value="science">Science</option>
+                          <option value="politics">Politics</option>
+                          <option value="magazine">Magazine</option>
+                        </select>
+                      </div>
+                      <div class="form__item-group">
+                        <label class="form__label" for="idUsername"
+                          >Username<span class="form__sub-label">*</span></label
+                        >
+                        <input
+                          type="text"
+                          id="idUsername"
+                          name="username"
                           class="form__item"
                           required
                         />
@@ -134,7 +150,6 @@
                           name="infoAddress"
                           class="form__item"
                           placeholder="Twitter, Linkedin, Email etc..."
-                          required
                         />
                       </div>
                     </div>
