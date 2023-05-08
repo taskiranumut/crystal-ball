@@ -295,6 +295,40 @@ body {
 }
 /*#endregion card*/
 
+/*#region form elements*/
+.form {
+  width: 100%;
+  height: auto;
+  font-family: "Sono", "Roboto", sans-serif;
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+.form__header,
+.form__content {
+  margin-bottom: 1.75rem;
+}
+
+.form__title {
+  font-family: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  font-size: 1.5rem;
+}
+
+.form__title--md {
+  font-size: 1.5rem;
+}
+
+.form__title--lg {
+  font-size: 1.75rem;
+}
+
+.form__title--xl {
+  font-size: 2rem;
+}
+/*#endregion form elements*/
+
 /*#region header*/
 .header__container {
   width: 100%;
