@@ -259,12 +259,12 @@ body {
 }
 
 .btn--tag-secondary:hover {
-  background-color: var(--tag-button-secondary-hover-color);
+  background-color: var(--tag-button-primary-color);
   color: var(--button-text-color);
 }
 
 .btn--tag-secondary:active {
-  background-color: var(--tag-button-secondary-active-color);
+  background-color: var(--tag-button-primary-active-color);
   color: var(--button-text-color);
 }
 
@@ -274,6 +274,11 @@ body {
 .btn--tag-secondary:disabled:active {
   background-color: var(--tag-button-secondary-color);
   color: var(--button-text-color);
+}
+
+.btn--active {
+  background-color: var(--tag-button-primary-color);
+  pointer-events: none;
 }
 /*#endregion buttons*/
 
@@ -524,7 +529,7 @@ textarea.form__item {
   gap: 1rem;
 }
 
-.sidebar__tag-buttons .btn--tag-primary {
+.sidebar__tag-buttons button:first-of-type {
   margin-bottom: 1rem;
 }
 
