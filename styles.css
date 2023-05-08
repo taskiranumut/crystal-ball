@@ -354,7 +354,7 @@ body {
 .form__item {
   width: 100%;
   font-family: inherit;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   background-color: var(--button-secondary-color);
   border-radius: 0.5rem;
@@ -371,6 +371,10 @@ textarea.form__item {
 .form__item::placeholder {
   color: var(--text-primary-color);
   opacity: 0.5;
+}
+
+.form__item:focus {
+  border: 1px solid var(--button-primary-color);
 }
 
 .form__actions {
