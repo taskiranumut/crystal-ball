@@ -327,6 +327,51 @@ body {
 .form__title--xl {
   font-size: 2rem;
 }
+
+.form__item-group {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.form__label {
+  display: block;
+  font-size: 1.25rem;
+  color: var(--text-primary-color);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form__sub-label {
+  display: inline-block;
+  opacity: 0.7;
+  margin-left: 0.5rem;
+}
+
+.form__sub-label--sm {
+  font-size: 0.75rem;
+}
+
+.form__item {
+  width: 100%;
+  font-family: inherit;
+  border: none;
+  outline: none;
+  background-color: var(--button-secondary-color);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary-color);
+  font-size: 1.25rem;
+  transition: all 0.2s;
+}
+
+textarea.form__item {
+  resize: none;
+}
+
+.form__item::placeholder {
+  color: var(--text-primary-color);
+  opacity: 0.5;
+}
 /*#endregion form elements*/
 
 /*#region header*/
