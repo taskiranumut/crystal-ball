@@ -20,7 +20,8 @@
   --tag-button-secondary-color: #352f44;
   --tag-button-secondary-hover-color: #534b61;
   --tag-button-secondary-active-color: #221d2e;
-  --error-color: #ef4444;
+  --erorr-primary-color: #e94560;
+  --error-secondary-color: #ed2b2a;
 }
 
 * {
@@ -387,6 +388,35 @@ textarea.form__item {
   font-weight: 600;
 }
 /*#endregion form elements*/
+
+/*#region errors*/
+.error {
+  width: 100%;
+  font-family: "Sono", "Roboto", sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--erorr-primary-color);
+  margin-top: 0.25rem;
+}
+
+.error--with-icon {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.error__text {
+  font-family: inherit;
+  display: inline-block;
+}
+
+.error--border,
+.error--border:focus {
+  border: 1px solid var(--erorr-primary-color);
+}
+/*#endregion errors*/
 
 /*#region header*/
 .header__container {
