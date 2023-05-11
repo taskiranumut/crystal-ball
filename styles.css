@@ -124,6 +124,10 @@ body {
   }
 }
 
+.hide {
+  display: none !important;
+}
+
 /*#region buttons*/
 .btn,
 .btn-md {
