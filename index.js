@@ -15,14 +15,14 @@ const getElement = (selector) => {
 
 const showElement = (el) => {
   if (!(el instanceof HTMLElement)) {
-    throw "Invalid argument: showElement expects an HTMLElement";
+    throw new Error("Invalid argument: showElement expects an HTMLElement");
   }
   el.classList.remove("hide");
 };
 
 const hideElement = (el) => {
   if (!(el instanceof HTMLElement)) {
-    throw "Invalid argument: hideElement expects an HTMLElement.";
+    throw new Error("Invalid argument: hideElement expects an HTMLElement.");
   }
   el.classList.add("hide");
 };
