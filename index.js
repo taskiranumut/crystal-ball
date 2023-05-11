@@ -22,7 +22,7 @@ const showElement = (el) => {
 
 const hideElement = (el) => {
   if (!(el instanceof HTMLElement)) {
-    throw "Invalid argument: hideElement expects an HTMLElement";
+    throw "Invalid argument: hideElement expects an HTMLElement.";
   }
   el.classList.add("hide");
 };
@@ -36,6 +36,22 @@ const validateIsHtmlElement = (
       `Invalid parameter: ${property} is not an instance of HTMLElement.`
     );
   }
+};
+
+const fillElementsObject = (elemenets, selectorList) => {
+  if (
+    !Array.isArray(selectorList) ||
+    typeof elemenets !== "object" ||
+    elemenets === null
+  ) {
+    throw new Error(
+      `Invalid argument: fillElementsObject expects an object and an array.`
+    );
+  }
+
+  selectorList.forEach(
+    (item) => (elemenets[item.selectorName] = getElement(item.selector))
+  );
 };
 
 const handleClickNewPredictionButton = (options) => {
@@ -53,9 +69,12 @@ const handleClickNewPredictionButton = (options) => {
 
 window.addEventListener("load", () => {
   const elements = {};
-  elements.newPredictionBtnEl = getElement("#new-prediction-btn");
-  elements.newPredictionCardEl = getElement("#new-prediction-card");
-  elements.predictionListEl = getElement("#predictions");
+  const selectorList = [
+    { selectorName: "newPredictionBtnEl", selector: "#new-prediction-btn" },
+    { selectorName: "newPredictionCardEl", selector: "#new-prediction-card" },
+    { selectorName: "predictionListEl", selector: "#predictions" },
+  ];
+  fillElementsObject(elements, selectorList);
 
   handleClickNewPredictionButton({
     newPredictionBtnEl: elements.newPredictionBtnEl,
