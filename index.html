@@ -29,7 +29,11 @@
                 <h1 class="header__title">Crystal Ball</h1>
               </div>
               <div class="header__navbar">
-                <button type="button" class="btn btn--xl btn--primary">
+                <button
+                  type="button"
+                  id="new-prediction-btn"
+                  class="btn btn--xl btn--primary"
+                >
                   New Prediction
                 </button>
               </div>
@@ -73,7 +77,7 @@
           </aside>
           <main class="main">
             <div class="main__container">
-              <div class="card card--full">
+              <div id="new-prediction-card" class="card card--full hide">
                 <div class="form">
                   <form action="#">
                     <div class="form__header">
@@ -177,7 +181,7 @@
                   </form>
                 </div>
               </div>
-              <div class="predictions" style="display: none">
+              <div id="predictions" class="predictions">
                 <div class="card card--full predictions__item">
                   <p class="predictions__item-content">
                     Lorem ipsum, dolor sit amet consectetur adipisicing elit.

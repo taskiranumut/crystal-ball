@@ -9,7 +9,7 @@ const getElement = (selector) => {
   if (!element) {
     console.error(`Element not found: ${selector}`);
     return null;
-}
+  }
   return element;
 };
 
@@ -27,7 +27,26 @@ const hideElement = (el) => {
   el.classList.add("hide");
 };
 
+const handleClickNewPredictionButton = (options) => {
+  const { newPredictionBtnEl, newPredictionCardEl, predictionListEl } = options;
+
+  if (newPredictionBtnEl && newPredictionCardEl && predictionListEl) {
+    newPredictionBtnEl.addEventListener("click", () => {
+      hideElement(predictionListEl);
+      showElement(newPredictionCardEl);
+    });
+  }
+};
 
 window.addEventListener("load", () => {
+  const elements = {};
+  elements.newPredictionBtnEl = getElement("#new-prediction-btn");
+  elements.newPredictionCardEl = getElement("#new-prediction-card");
+  elements.predictionListEl = getElement("#predictions");
 
+  handleClickNewPredictionButton({
+    newPredictionBtnEl: elements.newPredictionBtnEl,
+    newPredictionCardEl: elements.newPredictionCardEl,
+    predictionListEl: elements.predictionListEl,
+  });
 });
