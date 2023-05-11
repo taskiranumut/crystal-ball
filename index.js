@@ -27,15 +27,28 @@ const hideElement = (el) => {
   el.classList.add("hide");
 };
 
+const validateIsHtmlElement = (
+  value,
+  property = "the value passed as an argument"
+) => {
+  if (!(value instanceof HTMLElement)) {
+    throw new Error(
+      `Invalid parameter: ${property} is not an instance of HTMLElement.`
+    );
+  }
+};
+
 const handleClickNewPredictionButton = (options) => {
+  Object.entries(options).forEach(([key, value]) =>
+    validateIsHtmlElement(value, key)
+  );
+
   const { newPredictionBtnEl, newPredictionCardEl, predictionListEl } = options;
 
-  if (newPredictionBtnEl && newPredictionCardEl && predictionListEl) {
-    newPredictionBtnEl.addEventListener("click", () => {
-      hideElement(predictionListEl);
-      showElement(newPredictionCardEl);
-    });
-  }
+  newPredictionBtnEl.addEventListener("click", () => {
+    hideElement(predictionListEl);
+    showElement(newPredictionCardEl);
+  });
 };
 
 window.addEventListener("load", () => {
