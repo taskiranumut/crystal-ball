@@ -67,17 +67,37 @@ const handleClickNewPredictionButton = (options) => {
   });
 };
 
+const handleClickFormCancelButton = (options) => {
+  Object.entries(options).forEach(([key, value]) =>
+    validateIsHtmlElement(value, key)
+  );
+
+  const { formCancelBtnEl, newPredictionCardEl, predictionListEl } = options;
+
+  formCancelBtnEl.addEventListener("click", () => {
+    hideElement(newPredictionCardEl);
+    showElement(predictionListEl);
+  });
+};
+
 window.addEventListener("load", () => {
   const elements = {};
   const selectorList = [
     { elName: "newPredictionBtnEl", selector: "#new-prediction-btn" },
     { elName: "newPredictionCardEl", selector: "#new-prediction-card" },
     { elName: "predictionListEl", selector: "#predictions" },
+    { elName: "formCancelBtnEl", selector: "#form-cancel-btn" },
   ];
   fillElementsObject(elements, selectorList);
 
   handleClickNewPredictionButton({
     newPredictionBtnEl: elements.newPredictionBtnEl,
+    newPredictionCardEl: elements.newPredictionCardEl,
+    predictionListEl: elements.predictionListEl,
+  });
+
+  handleClickFormCancelButton({
+    formCancelBtnEl: elements.formCancelBtnEl,
     newPredictionCardEl: elements.newPredictionCardEl,
     predictionListEl: elements.predictionListEl,
   });
