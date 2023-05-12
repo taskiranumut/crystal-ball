@@ -50,7 +50,7 @@ const fillElementsObject = (elemenets, selectorList) => {
   }
 
   selectorList.forEach(
-    (item) => (elemenets[item.selectorName] = getElement(item.selector))
+    (item) => (elemenets[item.elName] = getElement(item.selector))
   );
 };
 
@@ -70,9 +70,9 @@ const handleClickNewPredictionButton = (options) => {
 window.addEventListener("load", () => {
   const elements = {};
   const selectorList = [
-    { selectorName: "newPredictionBtnEl", selector: "#new-prediction-btn" },
-    { selectorName: "newPredictionCardEl", selector: "#new-prediction-card" },
-    { selectorName: "predictionListEl", selector: "#predictions" },
+    { elName: "newPredictionBtnEl", selector: "#new-prediction-btn" },
+    { elName: "newPredictionCardEl", selector: "#new-prediction-card" },
+    { elName: "predictionListEl", selector: "#predictions" },
   ];
   fillElementsObject(elements, selectorList);
 
