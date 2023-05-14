@@ -9,6 +9,31 @@ const fakeNetworkLatency = async () => {
 };
 
 /**
+ * Random ID generator function that generates IDs with a minimum and maximum length.
+ * The IDs do not start with a number and include at least one number.
+ * @param {number} [minLength=4] - The minimum length of the generated ID. Default is 4.
+ * @param {number} [maxLength=16] - The maximum length of the generated ID. Default is 16.
+ * @returns {string} A randomly generated ID.
+ */
+export function generateId(minLength = 4, maxLength = 16) {
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  const length =
+    Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+
+  let id = "";
+
+  do {
+    const char = chars[Math.floor(Math.random() * chars.length)];
+
+    if (id.length === 0 && /^\d$/.test(char)) continue;
+
+    id += char;
+  } while (id.length < length);
+
+  return id;
+}
+
+/**
  * Selects an element from the DOM.
  * @param {string} selector - The CSS selector of the element to select.
  * @returns {HTMLElement|null} The selected element, or null if not found.
