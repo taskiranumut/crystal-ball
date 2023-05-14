@@ -64,6 +64,21 @@ const validateIsHtmlElement = (
 };
 
 /**
+ * Validates if the provided argument is an instance of HTMLFormElement.
+ * @param {HTMLElement} el - The HTML element to validate.
+ * @param {string} elName - The name of the argument being validated.
+ * @throws Will throw an error if the provided element is not an instance of HTMLFormElement.
+ */
+const validateIsHtmlFormElement = (
+  el,
+  elName = "the value passed as an argument"
+) => {
+  if (!(el instanceof HTMLFormElement)) {
+    throw new Error(`Invalid parameter: ${elName} is not a form element.`);
+  }
+};
+
+/**
  * Fills an elements object with HTMLElements selected by their CSS selectors.
  * @param {object} elemenets - The elements object to fill.
  * @param {Array<{elName: string, selector: string}>} selectorList - The list of elements to select.
@@ -83,6 +98,20 @@ const fillElementsObject = (elemenets, selectorList) => {
   selectorList.forEach(
     (item) => (elemenets[item.elName] = getElement(item.selector))
   );
+};
+
+/**
+ * Retrieves and returns form data as a JavaScript object.
+ * @param {HTMLFormElement} formEl - The form element from which to retrieve data.
+ * @returns {Object} - An object representing the form data.
+ * The object's properties correspond to form control names, and the values correspond to form control values.
+ * @throws Will throw an error if the provided element is not an instance of HTMLFormElement.
+ */
+const getFormData = (formEl) => {
+  validateIsHtmlFormElement(formEl, "formEl");
+
+  const formData = new FormData(formEl);
+  return Object.fromEntries(formData.entries());
 };
 
 /**
