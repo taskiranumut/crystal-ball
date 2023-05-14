@@ -200,12 +200,39 @@ const handleClickFormCancelButton = (options) => {
   });
 };
 
+/**
+ * Handles the submission of the prediction form. Upon submission, it prevents the default form submission behaviour, generates form data from the form element, assigns a generated ID to the form data, retrieves any existing predictions from local storage, and saves the updated predictions list back to local storage.
+ * @param {Object} options - The elements used in the function.
+ * @param {HTMLFormElement} options.newPredictionFormEl - The form element that is submitted.
+ * @throws Will throw an error if the provided element is not an instance of HTMLElement.
+ */
+const handleSubmitPredictionForm = (options) => {
+  Object.entries(options).forEach(([key, value]) =>
+    validateIsHtmlElement(value, key)
+  );
+
+  const { newPredictionFormEl } = options;
+
+  newPredictionFormEl.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const formData = getFormData(newPredictionFormEl);
+    const newFormData = { ...formData, id: generateId(8, 12) };
+
+    const predictions = getItemFromLocalStorage("predictions") || [];
+    const predictionsList = [...predictions, newFormData];
+
+    localStorage.setItem("predictions", JSON.stringify(predictionsList));
+  });
+};
+
 window.addEventListener("load", () => {
   const elements = {};
   const selectorList = [
     { elName: "newPredictionBtnEl", selector: "#new-prediction-btn" },
     { elName: "newPredictionCardEl", selector: "#new-prediction-card" },
     { elName: "predictionListEl", selector: "#predictions" },
+    { elName: "newPredictionFormEl", selector: "#new-prediction-form" },
     { elName: "formCancelBtnEl", selector: "#form-cancel-btn" },
   ];
   fillElementsObject(elements, selectorList);
@@ -220,5 +247,9 @@ window.addEventListener("load", () => {
     formCancelBtnEl: elements.formCancelBtnEl,
     newPredictionCardEl: elements.newPredictionCardEl,
     predictionListEl: elements.predictionListEl,
+  });
+
+  handleSubmitPredictionForm({
+    newPredictionFormEl: elements.newPredictionFormEl,
   });
 });
