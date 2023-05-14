@@ -15,7 +15,7 @@ const fakeNetworkLatency = async () => {
  * @param {number} [maxLength=16] - The maximum length of the generated ID. Default is 16.
  * @returns {string} A randomly generated ID.
  */
-export function generateId(minLength = 4, maxLength = 16) {
+function generateId(minLength = 4, maxLength = 16) {
   const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
   const length =
     Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
