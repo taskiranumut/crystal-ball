@@ -211,7 +211,8 @@ const handleSubmitPredictionForm = (options) => {
     validateIsHtmlElement(value, key)
   );
 
-  const { newPredictionFormEl } = options;
+  const { newPredictionFormEl, newPredictionCardEl, predictionListEl } =
+    options;
 
   newPredictionFormEl.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -223,6 +224,8 @@ const handleSubmitPredictionForm = (options) => {
     const predictionsList = [...predictions, newFormData];
 
     localStorage.setItem("predictions", JSON.stringify(predictionsList));
+    hideElement(newPredictionCardEl);
+    showElement(predictionListEl);
   });
 };
 
@@ -251,5 +254,7 @@ window.addEventListener("load", () => {
 
   handleSubmitPredictionForm({
     newPredictionFormEl: elements.newPredictionFormEl,
+    newPredictionCardEl: elements.newPredictionCardEl,
+    predictionListEl: elements.predictionListEl,
   });
 });
