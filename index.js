@@ -226,6 +226,7 @@ const handleSubmitPredictionForm = (options) => {
     localStorage.setItem("predictions", JSON.stringify(predictionsList));
     hideElement(newPredictionCardEl);
     showElement(predictionListEl);
+    newPredictionFormEl.reset();
   });
 };
 
