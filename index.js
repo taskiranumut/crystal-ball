@@ -158,6 +158,26 @@ const getItemFromLocalStorage = (itemName) => {
   }
 };
 
+const goToNewPredictionForm = (options) => {
+  Object.entries(options).forEach(([key, value]) =>
+    validateIsHtmlElement(value, key)
+  );
+  const { newPredictionCardEl, predictionListEl } = options;
+
+  hideElement(predictionListEl);
+  showElement(newPredictionCardEl);
+};
+
+const goToPredictionList = (options) => {
+  Object.entries(options).forEach(([key, value]) =>
+    validateIsHtmlElement(value, key)
+  );
+  const { newPredictionCardEl, predictionListEl } = options;
+
+  hideElement(newPredictionCardEl);
+  showElement(predictionListEl);
+};
+
 /**
  * Attaches a click event handler to the 'new prediction' button.
  * @param {Object} options - The HTMLElements needed for this function.
@@ -174,8 +194,7 @@ const handleClickNewPredictionButton = (options) => {
   const { newPredictionBtnEl, newPredictionCardEl, predictionListEl } = options;
 
   newPredictionBtnEl.addEventListener("click", () => {
-    hideElement(predictionListEl);
-    showElement(newPredictionCardEl);
+    goToNewPredictionForm({ newPredictionCardEl, predictionListEl });
   });
 };
 
@@ -195,8 +214,7 @@ const handleClickFormCancelButton = (options) => {
   const { formCancelBtnEl, newPredictionCardEl, predictionListEl } = options;
 
   formCancelBtnEl.addEventListener("click", () => {
-    hideElement(newPredictionCardEl);
-    showElement(predictionListEl);
+    goToPredictionList({ newPredictionCardEl, predictionListEl });
   });
 };
 
@@ -236,8 +254,7 @@ const handleSubmitPredictionForm = (options) => {
     const predictionsList = [...predictions, newFormData];
 
     localStorage.setItem("predictions", JSON.stringify(predictionsList));
-    hideElement(newPredictionCardEl);
-    showElement(predictionListEl);
+    goToPredictionList({ newPredictionCardEl, predictionListEl });
     newPredictionFormEl.reset();
   });
 };
