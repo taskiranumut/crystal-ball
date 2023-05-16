@@ -201,10 +201,22 @@ const handleClickFormCancelButton = (options) => {
 };
 
 /**
- * Handles the submission of the prediction form. Upon submission, it prevents the default form submission behaviour, generates form data from the form element, assigns a generated ID to the form data, retrieves any existing predictions from local storage, and saves the updated predictions list back to local storage.
- * @param {Object} options - The elements used in the function.
- * @param {HTMLFormElement} options.newPredictionFormEl - The form element that is submitted.
- * @throws Will throw an error if the provided element is not an instance of HTMLElement.
+ * Handles the submission of a prediction form.
+ * @param {Object} options - The options for handling the form submission.
+ * @param {HTMLFormElement} options.newPredictionFormEl - The form element to be submitted.
+ * @param {HTMLElement} options.newPredictionCardEl - The card element that contains the form.
+ * @param {HTMLElement} options.predictionListEl - The list element where the new prediction will be displayed.
+ * @description This function will perform several actions when the form is submitted:
+ * - Prevent the default form submission action.
+ * - Retrieve the data from the form and add a unique id to it.
+ * - Retrieve the existing predictions from local storage (or initialize an empty array if there are none).
+ * - Add the new prediction to the list of predictions.
+ * - Save the updated list of predictions to local storage.
+ * - Hide the card that contains the form.
+ * - Show the list where the new prediction will be displayed.
+ * - Reset the form.
+ * - Note: This function expects that all the elements passed in the `options` object are valid HTML elements.
+ * If any of the elements are not valid, it will throw an error.
  */
 const handleSubmitPredictionForm = (options) => {
   Object.entries(options).forEach(([key, value]) =>
