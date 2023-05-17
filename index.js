@@ -273,13 +273,16 @@ const fillPredictionList = (predictionListEl) => {
     }
 
     predictions.forEach((prediction) => {
+      const realizationTimeTimestamp = getTimestampFromDateString(
+        prediction["realization-time"]
+      );
+
       const data = {
         id: prediction["id"],
         content: prediction["prediction-content"],
         tag: prediction["tag"],
         votes: prediction["votes"],
-        // TODO: Below data will be dynamic.
-        countdown: { days: 0, hours: 0, minutes: 0, seconds: 0 },
+        countdown: getRemainingTimeUnits(realizationTimeTimestamp),
       };
       const predictionCardElWithData = getPredictionCardElWithData(data);
       predictionListEl.insertAdjacentHTML(
