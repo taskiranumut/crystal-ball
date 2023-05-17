@@ -140,6 +140,24 @@ const getFormData = (formEl) => {
 };
 
 /**
+ * Retrieves form data from a given HTMLFormElement and adds additional properties.
+ * @param {HTMLFormElement} newPredictionFormEl - The form element from which to retrieve data.
+ * @returns {Object} - An object representing the form data along with additional properties.
+ * The object's properties include form control names, form control values, a generated ID, and a votes object.
+ * @throws Will throw an error if the provided element is not an instance of HTMLFormElement.
+ */
+const getNewPredictionData = (newPredictionFormEl) => {
+  validateIsHtmlFormElement(newPredictionFormEl);
+
+  const formData = getFormData(newPredictionFormEl);
+  return {
+    ...formData,
+    id: generateId(8, 12),
+    votes: { upCount: 0, downCount: 0 },
+  };
+};
+
+/**
  * Get an item from the local storage and parse it as JSON.
  *
  * @param {string} itemName - The name of the item to retrieve from the local storage.
@@ -193,8 +211,8 @@ const fillPredictionList = (predictionListEl) => {
         id: prediction["id"],
         content: prediction["prediction-content"],
         tag: prediction["tag"],
+        votes: prediction["votes"],
         // TODO: Below data will be dynamic.
-        votes: { upCount: 0, downCount: 0 },
         countdown: { days: 0, hours: 0, minutes: 0, seconds: 0 },
       };
       const predictionCardElWithData = getPredictionCardElWithData(data);
@@ -348,11 +366,9 @@ const handleSubmitPredictionForm = (options) => {
   newPredictionFormEl.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const formData = getFormData(newPredictionFormEl);
-    const newFormData = { ...formData, id: generateId(8, 12) };
-
+    const newPredictionData = getNewPredictionData(newPredictionFormEl);
     const predictions = getItemFromLocalStorage("predictions") || [];
-    const predictionsList = [...predictions, newFormData];
+    const predictionsList = [...predictions, newPredictionData];
 
     localStorage.setItem("predictions", JSON.stringify(predictionsList));
     goToPredictionList({ newPredictionCardEl, predictionListEl });
