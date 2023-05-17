@@ -152,6 +152,46 @@ const getTimestampFromDateString = (dateString) => {
 };
 
 /**
+ * Returns the remaining time between the current date and a future timestamp
+ * in terms of days, hours, minutes, and seconds.
+ * @param {number} [futureTimestamp=NaN] - The future timestamp in milliseconds.
+ * @returns {Object} An object that represents the remaining time:
+ * - days: The number of remaining days.
+ * - hours: The number of remaining hours after the day calculation.
+ * - minutes: The number of remaining minutes after the hour calculation.
+ * - seconds: The number of remaining seconds after the minute calculation.
+ * @throws {Error} If the futureTimestamp is not a number.
+ * @throws {Error} If the futureTimestamp is in the past.
+ */
+const getRemainingTimeUnits = (futureTimestamp = NaN) => {
+  try {
+    if (isNaN(futureTimestamp)) {
+      throw new Error("The future timestamp is not a number");
+    }
+
+    const diffMilliseconds = futureTimestamp - new Date().getTime();
+
+    if (diffMilliseconds <= 0) {
+      throw new Error("The future timestamp is in the past.");
+    }
+
+    const diffSeconds = Math.floor(diffMilliseconds / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    return {
+      days: diffDays,
+      minutes: diffMinutes % 60,
+      hours: diffHours % 24,
+      seconds: diffSeconds % 60,
+    };
+  } catch (error) {
+    console.error(`Error occurred: ${error}`);
+  }
+};
+
+/**
  * Retrieves and returns form data as a JavaScript object.
  * @param {HTMLFormElement} formEl - The form element from which to retrieve data.
  * @returns {Object} - An object representing the form data.
