@@ -178,6 +178,77 @@ const goToPredictionList = (options) => {
   showElement(predictionListEl);
 };
 
+const getPredictionCardElWithData = (data) => {
+  const { id, content, countdown, tag, votes } = data;
+  return `
+    <div class="card card--full predictions__item ${
+      content ? "" : "hide"
+    }"" data-prediction-id="${id}">
+      <p class="predictions__item-content">${content}</p>
+      <div class="predictions__item-countdown">
+        <div class="predictions__item-countdown-item">
+          <span class="predictions__item-countdown-item-number"
+            >${countdown?.days == null ? "-" : countdown.days}</span
+          >
+          <span class="predictions__item-countdown-item-text"
+            >Days</span
+          >
+        </div>
+        <div class="predictions__item-countdown-item">
+          <span class="predictions__item-countdown-item-number"
+            >${countdown?.hours == null ? "-" : countdown.hours}</span
+          >
+          <span class="predictions__item-countdown-item-text"
+            >Hours</span
+          >
+        </div>
+        <div class="predictions__item-countdown-item">
+          <span class="predictions__item-countdown-item-number"
+            >${countdown?.minutes == null ? "-" : countdown.minutes}</span
+          >
+          <span class="predictions__item-countdown-item-text"
+            >Minutes</span
+          >
+        </div>
+        <div class="predictions__item-countdown-item">
+          <span class="predictions__item-countdown-item-number"
+            >${countdown?.seconds == null ? "-" : countdown.seconds}</span
+          >
+          <span class="predictions__item-countdown-item-text"
+            >Seconds</span
+          >
+        </div>
+      </div>
+      <span class="predictions__item-tag-label ${tag || "hide"}">${tag}</span>
+      <div class="predictions__item-vote-buttons">
+        <button
+          type="button"
+          class="predictions__item-vote-button-item"
+        >
+          <span
+            ><i class="fa-regular fa-thumbs-up"></i>
+            <i class="fa-solid fa-thumbs-up"></i
+          ></span>
+          <span class="predictions__item-vote-counter">${
+            votes?.upCount == null ? "0" : votes.upCount
+          }</span>
+        </button>
+        <button
+          type="button"
+          class="predictions__item-vote-button-item"
+        >
+          <span
+            ><i class="fa-regular fa-thumbs-down"></i>
+            <i class="fa-solid fa-thumbs-down"></i
+          ></span>
+          <span class="predictions__item-vote-counter">${
+            votes?.downCount == null ? "0" : votes.downCount
+          }</span>
+        </button>
+      </div>
+    </div>`;
+};
+
 /**
  * Attaches a click event handler to the 'new prediction' button.
  * @param {Object} options - The HTMLElements needed for this function.
