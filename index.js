@@ -126,6 +126,32 @@ const fillElementsObject = (elemenets, selectorList) => {
 };
 
 /**
+ * Takes a date string in the "YYYY-MM-DD" format, and returns the corresponding timestamp at 23:59:59.
+ * @param {string} dateString - The date string to convert. Must be in "YYYY-MM-DD" format.
+ * @returns {number} - The timestamp corresponding to the provided date at 23:59:59.
+ * @throws Will throw an error if the provided date string is not in the "YYYY-MM-DD" format or is not a valid date.
+ */
+const getTimestampFromDateString = (dateString) => {
+  try {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!regex.test(dateString)) {
+      throw new Error(
+        `Invalid date string format: ${dateString}. It has to be "YYYY-MM-DD" format.`
+      );
+    }
+
+    const date = new Date(dateString + "T23:59:59");
+    if (isNaN(date)) {
+      throw new Error(`Invalid date: ${dateString}`);
+    }
+
+    return date.getTime();
+  } catch (error) {
+    console.error(`Failed to get timestamp: ${error}`);
+  }
+};
+
+/**
  * Retrieves and returns form data as a JavaScript object.
  * @param {HTMLFormElement} formEl - The form element from which to retrieve data.
  * @returns {Object} - An object representing the form data.
