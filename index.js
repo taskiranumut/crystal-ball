@@ -176,6 +176,36 @@ const goToPredictionList = (options) => {
 
   hideElement(newPredictionCardEl);
   showElement(predictionListEl);
+  fillPredictionList(predictionListEl);
+};
+
+const fillPredictionList = (predictionListEl) => {
+  validateIsHtmlElement(predictionListEl);
+
+  try {
+    const predictions = getItemFromLocalStorage("predictions");
+    if (predictions == null) {
+      throw new Error("predictions not found in Local Storage.");
+    }
+
+    predictions.forEach((prediction) => {
+      const data = {
+        id: prediction["id"],
+        content: prediction["prediction-content"],
+        tag: prediction["tag"],
+        // TODO: Below data will be dynamic.
+        votes: { upCount: 0, downCount: 0 },
+        countdown: { days: 0, hours: 0, minutes: 0, seconds: 0 },
+      };
+      const predictionCardElWithData = getPredictionCardElWithData(data);
+      predictionListEl.insertAdjacentHTML(
+        "beforeend",
+        predictionCardElWithData
+      );
+    });
+  } catch (error) {
+    console.error(`Failed to fetch item: ${error}`);
+  }
 };
 
 const getPredictionCardElWithData = (data) => {
