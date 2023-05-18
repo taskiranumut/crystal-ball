@@ -298,18 +298,15 @@ const fillPredictionList = (predictionListEl) => {
         votes: prediction["votes"],
         countdown: getRemainingTimeUnits(realizationTimeTimestamp),
       };
-      const predictionCardElWithData = getPredictionCardElWithData(data);
-      predictionListEl.insertAdjacentHTML(
-        "beforeend",
-        predictionCardElWithData
-      );
+      const predictionCard = getPredictionCard(data);
+      predictionListEl.insertAdjacentHTML("beforeend", predictionCard);
     });
   } catch (error) {
     console.error(`Failed to fetch item: ${error}`);
   }
 };
 
-const getPredictionCardElWithData = (data) => {
+const getPredictionCard = (data) => {
   const { id, content, countdown, tag, votes } = data;
   return `
     <div class="card card--full predictions__item ${
