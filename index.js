@@ -237,6 +237,21 @@ const getNewPredictionData = (newPredictionFormEl) => {
 };
 
 /**
+ * Iterates over each property of the given object, applies the provided template function to them,
+ * and combines the results into a single string.
+ * @param {Object} obj The object to iterate over.
+ * @param {Function} templateFunction - The function to apply to each property of the object. This function should take two arguments: the property value and the property key, and return a string.
+ * @returns {string} The resulting string, with each property of the object transformed by the template function and combined together. Returns an empty string if the provided object is null or undefined.
+ */
+const generateTemplateString = (obj, templateFunction) => {
+  return obj
+    ? Object.keys(obj)
+        .map((key) => templateFunction(obj[key], key))
+        .join("")
+    : "";
+};
+
+/**
  * Get an item from the local storage and parse it as JSON.
  *
  * @param {string} itemName - The name of the item to retrieve from the local storage.
@@ -309,17 +324,11 @@ const fillPredictionList = (predictionListEl) => {
 const getPredictionCardTemplate = (data) => {
   const { id, content, countdown, tag, votes } = data;
 
-  const countdownItems = countdown
-    ? Object.keys(countdown)
-        .map((key) => getCountdownItemTemplate(countdown[key], key))
-        .join("")
-    : "";
-
-  const voteButtons = votes
-    ? Object.keys(votes)
-        .map((key) => getVoteButtonTemplate(votes[key], key))
-        .join("")
-    : "";
+  const countdownItems = generateTemplateString(
+    countdown,
+    getCountdownItemTemplate
+  );
+  const voteButtons = generateTemplateString(votes, getVoteButtonTemplate);
 
   return `
     <div class="card card--full predictions__item ${
