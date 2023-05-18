@@ -237,6 +237,45 @@ const getNewPredictionData = (newPredictionFormEl) => {
 };
 
 /**
+ * Takes a prediction object and returns a new object with processed data.
+ * @param {object} prediction - The prediction object. Required keys: "id", "prediction-content", "tag", "votes", "realization-time".
+ * @returns {object} An object that contains the processed prediction data.
+ * @throws Will throw an error if the prediction parameter is not an object or if it's missing any of the required keys.
+ */
+const createPredictionData = (prediction) => {
+  if (typeof prediction !== "object" || prediction === null) {
+    throw new Error("The prediction parameter must be an object.");
+  }
+
+  const requiredKeys = [
+    "id",
+    "prediction-content",
+    "tag",
+    "votes",
+    "realization-time",
+  ];
+  const predictionKeys = Object.keys(prediction);
+
+  requiredKeys.forEach((key) => {
+    if (!predictionKeys.includes(key)) {
+      throw new Error(`Missing required key: ${key}`);
+    }
+  });
+
+  const realizationTimeTimestamp = getTimestampFromDateString(
+    prediction["realization-time"]
+  );
+
+  return {
+    id: prediction["id"],
+    content: prediction["prediction-content"],
+    tag: prediction["tag"],
+    votes: prediction["votes"],
+    countdown: getRemainingTimeUnits(realizationTimeTimestamp),
+  };
+};
+
+/**
  * Iterates over each property of the given object, applies the provided template function to them,
  * and combines the results into a single string.
  * @param {Object} obj The object to iterate over.
@@ -301,21 +340,14 @@ const fillPredictionList = (predictionListEl) => {
       throw new Error("predictions not found in Local Storage.");
     }
 
-    predictions.forEach((prediction) => {
-      const realizationTimeTimestamp = getTimestampFromDateString(
-        prediction["realization-time"]
-      );
+    const predictionCards = predictions
+      .map((prediction) => {
+        const predictionData = createPredictionData(prediction);
+        return getPredictionCardTemplate(predictionData);
+      })
+      .join("");
 
-      const data = {
-        id: prediction["id"],
-        content: prediction["prediction-content"],
-        tag: prediction["tag"],
-        votes: prediction["votes"],
-        countdown: getRemainingTimeUnits(realizationTimeTimestamp),
-      };
-      const predictionCard = getPredictionCardTemplate(data);
-      predictionListEl.insertAdjacentHTML("beforeend", predictionCard);
-    });
+    predictionListEl.insertAdjacentHTML("beforeend", predictionCards);
   } catch (error) {
     console.error(`Failed to fetch item: ${error}`);
   }
