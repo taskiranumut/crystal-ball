@@ -308,45 +308,19 @@ const fillPredictionList = (predictionListEl) => {
 
 const getPredictionCardTemplate = (data) => {
   const { id, content, countdown, tag, votes } = data;
+
+  const countdownItems = countdown
+    ? Object.keys(countdown)
+        .map((key) => getCountdownItemTemplate(countdown[key], key))
+        .join("")
+    : "";
+
   return `
     <div class="card card--full predictions__item ${
       content ? "" : "hide"
     }"" data-prediction-id="${id}">
       <p class="predictions__item-content">${content}</p>
-      <div class="predictions__item-countdown">
-        <div class="predictions__item-countdown-item">
-          <span class="predictions__item-countdown-item-number"
-            >${countdown?.days == null ? "-" : countdown.days}</span
-          >
-          <span class="predictions__item-countdown-item-text"
-            >Days</span
-          >
-        </div>
-        <div class="predictions__item-countdown-item">
-          <span class="predictions__item-countdown-item-number"
-            >${countdown?.hours == null ? "-" : countdown.hours}</span
-          >
-          <span class="predictions__item-countdown-item-text"
-            >Hours</span
-          >
-        </div>
-        <div class="predictions__item-countdown-item">
-          <span class="predictions__item-countdown-item-number"
-            >${countdown?.minutes == null ? "-" : countdown.minutes}</span
-          >
-          <span class="predictions__item-countdown-item-text"
-            >Minutes</span
-          >
-        </div>
-        <div class="predictions__item-countdown-item">
-          <span class="predictions__item-countdown-item-number"
-            >${countdown?.seconds == null ? "-" : countdown.seconds}</span
-          >
-          <span class="predictions__item-countdown-item-text"
-            >Seconds</span
-          >
-        </div>
-      </div>
+      <div class="predictions__item-countdown">${countdownItems}</div>
       <span class="predictions__item-tag-label ${tag || "hide"}">${tag}</span>
       <div class="predictions__item-vote-buttons">
         <button
@@ -375,6 +349,25 @@ const getPredictionCardTemplate = (data) => {
         </button>
       </div>
     </div>`;
+};
+
+/**
+ * Generates HTML structure for a countdown item.
+ * @param {number|null} itemValue - The value of the countdown item. If the value is null, "-" will be displayed.
+ * @param {string} itemName - The name of the countdown item.
+ * @returns {string} The HTML structure for a countdown item as a string.
+ */
+const getCountdownItemTemplate = (itemValue, itemName) => {
+  return `
+    <div class="predictions__item-countdown-item">
+      <span class="predictions__item-countdown-item-number"
+        >${itemValue == null ? "-" : itemValue}</span
+      >
+      <span class="predictions__item-countdown-item-text"
+        >${itemName}</span
+      >
+    </div>
+  `;
 };
 
 /**
