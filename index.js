@@ -298,7 +298,7 @@ const fillPredictionList = (predictionListEl) => {
         votes: prediction["votes"],
         countdown: getRemainingTimeUnits(realizationTimeTimestamp),
       };
-      const predictionCard = getPredictionCard(data);
+      const predictionCard = getPredictionCardTemplate(data);
       predictionListEl.insertAdjacentHTML("beforeend", predictionCard);
     });
   } catch (error) {
@@ -306,7 +306,7 @@ const fillPredictionList = (predictionListEl) => {
   }
 };
 
-const getPredictionCard = (data) => {
+const getPredictionCardTemplate = (data) => {
   const { id, content, countdown, tag, votes } = data;
   return `
     <div class="card card--full predictions__item ${
