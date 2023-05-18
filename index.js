@@ -345,6 +345,15 @@ const goToPredictionList = (options) => {
   fillPredictionList(predictionListEl);
 };
 
+/**
+ * Fills the provided HTML element with a list of prediction cards fetched from Local Storage.
+ * @param {HTMLElement} predictionListEl - The HTML element where the prediction cards will be appended to.
+ * @throws {Error} Will throw an error if the predictionListEl is not a valid HTML element.
+ * @throws {Error} Will throw an error if predictions are not found in Local Storage.
+ * It fetches an array of prediction objects from the Local Storage. Each object in this array is used to create
+ * prediction data which is then passed to get a template for prediction card. All these templates are then joined to form
+ * a single string that represents all prediction cards. This string is then appended to the provided HTML element.
+ */
 const fillPredictionList = (predictionListEl) => {
   validateIsHtmlElement(predictionListEl);
 
