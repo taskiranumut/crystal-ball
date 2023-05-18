@@ -315,39 +315,20 @@ const getPredictionCardTemplate = (data) => {
         .join("")
     : "";
 
+  const voteButtons = votes
+    ? Object.keys(votes)
+        .map((key) => getVoteButtonTemplate(votes[key], key))
+        .join("")
+    : "";
+
   return `
     <div class="card card--full predictions__item ${
       content ? "" : "hide"
-    }"" data-prediction-id="${id}">
+    } data-prediction-id="${id}">
       <p class="predictions__item-content">${content}</p>
       <div class="predictions__item-countdown">${countdownItems}</div>
       <span class="predictions__item-tag-label ${tag || "hide"}">${tag}</span>
-      <div class="predictions__item-vote-buttons">
-        <button
-          type="button"
-          class="predictions__item-vote-button-item"
-        >
-          <span
-            ><i class="fa-regular fa-thumbs-up"></i>
-            <i class="fa-solid fa-thumbs-up"></i
-          ></span>
-          <span class="predictions__item-vote-counter">${
-            votes?.upCount == null ? "0" : votes.upCount
-          }</span>
-        </button>
-        <button
-          type="button"
-          class="predictions__item-vote-button-item"
-        >
-          <span
-            ><i class="fa-regular fa-thumbs-down"></i>
-            <i class="fa-solid fa-thumbs-down"></i
-          ></span>
-          <span class="predictions__item-vote-counter">${
-            votes?.downCount == null ? "0" : votes.downCount
-          }</span>
-        </button>
-      </div>
+      <div class="predictions__item-vote-buttons">${voteButtons}</div>
     </div>`;
 };
 
@@ -367,6 +348,38 @@ const getCountdownItemTemplate = (itemValue, itemName) => {
         >${itemName}</span
       >
     </div>
+  `;
+};
+
+/**
+ * Generates a template string for the vote button element.
+ * @param {number|null} voteValue - The value of the vote count. If null, vote count will be displayed as 0.
+ * @param {string} voteTypeKey - The key to determine the type of the vote button ("upCount" or "downCount").
+ * @throws {Error} Will throw an error if voteTypeKey is not "upCount" or "downCount".
+ * @returns {string} The template string for the vote button element.
+ */
+const getVoteButtonTemplate = (voteValue, voteTypeKey) => {
+  const voteTypes = {
+    upCount: "up",
+    downCount: "down",
+  };
+
+  const voteType = voteTypes[voteTypeKey];
+  if (!voteType) throw new Error(`Invalid voteTypeKey: ${voteTypeKey}`);
+
+  return `
+    <button
+      type="button"
+      class="predictions__item-vote-button-item"
+    >
+      <span
+        ><i class="fa-regular fa-thumbs-${voteType}"></i>
+        <i class="fa-solid fa-thumbs-${voteType}"></i
+      ></span>
+      <span class="predictions__item-vote-counter">${
+        voteValue == null ? "0" : voteValue
+      }</span>
+    </button>
   `;
 };
 
