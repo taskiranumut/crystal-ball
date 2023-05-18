@@ -376,6 +376,14 @@ const fillPredictionList = (predictionListEl) => {
   }
 };
 
+/**
+ * Generates a template for a prediction card using the provided data.
+ * @param {object} data - The data object to create a prediction card template from.
+ * @returns {string} A string that represents the HTML structure of a prediction card.
+ * The data object is destructured into its properties. Each property is used where needed in the HTML string
+ * that represents the structure of a prediction card. If the prediction has a countdown or votes, these are passed
+ * to the `generateTemplateString` function along with a template function to generate the respective part of the prediction card.
+ */
 const getPredictionCardTemplate = (data) => {
   const { id, content, countdown, tag, votes } = data;
 
