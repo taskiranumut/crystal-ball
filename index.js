@@ -48,6 +48,19 @@ const getElement = (selector) => {
 };
 
 /**
+ * Removes all child elements from a parent HTML element.
+ * @param {HTMLElement} parentEl - The parent HTML element from which child elements will be removed.
+ * @throws {Error} Will throw an error if parentEl is not an instance of HTMLElement.
+ */
+const removeChildElements = (parentEl) => {
+  validateIsHtmlElement(parentEl);
+
+  while (parentEl.firstChild) {
+    parentEl.removeChild(parentEl.firstChild);
+  }
+};
+
+/**
  * Removes the 'hide' class from an HTML element to show it.
  * @param {HTMLElement} el - The element to show.
  * @throws {Error} Throws an error if the provided argument is not an HTMLElement.
@@ -250,6 +263,7 @@ const goToNewPredictionForm = (options) => {
 
   hideElement(predictionListEl);
   showElement(newPredictionCardEl);
+  removeChildElements(predictionListEl);
 };
 
 const goToPredictionList = (options) => {
