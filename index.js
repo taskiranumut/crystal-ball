@@ -61,6 +61,20 @@ const removeChildElements = (parentEl) => {
 };
 
 /**
+ * Appends a child string as HTML to the parent HTML element.
+ * @param {HTMLElement} parentEl - The parent HTML element to which the child string will be appended.
+ * @param {string} stringChild - The child string that will be appended to the parent as HTML.
+ * @throws {Error} Will throw an error if the parentEl is not a valid HTML element.
+ * @throws {Error} Will throw an error if the stringChild is invalid or empty.
+ */
+const appendStringAsChildElement = (parentEl, stringChild = "") => {
+  validateIsHtmlElement(parentEl);
+  if (!stringChild) throw new Error("Child string is not valid or empty.");
+
+  parentEl.insertAdjacentHTML("beforeend", stringChild);
+};
+
+/**
  * Removes the 'hide' class from an HTML element to show it.
  * @param {HTMLElement} el - The element to show.
  * @throws {Error} Throws an error if the provided argument is not an HTMLElement.
@@ -347,7 +361,7 @@ const fillPredictionList = (predictionListEl) => {
       })
       .join("");
 
-    predictionListEl.insertAdjacentHTML("beforeend", predictionCards);
+    appendStringAsChildElement(predictionListEl, predictionCards);
   } catch (error) {
     console.error(`Failed to fetch item: ${error}`);
   }
