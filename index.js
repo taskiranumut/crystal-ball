@@ -470,6 +470,8 @@ window.addEventListener("load", () => {
   ];
   fillElementsObject(elements, selectorList);
 
+  fillPredictionList(elements.predictionListEl);
+
   handleClickNewPredictionButton({
     newPredictionBtnEl: elements.newPredictionBtnEl,
     newPredictionCardEl: elements.newPredictionCardEl,
