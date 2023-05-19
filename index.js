@@ -3,6 +3,9 @@
  * @property {boolean} isSuccessful - The request was successful or not.
  * @property {Object} [data] - The data received from the server.
  * @property {string} [error] - The error message if the request was not successful.
+ */
+
+/**
  * Send a request to a specified URL.
  * @async
  * @param {string} method - The HTTP method of the request (e.g., "GET", "POST").
@@ -42,6 +45,11 @@ const sendRequest = async (method, endpoint, data = null, headers = {}) => {
   }
 };
 
+/**
+ * Send a POST request to post predictions to the API.
+ * @param {Object} data - The data to be sent with the request.
+ * @returns {Promise<RequestResult>} The result of the request.
+ */
 const postPredictionsToApi = (data) => {
   const endpoint = `/`;
   return sendRequest("POST", endpoint, data);
