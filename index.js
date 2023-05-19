@@ -56,6 +56,15 @@ const postPredictionsToApi = (data) => {
 };
 
 /**
+ * Send a GET request to fetch predictions from the API.
+ * @returns {Promise<RequestResult>} The result of the request, including data if successful.
+ */
+const getPredictionsFromApi = () => {
+  const endpoint = `/`;
+  return sendRequest("GET", endpoint);
+};
+
+/**
  * Random ID generator function that generates IDs with a minimum and maximum length.
  * The IDs do not start with a number and include at least one number.
  * @param {number} [minLength=4] - The minimum length of the generated ID. Default is 4.
