@@ -42,6 +42,11 @@ const sendRequest = async (method, endpoint, data = null, headers = {}) => {
   }
 };
 
+const postPredictionsToApi = (data) => {
+  const endpoint = `/`;
+  return sendRequest("POST", endpoint, data);
+};
+
 /**
  * Simulates network latency.
  * @returns {Promise<void>} A promise that resolves after a random delay.
@@ -569,14 +574,14 @@ const handleSubmitPredictionForm = (options) => {
   const { newPredictionFormEl, newPredictionCardEl, predictionListEl } =
     options;
 
-  newPredictionFormEl.addEventListener("submit", (e) => {
+  newPredictionFormEl.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const newPredictionData = getNewPredictionData(newPredictionFormEl);
-    const predictions = getItemFromLocalStorage("predictions") || [];
-    const predictionsList = [...predictions, newPredictionData];
+    const response = await postPredictionsToApi(newPredictionData);
 
-    localStorage.setItem("predictions", JSON.stringify(predictionsList));
+    if (!response.isSuccessful) throw new Error(response.error.message);
+
     goToPredictionList({ newPredictionCardEl, predictionListEl });
     newPredictionFormEl.reset();
   });
