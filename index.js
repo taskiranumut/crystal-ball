@@ -364,25 +364,6 @@ const generateTemplateString = (obj, templateFunction) => {
     : "";
 };
 
-/**
- * Get an item from the local storage and parse it as JSON.
- *
- * @param {string} itemName - The name of the item to retrieve from the local storage.
- * @returns {(Object|null)} The parsed JSON object if the item exists and is a valid JSON string, null otherwise.
- * @throws {Error} Will throw an error if the `itemName` is not provided.
- */
-const getItemFromLocalStorage = (itemName) => {
-  try {
-    if (!itemName) throw new Error("No item name provided.");
-
-    const item = localStorage.getItem(itemName);
-    return item ? JSON.parse(item) : null;
-  } catch (error) {
-    console.error(`Failed to get item from local storage: ${error}`);
-    return null;
-  }
-};
-
 const goToNewPredictionForm = (options) => {
   Object.entries(options).forEach(([key, value]) =>
     validateIsHtmlElement(value, key)
