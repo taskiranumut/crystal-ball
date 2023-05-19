@@ -280,7 +280,7 @@ const getFormData = (formEl) => {
  * Retrieves form data from a given HTMLFormElement and adds additional properties.
  * @param {HTMLFormElement} newPredictionFormEl - The form element from which to retrieve data.
  * @returns {Object} - An object representing the form data along with additional properties.
- * The object's properties include form control names, form control values, a generated ID, and a votes object.
+ * The object's properties include form control names, form control values and a votes object.
  * @throws Will throw an error if the provided element is not an instance of HTMLFormElement.
  */
 const getNewPredictionData = (newPredictionFormEl) => {
@@ -288,8 +288,12 @@ const getNewPredictionData = (newPredictionFormEl) => {
 
   const formData = getFormData(newPredictionFormEl);
   return {
-    ...formData,
-    id: generateId(8, 12),
+    info_url: formData["info-address"],
+    prediction_content: formData["prediction-content"],
+    realization_time: formData["realization-time"],
+    info_url: formData["info-address"],
+    tag: formData["tag"],
+    username: formData["username"],
     votes: { upCount: 0, downCount: 0 },
   };
 };
