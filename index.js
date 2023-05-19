@@ -323,10 +323,10 @@ const createPredictionData = (prediction) => {
 
   const requiredKeys = [
     "id",
-    "prediction-content",
+    "prediction_content",
     "tag",
     "votes",
-    "realization-time",
+    "realization_time",
   ];
   const predictionKeys = Object.keys(prediction);
 
@@ -337,12 +337,12 @@ const createPredictionData = (prediction) => {
   });
 
   const realizationTimeTimestamp = getTimestampFromDateString(
-    prediction["realization-time"]
+    prediction["realization_time"]
   );
 
   return {
     id: prediction["id"],
-    content: prediction["prediction-content"],
+    content: prediction["prediction_content"],
     tag: prediction["tag"],
     votes: prediction["votes"],
     countdown: getRemainingTimeUnits(realizationTimeTimestamp),
