@@ -1,4 +1,48 @@
 /**
+ * @typedef {Object} RequestResult
+ * @property {boolean} isSuccessful - The request was successful or not.
+ * @property {Object} [data] - The data received from the server.
+ * @property {string} [error] - The error message if the request was not successful.
+ * Send a request to a specified URL.
+ * @async
+ * @param {string} method - The HTTP method of the request (e.g., "GET", "POST").
+ * @param {string} endpoint - The endpoint of the API where the request will be sent.
+ * @param {Object} [data] - The data to be sent with the request.
+ * @param {Object} [headers] - Additional headers for the request.
+ * @returns {Promise<RequestResult>} The result of the request.
+ * @throws {Error} Throws an error if the request is not successful.
+ */
+const sendRequest = async (method, endpoint, data = null, headers = {}) => {
+  const API_URL = "https://64671255ba7110b663aeb19c.mockapi.io/predictions";
+
+  try {
+    const url = `${API_URL}${endpoint}`;
+
+    const response = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      body: data ? JSON.stringify(data) : null,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.message || `HTTP error! status: ${response.status}`
+      );
+    }
+
+    const responseData = await response.json();
+
+    return { isSuccessful: true, data: responseData };
+  } catch (error) {
+    return { isSuccessful: false, error: error };
+  }
+};
+
+/**
  * Simulates network latency.
  * @returns {Promise<void>} A promise that resolves after a random delay.
  */
