@@ -312,7 +312,7 @@ const getNewPredictionData = (newPredictionFormEl) => {
 
 /**
  * Takes a prediction object and returns a new object with processed data.
- * @param {object} prediction - The prediction object. Required keys: "id", "prediction-content", "tag", "votes", "realization-time".
+ * @param {object} prediction - The prediction object. Required keys: "id", "prediction_content", "tag", "votes", "realization_time".
  * @returns {object} An object that contains the processed prediction data.
  * @throws Will throw an error if the prediction parameter is not an object or if it's missing any of the required keys.
  */
@@ -387,13 +387,10 @@ const goToPredictionList = (options) => {
 };
 
 /**
- * Fills the provided HTML element with a list of prediction cards fetched from Local Storage.
- * @param {HTMLElement} predictionListEl - The HTML element where the prediction cards will be appended to.
- * @throws {Error} Will throw an error if the predictionListEl is not a valid HTML element.
- * @throws {Error} Will throw an error if predictions are not found in Local Storage.
- * It fetches an array of prediction objects from the Local Storage. Each object in this array is used to create
- * prediction data which is then passed to get a template for prediction card. All these templates are then joined to form
- * a single string that represents all prediction cards. This string is then appended to the provided HTML element.
+ * Fetch predictions data from the API and fill the prediction list with it.
+ * @param {HTMLElement} predictionListEl - The HTML element where the prediction list will be inserted.
+ * @returns {Promise<void>} Nothing.
+ * @throws Will throw an error if the predictions could not be fetched or if the predictions data is not an array.
  */
 const fillPredictionList = async (predictionListEl) => {
   validateIsHtmlElement(predictionListEl);
@@ -543,22 +540,13 @@ const handleClickFormCancelButton = (options) => {
 };
 
 /**
- * Handles the submission of a prediction form.
+ * Handle the submission of the prediction form.
+ * It will validate the form, post the prediction data to the API, and then reset the form.
  * @param {Object} options - The options for handling the form submission.
- * @param {HTMLFormElement} options.newPredictionFormEl - The form element to be submitted.
- * @param {HTMLElement} options.newPredictionCardEl - The card element that contains the form.
- * @param {HTMLElement} options.predictionListEl - The list element where the new prediction will be displayed.
- * @description This function will perform several actions when the form is submitted:
- * - Prevent the default form submission action.
- * - Retrieve the data from the form and add a unique id to it.
- * - Retrieve the existing predictions from local storage (or initialize an empty array if there are none).
- * - Add the new prediction to the list of predictions.
- * - Save the updated list of predictions to local storage.
- * - Hide the card that contains the form.
- * - Show the list where the new prediction will be displayed.
- * - Reset the form.
- * - Note: This function expects that all the elements passed in the `options` object are valid HTML elements.
- * If any of the elements are not valid, it will throw an error.
+ * @param {HTMLElement} options.newPredictionFormEl - The form element.
+ * @param {HTMLElement} options.newPredictionCardEl - The HTML element of the new prediction card.
+ * @param {HTMLElement} options.predictionListEl - The HTML element where the prediction list will be inserted.
+ * @throws Will throw an error if posting the prediction data to the API is not successful.
  */
 const handleSubmitPredictionForm = (options) => {
   Object.entries(options).forEach(([key, value]) =>
