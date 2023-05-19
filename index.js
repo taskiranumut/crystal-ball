@@ -56,16 +56,6 @@ const postPredictionsToApi = (data) => {
 };
 
 /**
- * Simulates network latency.
- * @returns {Promise<void>} A promise that resolves after a random delay.
- */
-const fakeNetworkLatency = async () => {
-  return new Promise((res) => {
-    setTimeout(res, Math.random() * 800);
-  });
-};
-
-/**
  * Random ID generator function that generates IDs with a minimum and maximum length.
  * The IDs do not start with a number and include at least one number.
  * @param {number} [minLength=4] - The minimum length of the generated ID. Default is 4.
