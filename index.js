@@ -414,13 +414,19 @@ const goToPredictionList = (options) => {
  * prediction data which is then passed to get a template for prediction card. All these templates are then joined to form
  * a single string that represents all prediction cards. This string is then appended to the provided HTML element.
  */
-const fillPredictionList = (predictionListEl) => {
+const fillPredictionList = async (predictionListEl) => {
   validateIsHtmlElement(predictionListEl);
 
   try {
-    const predictions = getItemFromLocalStorage("predictions");
-    if (predictions == null) {
-      throw new Error("predictions not found in Local Storage.");
+    const response = await getPredictionsFromApi();
+
+    if (!response.isSuccessful) {
+      throw new Error(response.error.message);
+    }
+
+    const predictions = response.data;
+    if (!Array.isArray(predictions)) {
+      throw new Error("predictions has to be an array.");
     }
 
     const predictionCards = predictions
