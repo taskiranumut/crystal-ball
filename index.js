@@ -624,9 +624,9 @@ const handleClickTagButtons = (options) => {
     validateIsHtmlElement(value, key)
   );
 
-  const { tagButtonListEl } = options;
+  const { tagButtonListEl, predictionListEl } = options;
 
-  tagButtonListEl.addEventListener("click", (e) => {
+  tagButtonListEl.addEventListener("click", async (e) => {
     const targetClassList = [...e.target.classList];
     const isPassiveBtn =
       targetClassList.includes("btn") &&
@@ -638,6 +638,33 @@ const handleClickTagButtons = (options) => {
       const newActiveBtn = e.target;
 
       newActiveBtn.classList.add("btn--active");
+      const tagQuery = newActiveBtn.getAttribute("data-tag-value");
+
+      try {
+        const response = await getPredictionsFromApiWithTagQuery(tagQuery);
+
+        if (!response.isSuccessful) {
+          throw new Error(response.error.message);
+        }
+
+        const predictions = response.data;
+        if (!Array.isArray(predictions)) {
+          throw new Error("predictions has to be an array.");
+        }
+
+        removeChildElements(predictionListEl);
+        const predictionCards = predictions
+          .map((prediction) => {
+            const predictionData = createPredictionData(prediction);
+            return getPredictionCardTemplate(predictionData);
+          })
+          .join("");
+
+        if (predictionCards)
+          appendStringAsChildElement(predictionListEl, predictionCards);
+      } catch (error) {
+        console.error(`Failed to fetch item: ${error}`);
+      }
     }
   });
 };
@@ -677,5 +704,6 @@ window.addEventListener("load", () => {
 
   handleClickTagButtons({
     tagButtonListEl: elements.tagButtonListEl,
+    predictionListEl: elements.predictionListEl,
   });
 });
