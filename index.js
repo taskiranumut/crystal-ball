@@ -500,6 +500,21 @@ const getVoteButtonTemplate = (voteValue, voteTypeKey) => {
 };
 
 /**
+ * Generates the HTML markup for a tag button.
+ * @param {object} data - An object containing the data (value, display, isActive) for the tag button.
+ * @returns {string} The HTML markup for the tag button.
+ */
+const getTagButtonTemplate = (data) => {
+  const { value, display, isActive } = data;
+
+  return `
+    <button type="button" data-tag-value="${value}" class="btn btn--lg btn--tag-secondary ${
+    isActive ? "btn--active" : ""
+  }">${display}</button>
+  `;
+};
+
+/**
  * Attaches a click event handler to the 'new prediction' button.
  * @param {Object} options - The HTMLElements needed for this function.
  * @param {HTMLElement} options.newPredictionBtnEl - The 'new prediction' button element.
