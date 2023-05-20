@@ -608,6 +608,29 @@ const handleSubmitPredictionForm = (options) => {
   });
 };
 
+const handleClickTagButtons = (options) => {
+  Object.entries(options).forEach(([key, value]) =>
+    validateIsHtmlElement(value, key)
+  );
+
+  const { tagButtonListEl } = options;
+
+  tagButtonListEl.addEventListener("click", (e) => {
+    const targetClassList = [...e.target.classList];
+    const isPassiveBtn =
+      targetClassList.includes("btn") &&
+      !targetClassList.includes("btn--active");
+
+    if (isPassiveBtn) {
+      const oldActiveBtn = getElement("#tag-buttons-container .btn--active");
+      oldActiveBtn.classList.remove("btn--active");
+      const newActiveBtn = e.target;
+
+      newActiveBtn.classList.add("btn--active");
+    }
+  });
+};
+
 window.addEventListener("load", () => {
   const elements = {};
   const selectorList = [
@@ -639,5 +662,9 @@ window.addEventListener("load", () => {
     newPredictionFormEl: elements.newPredictionFormEl,
     newPredictionCardEl: elements.newPredictionCardEl,
     predictionListEl: elements.predictionListEl,
+  });
+
+  handleClickTagButtons({
+    tagButtonListEl: elements.tagButtonListEl,
   });
 });
