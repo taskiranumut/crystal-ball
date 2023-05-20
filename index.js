@@ -65,6 +65,17 @@ const getPredictionsFromApi = () => {
 };
 
 /**
+ * Fetches prediction data from the API with an optional tag query.
+ * @function
+ * @param {string} tagQuery - The tag query to filter predictions by. If the query is "all", it fetches all predictions.
+ * @returns {Promise<RequestResult>} The result of the request, including data if successful.
+ */
+const getPredictionsFromApiWithTagQuery = (tagQuery) => {
+  const endpoint = tagQuery === "all" ? `/` : `?tag=${tagQuery}`;
+  return sendRequest("GET", endpoint);
+};
+
+/**
  * Random ID generator function that generates IDs with a minimum and maximum length.
  * The IDs do not start with a number and include at least one number.
  * @param {number} [minLength=4] - The minimum length of the generated ID. Default is 4.
