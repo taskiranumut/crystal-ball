@@ -421,6 +421,30 @@ const fillPredictionList = async (predictionListEl) => {
 };
 
 /**
+ * Fills a given HTML element with tag buttons. The tag buttons are generated
+ * using data from a constant TAGS_DATA array.
+ * @param {HTMLElement} tagButtonListEl - The HTML element to fill with tag buttons.
+ * @throws {Error} If `tagButtonListEl` is not an instance of `HTMLElement`.
+ */
+const fillTagButtonList = (tagButtonListEl) => {
+  validateIsHtmlElement(tagButtonListEl);
+
+  const TAGS_DATA = [
+    { value: "all", display: "All", isActive: true },
+    { value: "technology", display: "Technology", isActive: false },
+    { value: "politics", display: "Politics", isActive: false },
+    { value: "science", display: "Science", isActive: false },
+    { value: "magazine", display: "Magazine", isActive: false },
+  ];
+
+  const tagButtons = TAGS_DATA.map((data) => getTagButtonTemplate(data)).join(
+    ""
+  );
+
+  appendStringAsChildElement(tagButtonListEl, tagButtons);
+};
+
+/**
  * Generates a template for a prediction card using the provided data.
  * @param {object} data - The data object to create a prediction card template from.
  * @returns {string} A string that represents the HTML structure of a prediction card.
@@ -592,10 +616,12 @@ window.addEventListener("load", () => {
     { elName: "predictionListEl", selector: "#predictions" },
     { elName: "newPredictionFormEl", selector: "#new-prediction-form" },
     { elName: "formCancelBtnEl", selector: "#form-cancel-btn" },
+    { elName: "tagButtonListEl", selector: "#tag-buttons-container" },
   ];
   fillElementsObject(elements, selectorList);
 
   fillPredictionList(elements.predictionListEl);
+  fillTagButtonList(elements.tagButtonListEl);
 
   handleClickNewPredictionButton({
     newPredictionBtnEl: elements.newPredictionBtnEl,
