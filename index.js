@@ -417,38 +417,52 @@ const goToPredictionList = (options) => {
 
   hideElement(newPredictionCardEl);
   showElement(predictionListEl);
-  fillPredictionList(predictionListEl);
+  fetchAndListPredictions(predictionListEl);
 };
 
 /**
- * Fetch predictions data from the API and fill the prediction list with it.
- * @param {HTMLElement} predictionListEl - The HTML element where the prediction list will be inserted.
- * @returns {Promise<void>} Nothing.
- * @throws Will throw an error if the predictions could not be fetched or if the predictions data is not an array.
+ * Adds prediction cards to the specified HTML element.
+ * @param {HTMLElement} predictionListEl - The HTML element to which prediction cards will be appended.
+ * @param {Array} predictions - An array of predictions to be listed.
+ * @throws Will throw an error if predictionListEl is not an instance of HTMLElement.
  */
-const fillPredictionList = async (predictionListEl) => {
+const listPredictions = (predictionListEl, predictions) => {
   validateIsHtmlElement(predictionListEl);
 
-  try {
-    const response = await getPredictionsFromApi();
+  const predictionCards = generatePredictionCards(predictions);
+  appendStringAsChildElement(predictionListEl, predictionCards);
+};
 
-    if (!response.isSuccessful) {
-      throw new Error(response.error.message);
-    }
-
-    const predictions = response.data;
+/**
+ * Generates HTML string of prediction cards from the provided predictions array.
+ * @param {Array} predictions - An array of predictions to be transformed into HTML string.
+ * @throws Will throw an error if the predictions parameter is not an array.
+ * @returns {string} A string of HTML representing each prediction as a card.
+ */
+const generatePredictionCards = (predictions) => {
     if (!Array.isArray(predictions)) {
-      throw new Error("predictions has to be an array.");
+    throw new Error("Invalid type: predictions parameter has to be an array.");
     }
 
-    const predictionCards = predictions
+  return predictions
       .map((prediction) => {
         const predictionData = createPredictionData(prediction);
         return getPredictionCardTemplate(predictionData);
       })
       .join("");
+};
 
-    appendStringAsChildElement(predictionListEl, predictionCards);
+/**
+ * Fetches predictions from the API and lists them on the specified HTML element.
+ * @param {HTMLElement} predictionListEl - The HTML element to which prediction cards will be appended.
+ * @throws Will throw an error if an issue arises during fetching data from the API.
+ */
+const fetchAndListPredictions = async (predictionListEl) => {
+  try {
+    const response = await getPredictionsFromApi();
+    const predictions = getResponseData(response);
+
+    listPredictions(predictionListEl, predictions);
   } catch (error) {
     console.error(`Failed to fetch item: ${error}`);
   }
@@ -704,7 +718,7 @@ window.addEventListener("load", () => {
   ];
   fillElementsObject(elements, selectorList);
 
-  fillPredictionList(elements.predictionListEl);
+  fetchAndListPredictions(elements.predictionListEl);
   fillTagButtonList(elements.tagButtonListEl);
 
   handleClickNewPredictionButton({
