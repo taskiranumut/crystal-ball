@@ -91,11 +91,26 @@ const getPredictionsFromApi = async () => {
 
 /**
  * @async
- * @param {string} tagQuery - The tag to query in the API.
+ * @param {string} [tagQuery=null] - The tag to query in the API.
  * @returns {Array} The array of predictions obtained from the API based on the tag query.
- * @throws {Error} Throws an error if the request fails.
+ * @throws {Error} Throws an error if the tagQuery is not valid or the request fails.
  */
-const getPredictionsFromApiWithTagQuery = async (tagQuery) => {
+const getPredictionsFromApiWithTagQuery = async (tagQuery = null) => {
+  const validTagQueries = [
+    "all",
+    "technology",
+    "politics",
+    "science",
+    "magazine",
+  ];
+
+  const isValidTagQuery = validTagQueries.some(
+    (requiredQuery) => requiredQuery === tagQuery
+  );
+  if (!isValidTagQuery) {
+    throw new Error(`Invalid query params, tagQuery: ${tagQuery}`);
+  }
+
   const endpoint = tagQuery === "all" ? `/` : `?tag=${tagQuery}`;
   const response = await sendRequest("GET", endpoint);
   return getResponseData(response);
