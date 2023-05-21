@@ -684,31 +684,9 @@ const handleClickTagButtons = (options) => {
       newActiveBtn.classList.add("btn--active");
       const tagQuery = newActiveBtn.getAttribute("data-tag-value");
 
-      try {
-        const response = await getPredictionsFromApiWithTagQuery(tagQuery);
-
-        if (!response.isSuccessful) {
-          throw new Error(response.error.message);
-        }
-
-        const predictions = response.data;
-        if (!Array.isArray(predictions)) {
-          throw new Error("predictions has to be an array.");
-        }
-
-        removeChildElements(predictionListEl);
-        const predictionCards = predictions
-          .map((prediction) => {
-            const predictionData = createPredictionData(prediction);
-            return getPredictionCardTemplate(predictionData);
-          })
-          .join("");
-
-        if (predictionCards)
-          appendStringAsChildElement(predictionListEl, predictionCards);
-      } catch (error) {
-        console.error(`Failed to fetch item: ${error}`);
-      }
+      fetchAndListPredictions(predictionListEl, () =>
+        getPredictionsFromApiWithTagQuery(tagQuery)
+      );
     }
   });
 };
