@@ -46,6 +46,29 @@ const sendRequest = async (method, endpoint, data = null, headers = {}) => {
 };
 
 /**
+ * @param {Object} response - The response object to be processed.
+ * @returns {Array} The data extracted from the response.
+ * @throws {TypeError} Throws an error if 'response' is not an object or 'response.data' is not an array.
+ * @throws {Error} Throws an error if 'response.isSuccessful' is false.
+ */
+const getResponseData = (response) => {
+  if (!response || typeof response !== "object" || Array.isArray(response)) {
+    throw new TypeError("'response' has to be an object.");
+  }
+
+  if (!response.isSuccessful) {
+    throw new Error(response.error.message);
+  }
+
+  const data = response.data;
+  if (!Array.isArray(data)) {
+    throw new TypeError("'response.data' has to be an array.");
+  }
+
+  return data;
+};
+
+/**
  * Send a POST request to post predictions to the API.
  * @param {Object} data - The data to be sent with the request.
  * @returns {Promise<RequestResult>} The result of the request.
