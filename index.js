@@ -683,6 +683,12 @@ const handleSubmitPredictionForm = (options) => {
   });
 };
 
+/**
+ * Attaches click event listeners to tag buttons and filters the predictions list based on clicked tag.
+ * @param {Object} options - The options for the function.
+ * @param {Element} options.tagButtonListEl - The HTML element of the tag button list.
+ * @param {Element} options.predictionListEl - The HTML element where the predictions will be listed.
+ */
 const handleClickTagButtons = (options) => {
   Object.entries(options).forEach(([key, value]) =>
     validateIsHtmlElement(value, key)
@@ -690,25 +696,49 @@ const handleClickTagButtons = (options) => {
 
   const { tagButtonListEl, predictionListEl } = options;
 
-  tagButtonListEl.addEventListener("click", async (e) => {
+  tagButtonListEl.addEventListener("click", (e) => {
     const targetClassList = [...e.target.classList];
-    const isPassiveBtn =
+    const isValidTarget =
       targetClassList.includes("btn") &&
       !targetClassList.includes("btn--active");
 
-    if (isPassiveBtn) {
-      const oldActiveBtn = getElement("#tag-buttons-container .btn--active");
-      oldActiveBtn.classList.remove("btn--active");
-      const newActiveBtn = e.target;
-
-      newActiveBtn.classList.add("btn--active");
-      const tagQuery = newActiveBtn.getAttribute("data-tag-value");
-
-      fetchAndListPredictions(predictionListEl, () =>
-        getPredictionsFromApiWithTagQuery(tagQuery)
-      );
+    if (isValidTarget) {
+      filterPredictionsAfterClickTagButton(predictionListEl, e);
     }
   });
+};
+
+/**
+ * Filters and updates the predictions list based on the clicked tag button.
+ * @async
+ * @param {Element} predictionListEl - The HTML element where the predictions will be listed.
+ * @param {Event} event - The event object from the tag button click event.
+ * @throws {Error} Throws an error if the predictionListEl is not a valid HTML element or fetching predictions fails.
+ */
+const filterPredictionsAfterClickTagButton = async (
+  predictionListEl,
+  event
+) => {
+  validateIsHtmlElement(predictionListEl);
+
+  const clickedBtn = event.target;
+  clickedBtn.disabled = true;
+  const tagQuery = clickedBtn.getAttribute("data-tag-value");
+
+  const response = await fetchAndListPredictions(predictionListEl, () =>
+        getPredictionsFromApiWithTagQuery(tagQuery)
+      );
+
+  if (!response.isFetched) {
+    clickedBtn.disabled = false;
+    return;
+    }
+
+  const oldActiveBtn = getElement("#tag-buttons-container .btn--active");
+  oldActiveBtn.classList.remove("btn--active");
+
+  clickedBtn.classList.add("btn--active");
+  clickedBtn.disabled = false;
 };
 
 window.addEventListener("load", () => {
