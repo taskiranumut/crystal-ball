@@ -79,23 +79,26 @@ const postPredictionsToApi = (data) => {
 };
 
 /**
- * Send a GET request to fetch predictions from the API.
- * @returns {Promise<RequestResult>} The result of the request, including data if successful.
+ * @async
+ * @returns {Array} The array of predictions obtained from the API.
+ * @throws {Error} Throws an error if the request fails.
  */
-const getPredictionsFromApi = () => {
+const getPredictionsFromApi = async () => {
   const endpoint = `/`;
-  return sendRequest("GET", endpoint);
+  const response = await sendRequest("GET", endpoint);
+  return getResponseData(response);
 };
 
 /**
- * Fetches prediction data from the API with an optional tag query.
- * @function
- * @param {string} tagQuery - The tag query to filter predictions by. If the query is "all", it fetches all predictions.
- * @returns {Promise<RequestResult>} The result of the request, including data if successful.
+ * @async
+ * @param {string} tagQuery - The tag to query in the API.
+ * @returns {Array} The array of predictions obtained from the API based on the tag query.
+ * @throws {Error} Throws an error if the request fails.
  */
-const getPredictionsFromApiWithTagQuery = (tagQuery) => {
+const getPredictionsFromApiWithTagQuery = async (tagQuery) => {
   const endpoint = tagQuery === "all" ? `/` : `?tag=${tagQuery}`;
-  return sendRequest("GET", endpoint);
+  const response = await sendRequest("GET", endpoint);
+  return getResponseData(response);
 };
 
 /**
