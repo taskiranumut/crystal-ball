@@ -154,15 +154,17 @@ const removeChildElements = (parentEl) => {
 };
 
 /**
- * Appends a child string as HTML to the parent HTML element.
- * @param {HTMLElement} parentEl - The parent HTML element to which the child string will be appended.
- * @param {string} stringChild - The child string that will be appended to the parent as HTML.
- * @throws {Error} Will throw an error if the parentEl is not a valid HTML element.
- * @throws {Error} Will throw an error if the stringChild is invalid or empty.
+ * Appends a string as a child element to a specified HTML parent element.
+ * @param {HTMLElement} parentEl - The parent HTML element to which the string will be appended.
+ * @param {string} stringChild - The string to be appended as an HTML child. If not provided or invalid, a warning is logged and the function will not append anything.
+ * @throws Will throw an error if parentEl is not an instance of HTMLElement.
  */
 const appendStringAsChildElement = (parentEl, stringChild = "") => {
   validateIsHtmlElement(parentEl);
-  if (!stringChild) throw new Error("Child string is not valid or empty.");
+  if (!stringChild)
+    console.warn(
+      "insertAdjacentHTML: stringChild parameter is not valid or empty."
+    );
 
   parentEl.insertAdjacentHTML("beforeend", stringChild);
 };
