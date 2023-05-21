@@ -420,7 +420,7 @@ const goToPredictionList = (options) => {
 
   hideElement(newPredictionCardEl);
   showElement(predictionListEl);
-  fetchAndListPredictions(predictionListEl);
+  fetchAndListPredictions(predictionListEl, getPredictionsFromApi);
 };
 
 /**
@@ -456,15 +456,19 @@ const generatePredictionCards = (predictions) => {
 };
 
 /**
- * Fetches predictions from the API and lists them on the specified HTML element.
- * @param {HTMLElement} predictionListEl - The HTML element to which prediction cards will be appended.
- * @throws Will throw an error if an issue arises during fetching data from the API.
+ * @async
+ * @param {Element} predictionListEl - The HTML element where the predictions will be listed.
+ * @param {Function} fetchPredictionsFunc - The function to fetch predictions.
+ * @throws {Error} Throws an error if the fetch operation fails.
  */
-const fetchAndListPredictions = async (predictionListEl) => {
+const fetchAndListPredictions = async (
+  predictionListEl,
+  fetchPredictionsFunc
+) => {
   try {
-    const response = await getPredictionsFromApi();
-    const predictions = getResponseData(response);
+    const predictions = await fetchPredictionsFunc();
 
+    removeChildElements(predictionListEl);
     listPredictions(predictionListEl, predictions);
   } catch (error) {
     console.error(`Failed to fetch item: ${error}`);
@@ -721,7 +725,7 @@ window.addEventListener("load", () => {
   ];
   fillElementsObject(elements, selectorList);
 
-  fetchAndListPredictions(elements.predictionListEl);
+  fetchAndListPredictions(elements.predictionListEl, getPredictionsFromApi);
   fillTagButtonList(elements.tagButtonListEl);
 
   handleClickNewPredictionButton({
