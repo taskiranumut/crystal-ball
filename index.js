@@ -487,8 +487,11 @@ const fetchAndListPredictions = async (
 
     removeChildElements(predictionListEl);
     listPredictions(predictionListEl, predictions);
+
+    return { isFetched: true };
   } catch (error) {
     console.error(`Failed to fetch item: ${error}`);
+    return { isFetched: false, error: error };
   }
 };
 
