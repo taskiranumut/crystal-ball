@@ -299,6 +299,27 @@ const validateIsHtmlFormElement = (
   }
 };
 
+/**
+ * Retrieves the list of prediction IDs that the user has already voted for.
+ * @returns {Array<string>} An array of prediction IDs.
+ */
+const getVotedPredictionIds = () => {
+  let idList = document.cookie.replace(
+    /(?:(?:^|.*;\s*)pids\s*\=\s*([^;]*).*$)|^.*$/,
+    "$1"
+  );
+
+  if (idList) {
+    return JSON.parse(idList);
+  }
+
+  idList = localStorage.getItem("pids");
+  if (idList) {
+    return JSON.parse(idList);
+  }
+
+  return [];
+};
 
 /**
  * Adds a prediction ID to the list of predictions that the user has already voted for.
@@ -316,6 +337,22 @@ const addVotedPredictionId = (predictionId) => {
   ).toUTCString()}; path=/; SameSite=Lax`;
 
   localStorage.setItem("pids", JSON.stringify(votedPredictionIds));
+};
+
+/**
+ * Checks if the user has already voted for the prediction with the provided ID.
+ * @param {string} predictionId - The ID of the prediction to be checked.
+ * @returns {boolean} Returns true if the user has already voted, otherwise false.
+ * @throws {Error} Throws an error if the 'predictionId' parameter is invalid.
+ */
+const hasVotedPrediction = (predictionId) => {
+  if (!predictionId) {
+    console.error(`Invalid parameter, predictionId: ${predictionId}`);
+    return;
+  }
+
+  const idList = getVotedPredictionIds();
+  return idList.includes(predictionId);
 };
 
 /**
@@ -589,11 +626,23 @@ const addClickEventToPredictionList = (predictionListEl) => {
 
   predictionListEl.addEventListener("click", (e) => {
     const VOTE_BUTTON_SELECTOR = "button.predictions__item-vote-button-item";
+    const ID_SELECTOR = "data-prediction-id";
+
     const voteBtnEl = e.target.closest(VOTE_BUTTON_SELECTOR);
 
     if (!voteBtnEl) return;
 
-    handleClickVoteBtn(voteBtnEl);
+    const predictionCardEl = voteBtnEl.closest(`[${ID_SELECTOR}]`);
+    const predictionId = predictionCardEl.getAttribute(ID_SELECTOR);
+
+    const hasVoted = hasVotedPrediction(predictionId);
+
+    if (hasVoted) {
+      console.warn("The prediction has already voted.");
+      return;
+    }
+
+    handleClickVoteBtn(voteBtnEl, predictionId, predictionCardEl);
   });
 };
 
@@ -603,16 +652,17 @@ const addClickEventToPredictionList = (predictionListEl) => {
  * @param {Element} voteBtnEl - The HTML element of the clicked vote button.
  * @throws {Error} Throws an error if the vote update operation fails.
  */
-const handleClickVoteBtn = async (voteBtnEl) => {
+const handleClickVoteBtn = async (
+  voteBtnEl,
+  predictionId,
+  predictionCardEl
+) => {
   validateIsHtmlElement(voteBtnEl);
 
-  const ID_SELECTOR = "data-prediction-id";
   const VOTE_TYPE_SELECTOR = "data-vote-type";
   const VOTE_BUTTONS_CONTAINER_SELECTOR = ".predictions__item-vote-buttons";
 
   const voteType = voteBtnEl.getAttribute(VOTE_TYPE_SELECTOR);
-  const predictionCardEl = voteBtnEl.closest(`[${ID_SELECTOR}]`);
-  const predictionId = predictionCardEl.getAttribute(ID_SELECTOR);
   const voteButtonsContainerEl = predictionCardEl.querySelector(
     VOTE_BUTTONS_CONTAINER_SELECTOR
   );
