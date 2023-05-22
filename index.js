@@ -46,9 +46,10 @@ const sendRequest = async (method, endpoint, data = null, headers = {}) => {
 };
 
 /**
+ * Processes the response from a request and retrieves the data.
  * @param {Object} response - The response object to be processed.
- * @returns {Array} The data extracted from the response.
- * @throws {TypeError} Throws an error if 'response' is not an object or 'response.data' is not an array.
+ * @returns {Object} The data extracted from the response.
+ * @throws {TypeError} Throws an error if 'response' is not an object.
  * @throws {Error} Throws an error if 'response.isSuccessful' is false.
  */
 const getResponseData = (response) => {
@@ -61,9 +62,6 @@ const getResponseData = (response) => {
   }
 
   const data = response.data;
-  if (!Array.isArray(data)) {
-    throw new TypeError("'response.data' has to be an array.");
-  }
 
   return data;
 };
