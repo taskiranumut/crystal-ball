@@ -552,12 +552,127 @@ const fetchAndListPredictions = async (
 
     removeChildElements(predictionListEl);
     listPredictions(predictionListEl, predictions);
+    addClickEventToPredictionList(predictionListEl);
 
     return { isFetched: true };
   } catch (error) {
     console.error(`Failed to fetch item: ${error}`);
     return { isFetched: false, error: error };
   }
+};
+
+/**
+ * Attaches click event listeners to the predictions list and handles vote button clicks.
+ * @param {Element} predictionListEl - The HTML element of the prediction list.
+ */
+const addClickEventToPredictionList = (predictionListEl) => {
+  validateIsHtmlElement(predictionListEl);
+
+  predictionListEl.addEventListener("click", (e) => {
+    const VOTE_BUTTON_SELECTOR = "button.predictions__item-vote-button-item";
+    const voteBtnEl = e.target.closest(VOTE_BUTTON_SELECTOR);
+
+    if (!voteBtnEl) return;
+
+    handleClickVoteBtn(voteBtnEl);
+  });
+};
+
+/**
+ * Handles click event on vote buttons, fetches the current votes, updates the vote count, and updates the vote buttons.
+ * @async
+ * @param {Element} voteBtnEl - The HTML element of the clicked vote button.
+ * @throws {Error} Throws an error if the vote update operation fails.
+ */
+const handleClickVoteBtn = async (voteBtnEl) => {
+  validateIsHtmlElement(voteBtnEl);
+
+  const ID_SELECTOR = "data-prediction-id";
+  const VOTE_TYPE_SELECTOR = "data-vote-type";
+  const VOTE_BUTTONS_CONTAINER_SELECTOR = ".predictions__item-vote-buttons";
+
+  const voteType = voteBtnEl.getAttribute(VOTE_TYPE_SELECTOR);
+  const predictionCardEl = voteBtnEl.closest(`[${ID_SELECTOR}]`);
+  const predictionId = predictionCardEl.getAttribute(ID_SELECTOR);
+  const voteButtonsContainerEl = predictionCardEl.querySelector(
+    VOTE_BUTTONS_CONTAINER_SELECTOR
+  );
+
+  try {
+    const currentVotes = await getCurrentVotes(predictionId);
+
+    const updatedVotes = await updateVoteCount(
+      predictionId,
+      currentVotes,
+      voteType
+    );
+
+    const updatedVoteButtons = generateTemplateString(
+      updatedVotes,
+      getVoteButtonTemplate
+    );
+
+    removeChildElements(voteButtonsContainerEl);
+    appendStringAsChildElement(voteButtonsContainerEl, updatedVoteButtons);
+  } catch (error) {
+    console.error(`Failed to update vote: ${error}`);
+  }
+};
+
+/**
+ * Fetches the current votes for a prediction from the API.
+ * @async
+ * @param {string} predictionId - The id of the prediction.
+ * @returns {Object} The current votes of the prediction.
+ * @throws {Error} Throws an error if the predictionId is empty or invalid, or if the fetched data is invalid.
+ */
+const getCurrentVotes = async (predictionId) => {
+  if (!predictionId) {
+    throw new Error("Invalid predictionId parameter: id is empty or invalid");
+  }
+
+  const prediction = await getPredictionFromApiById(predictionId);
+
+  if (!prediction) {
+    throw new Error("Invalid data: data is empty or invalid");
+  }
+
+  return { votes: prediction.votes };
+};
+
+/**
+ * Updates the vote count for a prediction and puts the updated vote to the API.
+ * @async
+ * @param {string} predictionId - The id of the prediction.
+ * @param {Object} currentVotes - The current votes of the prediction.
+ * @param {string} voteType - The type of the vote ("up" or "down").
+ * @returns {Object} The updated votes of the prediction.
+ * @throws {Error} Throws an error if the predictionId or voteType is invalid, or if updating the vote count fails.
+ */
+const updateVoteCount = async (predictionId, currentVotes, voteType) => {
+  if (!predictionId) {
+    throw new Error("Invalid predictionId parameter: id is empty or invalid");
+  }
+
+  const validVoteTypes = ["up", "down"];
+
+  if (!validVoteTypes.includes(voteType)) {
+    throw new Error(
+      `Invalid vote type: ${voteType}. Must be one of: ${validVoteTypes.join(
+        ", "
+      )}`
+    );
+  }
+
+  const inreasedVotes = increaseObjectValue(
+    currentVotes.votes,
+    `${voteType}Count`,
+    1
+  );
+  const data = { votes: inreasedVotes };
+
+  const { votes } = await putUpdatedVoteToApi(predictionId, data);
+  return votes;
 };
 
 /**
