@@ -154,6 +154,32 @@ const getElement = (selector) => {
 };
 
 /**
+ * Increases a value in an object by a specified increment.
+ * @param {Object} obj - The object that contains the value to be increased.
+ * @param {string} key - The key of the value to be increased in the object.
+ * @param {number} increment - The amount to increase the value by.
+ * @returns {Object} The object with the increased value.
+ * @throws {Error} Throws an error if the object, key or increment is invalid, or if the value or increment to be increased is NaN.
+ */
+const increaseObjectValue = (obj, key, increment) => {
+  if (!obj || !key || !obj.hasOwnProperty(key)) {
+    throw new Error(`Invalid parameters: obj[${key}] does not exist.`);
+  }
+
+  const value = parseInt(obj[key]);
+
+  if (isNaN(value)) {
+    throw new Error(`Invalid or NaN object value: obj[${key}].`);
+  }
+
+  if (isNaN(parseInt(increment))) {
+    throw new Error(`Invalid or NaN increment value: ${increment}.`);
+  }
+
+  return { ...obj, [key]: value + parseInt(increment) };
+};
+
+/**
  * Removes all child elements from a parent HTML element.
  * @param {HTMLElement} parentEl - The parent HTML element from which child elements will be removed.
  * @throws {Error} Will throw an error if parentEl is not an instance of HTMLElement.
