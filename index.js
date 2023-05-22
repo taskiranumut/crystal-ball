@@ -88,6 +88,23 @@ const getPredictionsFromApi = async () => {
 };
 
 /**
+ * Fetches a specific prediction from the API using the provided prediction ID.
+ * @async
+ * @param {string} predictionId - The ID of the prediction to fetch.
+ * @returns {Promise<Object>} The prediction data.
+ * @throws {Error} Throws an error if the prediction ID is invalid or if the request is unsuccessful.
+ */
+const getPredictionFromApiById = async (predictionId = null) => {
+  if (!predictionId) {
+    throw new Error(`Invalid query params, predictionId: ${predictionId}`);
+  }
+
+  const endpoint = `/${predictionId}`;
+  const response = await sendRequest("GET", endpoint);
+  return getResponseData(response);
+};
+
+/**
  * @async
  * @param {string} [tagQuery=null] - The tag to query in the API.
  * @returns {Array} The array of predictions obtained from the API based on the tag query.
