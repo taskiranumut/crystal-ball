@@ -602,9 +602,9 @@ const getPredictionCardTemplate = (data) => {
   const voteButtons = generateTemplateString(votes, getVoteButtonTemplate);
 
   return `
-    <div class="card card--full predictions__item ${
-      content ? "" : "hide"
-    } data-prediction-id="${id}">
+    <div class="card card--full predictions__item${
+      content ? "" : " hide"
+    }" data-prediction-id="${id}">
       <p class="predictions__item-content">${content}</p>
       <div class="predictions__item-countdown">${countdownItems}</div>
       <span class="predictions__item-tag-label ${tag || "hide"}">${tag}</span>
