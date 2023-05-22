@@ -132,6 +132,24 @@ const getPredictionsFromApiWithTagQuery = async (tagQuery = null) => {
 };
 
 /**
+ * Updates the vote count of a specific prediction in the API.
+ * @async
+ * @param {string} predictionId - The ID of the prediction to update.
+ * @param {Object} data - The data to send in the request body, typically the updated vote count.
+ * @returns {Promise<Object>} The updated prediction data.
+ * @throws {Error} Throws an error if the prediction ID is invalid, if the request is unsuccessful or if the data to send is incorrect.
+ */
+const putUpdatedVoteToApi = async (predictionId = null, data) => {
+  if (!predictionId) {
+    throw new Error(`Invalid query params, predictionId: ${predictionId}`);
+  }
+
+  const endpoint = `/${predictionId}`;
+  const response = await sendRequest("PUT", endpoint, data);
+  return getResponseData(response);
+};
+
+/**
  * Random ID generator function that generates IDs with a minimum and maximum length.
  * The IDs do not start with a number and include at least one number.
  * @param {number} [minLength=4] - The minimum length of the generated ID. Default is 4.
