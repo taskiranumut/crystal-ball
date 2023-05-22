@@ -299,6 +299,25 @@ const validateIsHtmlFormElement = (
   }
 };
 
+
+/**
+ * Adds a prediction ID to the list of predictions that the user has already voted for.
+ * This list is stored in both the document's cookies and the local storage.
+ * @param {string} predictionId - The ID of the prediction to be added.
+ * @throws {Error} Throws an error if the 'predictionId' parameter is invalid.
+ */
+const addVotedPredictionId = (predictionId) => {
+  const votedPredictionIds = [...getVotedPredictionIds(), predictionId];
+
+  document.cookie = `pids=${JSON.stringify(
+    votedPredictionIds
+  )}; expires=${new Date(
+    Date.now() + 100 * 24 * 60 * 60 * 1000
+  ).toUTCString()}; path=/; SameSite=Lax`;
+
+  localStorage.setItem("pids", JSON.stringify(votedPredictionIds));
+};
+
 /**
  * Fills an elements object with HTMLElements selected by their CSS selectors.
  * @param {object} elemenets - The elements object to fill.
@@ -614,6 +633,7 @@ const handleClickVoteBtn = async (voteBtnEl) => {
 
     removeChildElements(voteButtonsContainerEl);
     appendStringAsChildElement(voteButtonsContainerEl, updatedVoteButtons);
+    addVotedPredictionId(predictionId);
   } catch (error) {
     console.error(`Failed to update vote: ${error}`);
   }
