@@ -651,6 +651,7 @@ const getVoteButtonTemplate = (voteValue, voteTypeKey) => {
     <button
       type="button"
       class="predictions__item-vote-button-item"
+      data-vote-type="${voteType}"
     >
       <span
         ><i class="fa-regular fa-thumbs-${voteType}"></i>
