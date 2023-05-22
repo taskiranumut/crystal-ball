@@ -309,7 +309,13 @@ const getRemainingTimeUnits = (futureTimestamp = NaN) => {
     const diffMilliseconds = futureTimestamp - new Date().getTime();
 
     if (diffMilliseconds <= 0) {
-      throw new Error("The future timestamp is in the past.");
+      console.warn("The future timestamp is in the past.");
+      return {
+        days: 0,
+        minutes: 0,
+        hours: 0,
+        seconds: 0,
+      };
     }
 
     const diffSeconds = Math.floor(diffMilliseconds / 1000);
