@@ -625,25 +625,32 @@ const fetchAndListPredictions = async (
 const addClickEventToPredictionList = (predictionListEl) => {
   validateIsHtmlElement(predictionListEl);
 
-  predictionListEl.addEventListener("click", (e) => {
-    const VOTE_BUTTON_SELECTOR = "button.predictions__item-vote-button-item";
-    const ID_SELECTOR = "data-prediction-id";
+  predictionListEl.addEventListener("click", async (e) => {
+    const voteBtnEl = e.target.closest(".predictions__item-vote-button-item");
+    if (!voteBtnEl) {
+      return;
+    }
 
-    const voteBtnEl = e.target.closest(VOTE_BUTTON_SELECTOR);
-
-    if (!voteBtnEl) return;
-
-    const predictionCardEl = voteBtnEl.closest(`[${ID_SELECTOR}]`);
-    const predictionId = predictionCardEl.getAttribute(ID_SELECTOR);
+    const predictionId = voteBtnEl.getAttribute("data-prediction-id");
+    const voteButtonsContainerEl = voteBtnEl.closest(
+      ".predictions__item-vote-buttons"
+    );
+    toggleButtonsDisabledStatus(true, voteBtnEl, voteButtonsContainerEl);
 
     const hasVoted = hasVotedPrediction(predictionId);
-
     if (hasVoted) {
       console.warn("The prediction has already voted.");
       return;
     }
 
-    handleClickVoteBtn(voteBtnEl, predictionId, predictionCardEl);
+    const response = handleClickVoteBtn(
+      voteBtnEl,
+      predictionId,
+      voteButtonsContainerEl
+    );
+    if (!response.isCompleted) {
+      toggleButtonsDisabledStatus(false, voteBtnEl, voteButtonsContainerEl);
+    }
   });
 };
 
@@ -656,19 +663,12 @@ const addClickEventToPredictionList = (predictionListEl) => {
 const handleClickVoteBtn = async (
   voteBtnEl,
   predictionId,
-  predictionCardEl
+  voteButtonsContainerEl
 ) => {
   validateIsHtmlElement(voteBtnEl);
-
-  const VOTE_TYPE_SELECTOR = "data-vote-type";
-  const VOTE_BUTTONS_CONTAINER_SELECTOR = ".predictions__item-vote-buttons";
-
-  const voteType = voteBtnEl.getAttribute(VOTE_TYPE_SELECTOR);
-  const voteButtonsContainerEl = predictionCardEl.querySelector(
-    VOTE_BUTTONS_CONTAINER_SELECTOR
-  );
-
   try {
+    const voteType = voteBtnEl.getAttribute("data-vote-type");
+
     const currentVotes = await getCurrentVotes(predictionId);
 
     const updatedVotes = await updateVoteCount(
@@ -677,16 +677,21 @@ const handleClickVoteBtn = async (
       voteType
     );
 
+    addVotedPredictionId(predictionId);
+
     const updatedVoteButtons = generateTemplateString(
       updatedVotes,
-      getVoteButtonTemplate
+      getVoteButtonTemplate,
+      { isDisabled: true }
     );
 
     removeChildElements(voteButtonsContainerEl);
     appendStringAsChildElement(voteButtonsContainerEl, updatedVoteButtons);
-    addVotedPredictionId(predictionId);
+
+    return { isCompleted: true };
   } catch (error) {
     console.error(`Failed to update vote: ${error}`);
+    return { isCompleted: false };
   }
 };
 
