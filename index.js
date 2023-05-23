@@ -521,6 +521,7 @@ const createPredictionData = (prediction) => {
     tag: prediction["tag"],
     votes: prediction["votes"],
     countdown: getRemainingTimeUnits(realizationTimeTimestamp),
+    hasVoted: hasVotedPrediction(prediction["id"]),
   };
 };
 
@@ -531,10 +532,10 @@ const createPredictionData = (prediction) => {
  * @param {Function} templateFunction - The function to apply to each property of the object. This function should take two arguments: the property value and the property key, and return a string.
  * @returns {string} The resulting string, with each property of the object transformed by the template function and combined together. Returns an empty string if the provided object is null or undefined.
  */
-const generateTemplateString = (obj, templateFunction) => {
+const generateTemplateString = (obj, templateFunction, options = null) => {
   return obj
     ? Object.keys(obj)
-        .map((key) => templateFunction(obj[key], key))
+        .map((key) => templateFunction(obj[key], key, options))
         .join("")
     : "";
 };
@@ -778,13 +779,16 @@ const fillTagButtonList = (tagButtonListEl) => {
  * to the `generateTemplateString` function along with a template function to generate the respective part of the prediction card.
  */
 const getPredictionCardTemplate = (data) => {
-  const { id, content, countdown, tag, votes } = data;
+  const { id, content, countdown, tag, votes, hasVoted } = data;
 
   const countdownItems = generateTemplateString(
     countdown,
     getCountdownItemTemplate
   );
-  const voteButtons = generateTemplateString(votes, getVoteButtonTemplate);
+  const voteButtons = generateTemplateString(votes, getVoteButtonTemplate, {
+    predictionId: id,
+    isDisabled: hasVoted,
+  });
 
   return `
     <div class="card card--full predictions__item${
@@ -823,7 +827,7 @@ const getCountdownItemTemplate = (itemValue, itemName) => {
  * @throws {Error} Will throw an error if voteTypeKey is not "upCount" or "downCount".
  * @returns {string} The template string for the vote button element.
  */
-const getVoteButtonTemplate = (voteValue, voteTypeKey) => {
+const getVoteButtonTemplate = (voteValue, voteTypeKey, options) => {
   const voteTypes = {
     upCount: "up",
     downCount: "down",
@@ -832,11 +836,21 @@ const getVoteButtonTemplate = (voteValue, voteTypeKey) => {
   const voteType = voteTypes[voteTypeKey];
   if (!voteType) throw new Error(`Invalid voteTypeKey: ${voteTypeKey}`);
 
+  const { predictionId, isDisabled } = options;
+
+  const dataPredictionIdAttr = predictionId
+    ? `data-prediction-id="${predictionId}"`
+    : "";
+
+  const disabledAttr = isDisabled === true ? "disabled" : "";
+
   return `
     <button
       type="button"
       class="predictions__item-vote-button-item"
       data-vote-type="${voteType}"
+      ${dataPredictionIdAttr}
+      ${disabledAttr}
     >
       <span
         ><i class="fa-regular fa-thumbs-${voteType}"></i>
