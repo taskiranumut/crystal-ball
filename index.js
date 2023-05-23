@@ -747,6 +747,31 @@ const updateVoteCount = async (predictionId, currentVotes, voteType) => {
 };
 
 /**
+ * Toggles the disabled status of all vote buttons within the provided vote buttons container.
+ * @param {boolean} shouldDisable - Determines whether the buttons should be disabled.
+ * @param {HTMLElement} voteBtnEl - A button element within the vote buttons container.
+ * @param {HTMLElement} voteButtonsContainerEl - The container element for the vote buttons.
+ * @throws {Error} Throws an error if the provided elements are not valid or if 'shouldDisable' is not a boolean.
+ */
+const toggleButtonsDisabledStatus = (
+  shouldDisable,
+  voteBtnEl,
+  voteButtonsContainerEl
+) => {
+  validateIsHtmlElement(voteBtnEl);
+  validateIsHtmlElement(voteButtonsContainerEl);
+
+  if (typeof shouldDisable !== "boolean") {
+    throw new Error("Invalid parameter: shouldDisable must be a boolean.");
+  }
+
+  const voteButtonElList = voteButtonsContainerEl.querySelectorAll(
+    ".predictions__item-vote-button-item"
+  );
+  voteButtonElList.forEach((btnEl) => (btnEl.disabled = shouldDisable));
+};
+
+/**
  * Fills a given HTML element with tag buttons. The tag buttons are generated
  * using data from a constant TAGS_DATA array.
  * @param {HTMLElement} tagButtonListEl - The HTML element to fill with tag buttons.
