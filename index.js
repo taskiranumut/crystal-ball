@@ -427,8 +427,8 @@ const getRemainingTimeUnits = (futureTimestamp = NaN) => {
       console.warn("The future timestamp is in the past.");
       return {
         days: 0,
-        minutes: 0,
         hours: 0,
+        minutes: 0,
         seconds: 0,
       };
     }
@@ -440,8 +440,8 @@ const getRemainingTimeUnits = (futureTimestamp = NaN) => {
 
     return {
       days: diffDays,
-      minutes: diffMinutes % 60,
       hours: diffHours % 24,
+      minutes: diffMinutes % 60,
       seconds: diffSeconds % 60,
     };
   } catch (error) {
