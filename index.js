@@ -530,6 +530,7 @@ const createPredictionData = (prediction) => {
  * and combines the results into a single string.
  * @param {Object} obj The object to iterate over.
  * @param {Function} templateFunction - The function to apply to each property of the object. This function should take two arguments: the property value and the property key, and return a string.
+ * @param {Object} [options=null] - Additional options that may be used by the template function.
  * @returns {string} The resulting string, with each property of the object transformed by the template function and combined together. Returns an empty string if the provided object is null or undefined.
  */
 const generateTemplateString = (obj, templateFunction, options = null) => {
@@ -620,7 +621,7 @@ const fetchAndListPredictions = async (
 
 /**
  * Attaches click event listeners to the predictions list and handles vote button clicks.
- * @param {Element} predictionListEl - The HTML element of the prediction list.
+ * @param {HTMLElement} predictionListEl - The HTML element of the prediction list.
  */
 const addClickEventToPredictionList = (predictionListEl) => {
   validateIsHtmlElement(predictionListEl);
@@ -657,7 +658,9 @@ const addClickEventToPredictionList = (predictionListEl) => {
 /**
  * Handles click event on vote buttons, fetches the current votes, updates the vote count, and updates the vote buttons.
  * @async
- * @param {Element} voteBtnEl - The HTML element of the clicked vote button.
+ * @param {HTMLElement} voteBtnEl - The HTML element of the clicked vote button.
+ * @param {string} predictionId - The ID of the prediction related to the clicked vote button.
+ * @param {HTMLElement} voteButtonsContainerEl - The container of the vote buttons.
  * @throws {Error} Throws an error if the vote update operation fails.
  */
 const handleClickVoteBtn = async (
@@ -852,8 +855,9 @@ const getCountdownItemTemplate = (itemValue, itemName) => {
 
 /**
  * Generates a template string for the vote button element.
- * @param {number|null} voteValue - The value of the vote count. If null, vote count will be displayed as 0.
+ * @param {number} voteValue - The value of the vote count. If null, vote count will be displayed as 0.
  * @param {string} voteTypeKey - The key to determine the type of the vote button ("upCount" or "downCount").
+ * @param {Object} options - Additional options.
  * @throws {Error} Will throw an error if voteTypeKey is not "upCount" or "downCount".
  * @returns {string} The template string for the vote button element.
  */
