@@ -644,7 +644,7 @@ const addClickEventToPredictionList = (predictionListEl) => {
       return;
     }
 
-    const response = handleClickVoteBtn(
+    const response = await handleClickVoteBtn(
       voteBtnEl,
       predictionId,
       voteButtonsContainerEl
