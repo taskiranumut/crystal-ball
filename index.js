@@ -669,6 +669,8 @@ const handleClickVoteBtn = async (
   voteButtonsContainerEl
 ) => {
   validateIsHtmlElement(voteBtnEl);
+  validateIsHtmlElement(voteButtonsContainerEl);
+
   try {
     const voteType = voteBtnEl.getAttribute("data-vote-type");
 
