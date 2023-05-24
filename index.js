@@ -519,21 +519,28 @@ const createPredictionData = (prediction) => {
     }
   });
 
-  const realizationTimeTimestamp = getTimestampFromDateString(
-    prediction["realization_time"]
-  );
-
-  const countdownObj = getRemainingTimeUnits(realizationTimeTimestamp);
+  const countdownData = getCountdownData(prediction["realization_time"]);
 
   return {
     id: prediction["id"],
     content: prediction["prediction_content"],
     tag: prediction["tag"],
     votes: prediction["votes"],
-    countdown: countdownObj.units,
-    countdownNext: countdownObj.next,
+    countdown: countdownData.units,
+    countdownNext: countdownData.next,
     hasVoted: hasVotedPrediction(prediction["id"]),
   };
+};
+
+/**
+ * Calculates the remaining time (in years, months, days, hours, minutes, and seconds) to a specific time.
+ * @param {string} realizationTime - The time of realization in a valid date string format.
+ * @throws {Error} Throws an error if realizationTime is not a valid date string.
+ * @returns {Object} Returns an object containing the remaining time in various units (years, months, days, hours, minutes, seconds).
+ */
+const getCountdownData = (realizationTime) => {
+  const realizationTimeTimestamp = getTimestampFromDateString(realizationTime);
+  return getRemainingTimeUnits(realizationTimeTimestamp);
 };
 
 /**
@@ -647,7 +654,8 @@ const startCountdowns = (rawPredictions) => {
 
   globalCountdownInterval = setInterval(() => {
     for (let i = 0; i < rawPredictions.length; i++) {
-      const prediction = createPredictionData(rawPredictions[i]);
+      const prediction = rawPredictions[i];
+      const countdownData = getCountdownData(prediction["realization_time"]);
 
       const isEndedCountdown = endedCountdowns.includes(prediction.id);
       if (isEndedCountdown) continue;
@@ -655,9 +663,9 @@ const startCountdowns = (rawPredictions) => {
       if (!prediction.countdownNext) endedCountdowns.push(prediction.id);
 
       const countdownItems = generateTemplateString(
-        prediction.countdown,
+        countdownData.units,
         getCountdownItemTemplate,
-        { next: prediction.countdownNext }
+        { next: countdownData.next }
       );
 
       const countdownItemsContainerEl = getElement(
