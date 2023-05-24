@@ -643,9 +643,16 @@ const fetchAndListPredictions = async (
  * @global
  */
 const startCountdowns = (rawPredictions) => {
+  const endedCountdowns = [];
+
   globalCountdownInterval = setInterval(() => {
     for (let i = 0; i < rawPredictions.length; i++) {
       const prediction = createPredictionData(rawPredictions[i]);
+
+      const isEndedCountdown = endedCountdowns.includes(prediction.id);
+      if (isEndedCountdown) continue;
+
+      if (!prediction.countdownNext) endedCountdowns.push(prediction.id);
 
       const countdownItems = generateTemplateString(
         prediction.countdown,
