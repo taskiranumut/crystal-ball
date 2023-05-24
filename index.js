@@ -425,7 +425,7 @@ const getRemainingTimeUnits = (futureTimestamp = NaN) => {
 
     const diffMilliseconds = futureTimestamp - new Date().getTime();
 
-    if (diffMilliseconds <= 0) {
+    if (diffMilliseconds < 1000) {
       console.warn("The realization time is in the past.");
       return {
         units: {
