@@ -424,12 +424,15 @@ const getRemainingTimeUnits = (futureTimestamp = NaN) => {
     const diffMilliseconds = futureTimestamp - new Date().getTime();
 
     if (diffMilliseconds <= 0) {
-      console.warn("The future timestamp is in the past.");
+      console.warn("The realization time is in the past.");
       return {
+        units: {
         days: 0,
         hours: 0,
         minutes: 0,
         seconds: 0,
+        },
+        next: false,
       };
     }
 
@@ -439,10 +442,13 @@ const getRemainingTimeUnits = (futureTimestamp = NaN) => {
     const diffDays = Math.floor(diffHours / 24);
 
     return {
+      units: {
       days: diffDays,
       hours: diffHours % 24,
       minutes: diffMinutes % 60,
       seconds: diffSeconds % 60,
+      },
+      next: true,
     };
   } catch (error) {
     console.error(`Error occurred: ${error}`);
@@ -515,12 +521,15 @@ const createPredictionData = (prediction) => {
     prediction["realization_time"]
   );
 
+  const countdownObj = getRemainingTimeUnits(realizationTimeTimestamp);
+
   return {
     id: prediction["id"],
     content: prediction["prediction_content"],
     tag: prediction["tag"],
     votes: prediction["votes"],
-    countdown: getRemainingTimeUnits(realizationTimeTimestamp),
+    countdown: countdownObj.units,
+    countdownNext: countdownObj.next,
     hasVoted: hasVotedPrediction(prediction["id"]),
   };
 };
@@ -814,11 +823,12 @@ const fillTagButtonList = (tagButtonListEl) => {
  * to the `generateTemplateString` function along with a template function to generate the respective part of the prediction card.
  */
 const getPredictionCardTemplate = (data) => {
-  const { id, content, countdown, tag, votes, hasVoted } = data;
+  const { id, content, countdown, countdownNext, tag, votes, hasVoted } = data;
 
   const countdownItems = generateTemplateString(
     countdown,
-    getCountdownItemTemplate
+    getCountdownItemTemplate,
+    { next: countdownNext }
   );
   const voteButtons = generateTemplateString(votes, getVoteButtonTemplate, {
     predictionId: id,
@@ -842,9 +852,13 @@ const getPredictionCardTemplate = (data) => {
  * @param {string} itemName - The name of the countdown item.
  * @returns {string} The HTML structure for a countdown item as a string.
  */
-const getCountdownItemTemplate = (itemValue, itemName) => {
+const getCountdownItemTemplate = (itemValue, itemName, options) => {
+  const { next } = options;
+
+  const errorClassName = !next ? "predictions__item-countdown-item--error" : "";
+
   return `
-    <div class="predictions__item-countdown-item">
+    <div class="predictions__item-countdown-item ${errorClassName}">
       <span class="predictions__item-countdown-item-number"
         >${itemValue == null ? "-" : itemValue}</span
       >

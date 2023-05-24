@@ -717,6 +717,10 @@ textarea.form__item {
   color: var(--text-secondary-color);
 }
 
+.predictions__item-countdown-item--error {
+  color: var(--erorr-primary-color);
+}
+
 .predictions__item-countdown-item-number {
   font-size: 1.25rem;
 }
