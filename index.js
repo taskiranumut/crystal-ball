@@ -667,7 +667,7 @@ const startCountdowns = (rawPredictions) => {
       );
 
       const countdownItemsContainerEl = getElement(
-        `[data-prediction-id='${prediction.id}'] .predictions__item-countdown`
+        `#countdown-items-container-${prediction.id}`
       );
 
       if (countdownItemsContainerEl) {
@@ -898,7 +898,7 @@ const getPredictionCardTemplate = (data) => {
       content ? "" : " hide"
     }" data-prediction-id="${id}">
       <p class="predictions__item-content">${content}</p>
-      <div class="predictions__item-countdown">${countdownItems}</div>
+      <div id="countdown-items-container-${id}" class="predictions__item-countdown">${countdownItems}</div>
       <span class="predictions__item-tag-label ${tag || "hide"}">${tag}</span>
       <div class="predictions__item-vote-buttons">${voteButtons}</div>
     </div>`;
