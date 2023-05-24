@@ -1,3 +1,5 @@
+let globalCountdownInterval;
+
 /**
  * @typedef {Object} RequestResult
  * @property {boolean} isSuccessful - The request was successful or not.
@@ -558,6 +560,7 @@ const goToNewPredictionForm = (options) => {
 
   hideElement(predictionListEl);
   showElement(newPredictionCardEl);
+  stopCountdowns();
   removeChildElements(predictionListEl);
 };
 
@@ -606,9 +609,11 @@ const generatePredictionCards = (predictions) => {
 
 /**
  * @async
- * @param {Element} predictionListEl - The HTML element where the predictions will be listed.
+ * @param {HTMLElement} predictionListEl - The HTML element where the predictions will be listed.
  * @param {Function} fetchPredictionsFunc - The function to fetch predictions.
  * @throws {Error} Throws an error if the fetch operation fails.
+ * @returns {Object} Returns an object indicating whether the operation was successful or not.
+ * If it was not, the object also contains an 'error' property.
  */
 const fetchAndListPredictions = async (
   predictionListEl,
@@ -616,16 +621,56 @@ const fetchAndListPredictions = async (
 ) => {
   try {
     const predictions = await fetchPredictionsFunc();
+    stopCountdowns();
 
     removeChildElements(predictionListEl);
     listPredictions(predictionListEl, predictions);
     addClickEventToPredictionList(predictionListEl);
+    startCountdowns(predictions);
 
     return { isFetched: true };
   } catch (error) {
     console.error(`Failed to fetch item: ${error}`);
     return { isFetched: false, error: error };
   }
+};
+
+/**
+ * Starts a countdown for each prediction in the provided raw data.
+ * The countdown runs every second, updates the countdown data for each prediction,
+ * and updates the corresponding DOM element.
+ * @param {Array} rawPredictions - The raw data containing the predictions.
+ * @global
+ */
+const startCountdowns = (rawPredictions) => {
+  globalCountdownInterval = setInterval(() => {
+    for (let i = 0; i < rawPredictions.length; i++) {
+      const prediction = createPredictionData(rawPredictions[i]);
+
+      const countdownItems = generateTemplateString(
+        prediction.countdown,
+        getCountdownItemTemplate,
+        { next: prediction.countdownNext }
+      );
+
+      const countdownItemsContainerEl = getElement(
+        `[data-prediction-id='${prediction.id}'] .predictions__item-countdown`
+      );
+
+      if (countdownItemsContainerEl) {
+        removeChildElements(countdownItemsContainerEl);
+        appendStringAsChildElement(countdownItemsContainerEl, countdownItems);
+      }
+    }
+  }, 1000);
+};
+
+/**
+ * Stops all countdowns that have been started with 'startCountdowns'.
+ * @global
+ */
+const stopCountdowns = () => {
+  clearInterval(globalCountdownInterval);
 };
 
 /**
