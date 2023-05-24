@@ -644,8 +644,7 @@ const fetchAndListPredictions = async (
 
 /**
  * Starts a countdown for each prediction in the provided raw data.
- * The countdown runs every second, updates the countdown data for each prediction,
- * and updates the corresponding DOM element.
+ * The countdown runs every second, updates the countdown data for each prediction, and updates the corresponding DOM element.
  * @param {Array} rawPredictions - The raw data containing the predictions.
  * @global
  */
@@ -653,14 +652,13 @@ const startCountdowns = (rawPredictions) => {
   const endedCountdowns = [];
 
   globalCountdownInterval = setInterval(() => {
-    for (let i = 0; i < rawPredictions.length; i++) {
-      const prediction = rawPredictions[i];
+    rawPredictions.forEach((prediction) => {
       const countdownData = getCountdownData(prediction["realization_time"]);
 
       const isEndedCountdown = endedCountdowns.includes(prediction.id);
-      if (isEndedCountdown) continue;
+      if (isEndedCountdown) return;
 
-      if (!prediction.countdownNext) endedCountdowns.push(prediction.id);
+      if (!countdownData.next) endedCountdowns.push(prediction.id);
 
       const countdownItems = generateTemplateString(
         countdownData.units,
@@ -676,7 +674,7 @@ const startCountdowns = (rawPredictions) => {
         removeChildElements(countdownItemsContainerEl);
         appendStringAsChildElement(countdownItemsContainerEl, countdownItems);
       }
-    }
+    });
   }, 1000);
 };
 
