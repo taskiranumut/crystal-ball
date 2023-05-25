@@ -152,6 +152,64 @@ const putUpdatedVoteToApi = async (predictionId = null, data) => {
 };
 
 /**
+ * Adds an animation to a given HTML element. This function is based on the animate.css library.
+ * @param {(HTMLElement|string)} element - A HTML element or a query selector for the element to be animated.
+ * @param {string} animation - The name of the animation to be applied (based on animate.css).
+ * @param {Array} [options] - Optional settings for the animation. These can be delay, repeat, speed, etc. (based on animate.css)
+ * @returns {Promise<boolean>} A Promise that resolves to true when the animation ends. If there is any error, the Promise will resolve to false.
+ * @throws {Error} If the element or animation parameters are invalid or missing, an error will be logged in the console and the function will return a Promise that resolves to false.
+ */
+
+const addAnimation = (element, animation, options) => {
+  if (!element) {
+    console.error(
+      "(Animation Error) Invalid parameter: element is must be HTML element or query selector."
+    );
+    return Promise.resolve(false);
+  }
+
+  if (!animation) {
+    console.error(
+      "(Animation Error) Missing parameter: animation parameter is required."
+    );
+    return Promise.resolve(false);
+  }
+
+  const node =
+    element instanceof HTMLElement ? element : document.querySelector(element);
+
+  if (!node) {
+    console.error(
+      "(Animation Error) Not found element (node) for adding animation."
+    );
+    return Promise.resolve(false);
+  }
+
+  const prefix = "animate__";
+  const animationInitializater = `${prefix}animated`;
+  const animationName = `${prefix}${animation}`;
+  const animationClassList = [animationInitializater, animationName];
+
+  if (Array.isArray(options)) {
+    options.forEach((option) => animationClassList.push(`${prefix}${option}`));
+  }
+
+  animationClassList.forEach((className) => node.classList.add(className));
+
+  return new Promise((resolve, reject) => {
+    const handleAnimationEnd = (e) => {
+      e.stopPropagation();
+      animationClassList.forEach((className) =>
+        node.classList.remove(className)
+      );
+      resolve(true);
+    };
+
+    node.addEventListener("animationend", handleAnimationEnd, { once: true });
+  });
+};
+
+/**
  * Random ID generator function that generates IDs with a minimum and maximum length.
  * The IDs do not start with a number and include at least one number.
  * @param {number} [minLength=4] - The minimum length of the generated ID. Default is 4.
