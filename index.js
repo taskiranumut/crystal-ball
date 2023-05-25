@@ -751,11 +751,15 @@ const stopCountdowns = () => {
 const addClickEventToPredictionList = (predictionListEl) => {
   validateIsHtmlElement(predictionListEl);
 
+  let isActiveClick = false;
+
   predictionListEl.addEventListener("click", async (e) => {
     const voteBtnEl = e.target.closest(".predictions__item-vote-button-item");
-    if (!voteBtnEl) {
+
+    if (!voteBtnEl || isActiveClick) {
       return;
     }
+    isActiveClick = true;
 
     const predictionId = voteBtnEl.getAttribute("data-prediction-id");
     const voteButtonsContainerEl = voteBtnEl.closest(
@@ -774,9 +778,10 @@ const addClickEventToPredictionList = (predictionListEl) => {
       predictionId,
       voteButtonsContainerEl
     );
-    if (!response.isCompleted) {
-      toggleButtonsDisabledStatus(false, voteBtnEl, voteButtonsContainerEl);
-    }
+
+    await handleClickVoteBtn(voteBtnEl, predictionId, voteButtonsContainerEl);
+
+    isActiveClick = false;
   });
 };
 
