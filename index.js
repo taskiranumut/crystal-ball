@@ -765,7 +765,6 @@ const addClickEventToPredictionList = (predictionListEl) => {
     const voteButtonsContainerEl = voteBtnEl.closest(
       ".predictions__item-vote-buttons"
     );
-    toggleButtonsDisabledStatus(true, voteBtnEl, voteButtonsContainerEl);
 
     const hasVoted = hasVotedPrediction(predictionId);
     if (hasVoted) {
@@ -773,11 +772,10 @@ const addClickEventToPredictionList = (predictionListEl) => {
       return;
     }
 
-    const response = await handleClickVoteBtn(
-      voteBtnEl,
-      predictionId,
-      voteButtonsContainerEl
+    const voteBtnIconItem = voteBtnEl.querySelector(
+      `.predictions__item-vote-button-item-icon`
     );
+    await addAnimation(voteBtnIconItem, "swing", ["faster"]);
 
     await handleClickVoteBtn(voteBtnEl, predictionId, voteButtonsContainerEl);
 
@@ -1023,7 +1021,7 @@ const getVoteButtonTemplate = (voteValue, voteTypeKey, options) => {
       ${dataPredictionIdAttr}
       ${disabledAttr}
     >
-      <span
+      <span class="predictions__item-vote-button-item-icon"
         ><i class="fa-regular fa-thumbs-${voteType}"></i>
         <i class="fa-solid fa-thumbs-${voteType}"></i
       ></span>
