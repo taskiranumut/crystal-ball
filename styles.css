@@ -669,7 +669,7 @@ textarea.form__item {
   grid-template-columns: auto auto auto;
   grid-template-areas:
     "content tag buttons"
-    "countdown countdown countdown";
+    "dates dates dates";
   gap: 1.5rem;
 }
 
@@ -758,8 +758,20 @@ textarea.form__item {
   margin: 0 auto;
 }
 
+.predictions__item-dates {
+  grid-area: dates;
+}
+
+.predictions__item-realization-time {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-family: "Sono", "Roboto", sans-serif;
+  letter-spacing: 0;
+  font-size: 0.75rem;
+  color: var(--url-text-secondary-active-color);
+}
+
 .predictions__item-countdown {
-  grid-area: countdown;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -776,7 +788,8 @@ textarea.form__item {
   color: var(--text-secondary-color);
 }
 
-.predictions__item-countdown-item--error {
+.predictions__item-countdown-item--error,
+.predictions__item-realization-time--error {
   color: var(--erorr-primary-color);
 }
 
@@ -794,7 +807,7 @@ textarea.form__item {
     grid-template-areas:
       "content buttons"
       "tag tag"
-      "countdown countdown";
+      "dates dates";
     gap: 1.25rem 1rem;
   }
 }
@@ -806,7 +819,7 @@ textarea.form__item {
       "content"
       "buttons"
       "tag"
-      "countdown";
+      "dates";
     gap: 1.25rem 1rem;
   }
 

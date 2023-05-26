@@ -606,6 +606,7 @@ const createPredictionData = (prediction) => {
     votes: prediction["votes"],
     countdown: countdownData.units,
     countdownNext: countdownData.next,
+    realizationTime: formatDateUSA(prediction["realization_time"]),
     username: prediction["username"],
     infoUrl: prediction["info_url"],
     hasVoted: hasVotedPrediction(prediction["id"]),
@@ -971,6 +972,7 @@ const getPredictionCardTemplate = (data) => {
     countdownNext,
     tag,
     votes,
+    realizationTime,
     username,
     infoUrl,
     hasVoted,
@@ -995,7 +997,12 @@ const getPredictionCardTemplate = (data) => {
       content ? "" : " hide"
     }" data-prediction-id="${id}">
       <p class="predictions__item-content">${content} ${usernameItem}</p>
+      <div class="predictions__item-date">
       <div id="countdown-items-container-${id}" class="predictions__item-countdown">${countdownItems}</div>
+        <span class="predictions__item-realization-time ${
+          !countdownNext ? "predictions__item-realization-time--error" : ""
+        }">Realization: ${realizationTime}</span>
+      </div>
       <span class="predictions__item-tag-label ${tag || "hide"}">${tag}</span>
       <div class="predictions__item-vote-buttons">${voteButtons}</div>
     </div>`;
