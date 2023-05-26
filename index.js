@@ -235,6 +235,26 @@ function generateId(minLength = 4, maxLength = 16) {
 }
 
 /**
+ * Formats a date string into the standard US format ("Month Day, Year").
+ * @param {string} dateStr - The date string to be formatted. It must be a string representing a valid date.
+ * @returns {string} The formatted date string.
+ * @throws {Error} If the input date string is invalid or can't be parsed into a date, an error will be thrown.
+ */
+const formatDateUSA = (dateStr) => {
+  if (!Date.parse(dateStr)) {
+    throw new Error(`Invalid date: ${dateStr}`);
+  }
+
+  const dateObj = new Date(dateStr);
+
+  return dateObj.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+/**
  * Selects an element from the DOM.
  * @param {string} selector - The CSS selector of the element to select.
  * @returns {HTMLElement|null} The selected element, or null if not found.
