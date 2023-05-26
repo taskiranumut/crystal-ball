@@ -888,6 +888,11 @@ const handleClickVoteBtn = async (
     removeChildElements(voteButtonsContainerEl);
     appendStringAsChildElement(voteButtonsContainerEl, updatedVoteButtons);
 
+    const voteBtnCounterItem = voteButtonsContainerEl.querySelector(
+      `[data-vote-type="${voteType}"] .predictions__item-vote-counter`
+    );
+    await addAnimation(voteBtnCounterItem, "bounceIn");
+
     return { isCompleted: true };
   } catch (error) {
     console.error(`Failed to update vote: ${error}`);
