@@ -586,6 +586,8 @@ const createPredictionData = (prediction) => {
     votes: prediction["votes"],
     countdown: countdownData.units,
     countdownNext: countdownData.next,
+    username: prediction["username"],
+    infoUrl: prediction["info_url"],
     hasVoted: hasVotedPrediction(prediction["id"]),
   };
 };
@@ -942,7 +944,17 @@ const fillTagButtonList = (tagButtonListEl) => {
  * to the `generateTemplateString` function along with a template function to generate the respective part of the prediction card.
  */
 const getPredictionCardTemplate = (data) => {
-  const { id, content, countdown, countdownNext, tag, votes, hasVoted } = data;
+  const {
+    id,
+    content,
+    countdown,
+    countdownNext,
+    tag,
+    votes,
+    username,
+    infoUrl,
+    hasVoted,
+  } = data;
 
   const countdownItems = generateTemplateString(
     countdown,
@@ -954,11 +966,15 @@ const getPredictionCardTemplate = (data) => {
     isDisabled: hasVoted,
   });
 
+  const usernameItem = `<a ${
+    infoUrl ? `href="${infoUrl}"` : ""
+  } class="url url--inherit url--secondary" title="Prediction Owner">(${username})</a>`;
+
   return `
     <div class="card card--full predictions__item${
       content ? "" : " hide"
     }" data-prediction-id="${id}">
-      <p class="predictions__item-content">${content}</p>
+      <p class="predictions__item-content">${content} ${usernameItem}</p>
       <div id="countdown-items-container-${id}" class="predictions__item-countdown">${countdownItems}</div>
       <span class="predictions__item-tag-label ${tag || "hide"}">${tag}</span>
       <div class="predictions__item-vote-buttons">${voteButtons}</div>
