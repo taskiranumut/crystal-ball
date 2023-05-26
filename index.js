@@ -496,7 +496,15 @@ const setPredictionAsExpired = (predictionId) => {
 
   if (!predictionCardEl) return;
 
+  const voteBtnElList = predictionCardEl.querySelectorAll(
+    "button[data-prediction-id]"
+  );
+
   predictionCardEl.classList.add("predictions__item--expired");
+  voteBtnElList.forEach((voteBtnEl) => {
+    voteBtnEl.disabled = true;
+    voteBtnEl.removeAttribute("data-prediction-id");
+  });
 };
 
 /**
@@ -810,13 +818,17 @@ const addClickEventToPredictionList = (predictionListEl) => {
 
   predictionListEl.addEventListener("click", async (e) => {
     const voteBtnEl = e.target.closest(".predictions__item-vote-button-item");
-
     if (!voteBtnEl || isActiveClick) {
       return;
     }
-    isActiveClick = true;
 
     const predictionId = voteBtnEl.getAttribute("data-prediction-id");
+    if (!predictionId) {
+      return;
+    }
+
+    isActiveClick = true;
+
     const voteButtonsContainerEl = voteBtnEl.closest(
       ".predictions__item-vote-buttons"
     );
