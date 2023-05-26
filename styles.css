@@ -694,6 +694,7 @@ textarea.form__item {
   font-size: 1.25rem;
   letter-spacing: 0;
   line-height: 1.4;
+  text-transform: capitalize;
 }
 
 .predictions__item-tag-label {
@@ -703,6 +704,7 @@ textarea.form__item {
   display: inline-block;
   font-family: "Coiny", "Roboto", sans-serif;
   line-height: 1;
+  text-transform: capitalize;
   padding: 0.75rem 1rem;
   border-radius: 1.5rem;
   background-color: var(--tag-button-secondary-color);
@@ -800,6 +802,7 @@ textarea.form__item {
   gap: 0.25rem;
   font-family: "Sono", "Roboto", sans-serif;
   letter-spacing: 0;
+  text-transform: capitalize;
   color: var(--text-secondary-color);
 }
 
