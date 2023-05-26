@@ -484,6 +484,22 @@ const getTimestampFromDateString = (dateString) => {
 };
 
 /**
+ * Adds a CSS class to the prediction card element to indicate that it is expired.
+ * This function relies on the document's structure and on the `getElement` function.
+ * @param {string} predictionId - The ID of the prediction card to mark as expired.
+ * @throws Will throw an error if the `getElement` function is not defined or if it doesn't select the correct element.
+ */
+const setPredictionAsExpired = (predictionId) => {
+  const predictionCardEl = getElement(
+    `.predictions__item[data-prediction-id="${predictionId}"]`
+  );
+
+  if (!predictionCardEl) return;
+
+  predictionCardEl.classList.add("predictions__item--expired");
+};
+
+/**
  * Returns the remaining time between the current date and a future timestamp
  * in terms of days, hours, minutes, and seconds.
  * @param {number} [futureTimestamp=NaN] - The future timestamp in milliseconds.
@@ -495,16 +511,24 @@ const getTimestampFromDateString = (dateString) => {
  * @throws {Error} If the futureTimestamp is not a number.
  * @throws {Error} If the futureTimestamp is in the past.
  */
-const getRemainingTimeUnits = (futureTimestamp = NaN) => {
+const getRemainingTimeUnits = (futureTimestamp = NaN, predictionId) => {
   try {
     if (isNaN(futureTimestamp)) {
       throw new Error("The future timestamp is not a number");
+    }
+
+    if (!predictionId) {
+      throw new Error(
+        `Missing or invalid parameter (predictionId): ${predictionId}`
+      );
     }
 
     const diffMilliseconds = futureTimestamp - new Date().getTime();
 
     if (diffMilliseconds < 1000) {
       console.warn("The realization time is in the past.");
+      setPredictionAsExpired(predictionId);
+
       return {
         units: {
         days: 0,
@@ -599,7 +623,10 @@ const createPredictionData = (prediction) => {
     }
   });
 
-  const countdownData = getCountdownData(prediction["realization_time"]);
+  const countdownData = getCountdownData(
+    prediction["realization_time"],
+    prediction["id"]
+  );
 
   return {
     id: prediction["id"],
@@ -621,9 +648,9 @@ const createPredictionData = (prediction) => {
  * @throws {Error} Throws an error if realizationTime is not a valid date string.
  * @returns {Object} Returns an object containing the remaining time in various units (years, months, days, hours, minutes, seconds).
  */
-const getCountdownData = (realizationTime) => {
+const getCountdownData = (realizationTime, predictionId) => {
   const realizationTimeTimestamp = getTimestampFromDateString(realizationTime);
-  return getRemainingTimeUnits(realizationTimeTimestamp);
+  return getRemainingTimeUnits(realizationTimeTimestamp, predictionId);
 };
 
 /**
@@ -736,7 +763,10 @@ const startCountdowns = (rawPredictions) => {
 
   globalCountdownInterval = setInterval(() => {
     rawPredictions.forEach((prediction) => {
-      const countdownData = getCountdownData(prediction["realization_time"]);
+      const countdownData = getCountdownData(
+        prediction["realization_time"],
+        prediction["id"]
+      );
 
       const isEndedCountdown = endedCountdowns.includes(prediction.id);
       if (isEndedCountdown) return;
@@ -998,7 +1028,7 @@ const getPredictionCardTemplate = (data) => {
     <div class="card card--full predictions__item${
       content ? "" : " hide"
     }" data-prediction-id="${id}">
-      <p class="predictions__item-content">${content} ${usernameItem}</p>
+      <p class="predictions__item-content"><span class="predictions__item-content-label">[Expired]</span> ${content} ${usernameItem}</p>
       <div class="predictions__item-date">
       <div id="countdown-items-container-${id}" class="predictions__item-countdown">${countdownItems}</div>
         <span class="predictions__item-realization-time ${

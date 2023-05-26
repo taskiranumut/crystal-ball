@@ -673,6 +673,25 @@ textarea.form__item {
   gap: 1.5rem;
 }
 
+.predictions__item-content-label {
+  display: none;
+  font-size: inherit;
+  font-family: inherit;
+  color: var(--erorr-primary-color);
+}
+
+.predictions__item--expired {
+  opacity: 0.5;
+}
+
+.predictions__item--expired .predictions__item-content-label {
+  display: inline-block;
+}
+
+.predictions__item--expired .predictions__item-vote-button-item {
+  pointer-events: none;
+}
+
 .predictions__item-content {
   grid-area: content;
   font-family: "Sono", "Roboto", sans-serif;
