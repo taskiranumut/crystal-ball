@@ -588,6 +588,8 @@ const createPredictionData = (prediction) => {
     "tag",
     "votes",
     "realization_time",
+    "username",
+    "info_url",
   ];
   const predictionKeys = Object.keys(prediction);
 
