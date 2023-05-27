@@ -517,6 +517,7 @@ textarea.form__item {
   height: 7rem;
   border-radius: 50%;
   background-color: var(--button-secondary-color);
+  flex-shrink: 0;
 }
 
 .header__logo-image {
