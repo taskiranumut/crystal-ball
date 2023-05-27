@@ -235,6 +235,37 @@ function generateId(minLength = 4, maxLength = 16) {
 }
 
 /**
+ * Syncs the top CSS style of a sticky element with the height of a reference element.
+ * This function uses the ResizeObserver API to watch for size changes in the reference element.
+ * @param {Element} stickyElement - The element whose top style will be adjusted.
+ * @param {Element} referenceElement - The element whose height will be used to adjust the top style of the sticky element.
+ * @return {Function} A function that can be called to stop observing the reference element.
+ */
+const syncTopStylingWithElementSize = (stickyElement, referenceElement) => {
+  let observer;
+
+  const updateTopStyling = () => {
+    const referenceHeight = referenceElement.getBoundingClientRect().height;
+    const gap =
+      parseFloat(
+        getComputedStyle(referenceElement.parentNode).getPropertyValue(
+          "grid-row-gap"
+        )
+      ) || 0;
+    stickyElement.style.top = `${referenceHeight + gap}px`;
+  };
+
+  if ("ResizeObserver" in window) {
+    observer = new ResizeObserver(updateTopStyling);
+    observer.observe(referenceElement);
+  }
+
+  return () => {
+    if (observer) observer.unobserve(referenceElement);
+  };
+};
+
+/**
  * Formats a date string into the standard US format ("Month Day, Year").
  * @param {string} dateStr - The date string to be formatted. It must be a string representing a valid date.
  * @returns {string} The formatted date string.
