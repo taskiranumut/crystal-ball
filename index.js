@@ -266,6 +266,23 @@ const syncTopStylingWithElementSize = (stickyElement, referenceElement) => {
 };
 
 /**
+ * Sets the top CSS style of a sidebar element dynamically based on the height of the header element.
+ * This function relies on the `syncTopStylingWithElementSize` function.
+ * @param {Object} options - An object containing the sidebar and header elements.
+ * @param {Element} options.sidebarEl - The sidebar element whose top style will be adjusted.
+ * @param {Element} options.headerEl - The header element whose height will be used to adjust the top style of the sidebar element.
+ * @throws Will throw an error if the `validateIsHtmlElement` function is not defined or if it doesn't validate the correct element.
+ */
+const setSidebarTopValueDynamically = (options) => {
+  Object.entries(options).forEach(([key, value]) =>
+    validateIsHtmlElement(value, key)
+  );
+
+  const { sidebarEl, headerEl } = options;
+  syncTopStylingWithElementSize(sidebarEl, headerEl);
+};
+
+/**
  * Formats a date string into the standard US format ("Month Day, Year").
  * @param {string} dateStr - The date string to be formatted. It must be a string representing a valid date.
  * @returns {string} The formatted date string.
@@ -1313,11 +1330,18 @@ window.addEventListener("load", () => {
     { elName: "newPredictionFormEl", selector: "#new-prediction-form" },
     { elName: "formCancelBtnEl", selector: "#form-cancel-btn" },
     { elName: "tagButtonListEl", selector: "#tag-buttons-container" },
+    { elName: "headerEl", selector: "#header" },
+    { elName: "sidebarEl", selector: "#sidebar" },
   ];
   fillElementsObject(elements, selectorList);
 
   fetchAndListPredictions(elements.predictionListEl, getPredictionsFromApi);
   fillTagButtonList(elements.tagButtonListEl);
+
+  setSidebarTopValueDynamically({
+    headerEl: elements.headerEl,
+    sidebarEl: elements.sidebarEl,
+  });
 
   handleClickNewPredictionButton({
     newPredictionBtnEl: elements.newPredictionBtnEl,
