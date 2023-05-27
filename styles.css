@@ -69,6 +69,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-y: overlay;
 }
 
 html,
