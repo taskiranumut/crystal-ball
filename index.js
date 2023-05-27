@@ -163,7 +163,6 @@ const putUpdatedVoteToApi = async (predictionId = null, data) => {
  * @returns {Promise<boolean>} A Promise that resolves to true when the animation ends. If there is any error, the Promise will resolve to false.
  * @throws {Error} If the element or animation parameters are invalid or missing, an error will be logged in the console and the function will return a Promise that resolves to false.
  */
-
 const addAnimation = (element, animation, options) => {
   if (!element) {
     console.error(
@@ -791,6 +790,13 @@ const generateTemplateString = (obj, templateFunction, options = null) => {
     : "";
 };
 
+/**
+ * Navigates to the new prediction form, hides the prediction list and shows the new prediction form.
+ * It also stops any ongoing countdowns and clears the prediction list.
+ * @param {Object} options - The DOM elements for operation.
+ * @param {HTMLElement} options.newPredictionCardEl - The new prediction form element.
+ * @param {HTMLElement} options.predictionListEl - The prediction list element.
+ */
 const goToNewPredictionForm = (options) => {
   Object.entries(options).forEach(([key, value]) =>
     validateIsHtmlElement(value, key)
@@ -803,6 +809,14 @@ const goToNewPredictionForm = (options) => {
   removeChildElements(predictionListEl);
 };
 
+/**
+ * Navigates to the prediction list, hides the new prediction form and shows the prediction list.
+ * It also triggers the filtering of predictions based on the active tag button.
+ * @param {Object} options - The DOM elements for operation.
+ * @param {HTMLElement} options.newPredictionCardEl - The new prediction form element.
+ * @param {HTMLElement} options.predictionListEl - The prediction list element.
+ * @param {Boolean|null} isAll - A flag to specify if it should return the 'all' button for the filter function.
+ */
 const goToPredictionList = (options, isAll) => {
   Object.entries(options).forEach(([key, value]) =>
     validateIsHtmlElement(value, key)
@@ -819,6 +833,11 @@ const goToPredictionList = (options, isAll) => {
   });
 };
 
+/**
+ * Returns the active tag button from the tag button container.
+ * @param {Boolean|null} isAll - A flag to specify if it should return the 'all' button.
+ * @returns {HTMLElement} - The active button element.
+ */
 const getActiveTagBtn = (isAll = null) => {
   return isAll
     ? getElement("#tag-buttons-container [data-tag-value='all']")
@@ -1371,10 +1390,13 @@ const handleSubmitPredictionForm = (options) => {
 };
 
 /**
- * Attaches click event listeners to tag buttons and filters the predictions list based on clicked tag.
+ * Attaches click event listeners to tag buttons. When a tag button is clicked,
+ * it hides the new prediction form, shows the prediction list and triggers
+ * the filtering of predictions.
  * @param {Object} options - The options for the function.
- * @param {Element} options.tagButtonListEl - The HTML element of the tag button list.
- * @param {Element} options.predictionListEl - The HTML element where the predictions will be listed.
+ * @param {HTMLElement} options.tagButtonListEl - The HTML element of the tag button list.
+ * @param {HTMLElement} options.predictionListEl - The HTML element where the predictions will be listed.
+ * @param {HTMLElement} options.newPredictionCardEl - The new prediction form element.
  */
 const handleClickTagButtons = (options) => {
   Object.entries(options).forEach(([key, value]) =>
@@ -1409,11 +1431,14 @@ const handleClickTagButtons = (options) => {
 };
 
 /**
- * Filters and updates the predictions list based on the clicked tag button.
+ * Filters and updates the predictions list based on the clicked tag button. After successful fetching,
+ * it deactivates the old active button and activates the clicked button.
  * @async
- * @param {Element} predictionListEl - The HTML element where the predictions will be listed.
- * @param {Event} event - The event object from the tag button click event.
- * @throws {Error} Throws an error if the predictionListEl is not a valid HTML element or fetching predictions fails.
+ * @param {Object} options - The DOM elements and the event object for the operation.
+ * @param {HTMLElement} options.predictionListEl - The HTML element where the predictions will be listed.
+ * @param {Event|null} options.event - The click event object.
+ * @param {HTMLElement|null} options.tagBtnEl - The clicked tag button element.
+ * @throws Will throw an error if the clickedBtn parameter is not valid.
  */
 const filterPredictionsAfterClickTagButton = async (options) => {
   const { predictionListEl, event = null, tagBtnEl = null } = options;
