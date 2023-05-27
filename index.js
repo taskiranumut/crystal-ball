@@ -437,6 +437,28 @@ const hideElement = (el) => {
 };
 
 /**
+ * Toggles the visibility of a loader element based on the provided activity state.
+ * @param {Boolean} isActive - A flag to specify whether the loader should be active or not.
+ * @param {HTMLElement|string} loader - The loader DOM element or a query selector string to select the loader element.
+ * @throws Will throw an error if `isActive` is not a boolean.
+ * @throws Will throw an error if `loader` is not a valid HTMLElement or a valid query selector string.
+ */
+const toggleLoader = (isActive, loader) => {
+  if (typeof isActive !== "boolean") {
+    throw new Error(
+      `Invalid parameter, isActive must be Boolean, isActive: ${isActive}`
+    );
+  }
+
+  const loaderEl = loader instanceof HTMLElement ? loader : getElement(loader);
+  if (!loaderEl) {
+    throw new Error(`Invalid loader element (loaderEl): ${loaderEl}`);
+  }
+
+  isActive ? loaderEl.classList.remove("hide") : loaderEl.classList.add("hide");
+};
+
+/**
  * Validates if a value is an instance of HTMLElement.
  * @param {any} value - The value to validate.
  * @param {string} [property="the value passed as an argument"] - The name of the property for error messaging.
