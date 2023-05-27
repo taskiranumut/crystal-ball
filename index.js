@@ -905,7 +905,7 @@ const addClickEventToPredictionList = (predictionListEl) => {
 
   let isActiveClick = false;
 
-  predictionListEl.addEventListener("click", async (e) => {
+  const eventHandlerFunction = async (e) => {
     const voteBtnEl = e.target.closest(".predictions__item-vote-button-item");
     if (!voteBtnEl || isActiveClick) {
       return;
@@ -936,6 +936,12 @@ const addClickEventToPredictionList = (predictionListEl) => {
     await handleClickVoteBtn(voteBtnEl, predictionId, voteButtonsContainerEl);
 
     isActiveClick = false;
+  };
+
+  addEvent({
+    element: predictionListEl,
+    eventName: "click",
+    handler: eventHandlerFunction,
   });
 };
 
@@ -1249,8 +1255,14 @@ const handleClickNewPredictionButton = (options) => {
 
   const { newPredictionBtnEl, newPredictionCardEl, predictionListEl } = options;
 
-  newPredictionBtnEl.addEventListener("click", () => {
+  const eventHandlerFunction = () => {
     goToNewPredictionForm({ newPredictionCardEl, predictionListEl });
+  };
+
+  addEvent({
+    element: newPredictionBtnEl,
+    eventName: "click",
+    handler: eventHandlerFunction,
   });
 };
 
@@ -1269,8 +1281,14 @@ const handleClickFormCancelButton = (options) => {
 
   const { formCancelBtnEl, newPredictionCardEl, predictionListEl } = options;
 
-  formCancelBtnEl.addEventListener("click", () => {
+  const eventHandlerFunction = () => {
     goToPredictionList({ newPredictionCardEl, predictionListEl });
+  };
+
+  addEvent({
+    element: formCancelBtnEl,
+    eventName: "click",
+    handler: eventHandlerFunction,
   });
 };
 
@@ -1291,7 +1309,7 @@ const handleSubmitPredictionForm = (options) => {
   const { newPredictionFormEl, newPredictionCardEl, predictionListEl } =
     options;
 
-  newPredictionFormEl.addEventListener("submit", async (e) => {
+  const eventHandlerFunction = async (e) => {
     e.preventDefault();
 
     const newPredictionData = getNewPredictionData(newPredictionFormEl);
@@ -1301,6 +1319,12 @@ const handleSubmitPredictionForm = (options) => {
 
     goToPredictionList({ newPredictionCardEl, predictionListEl });
     newPredictionFormEl.reset();
+  };
+
+  addEvent({
+    element: newPredictionFormEl,
+    eventName: "submit",
+    handler: eventHandlerFunction,
   });
 };
 
@@ -1317,7 +1341,7 @@ const handleClickTagButtons = (options) => {
 
   const { tagButtonListEl, predictionListEl } = options;
 
-  tagButtonListEl.addEventListener("click", (e) => {
+  const eventHandlerFunction = (e) => {
     const targetClassList = [...e.target.classList];
     const isValidTarget =
       targetClassList.includes("btn") &&
@@ -1326,6 +1350,12 @@ const handleClickTagButtons = (options) => {
     if (isValidTarget) {
       filterPredictionsAfterClickTagButton(predictionListEl, e);
     }
+  };
+
+  addEvent({
+    element: tagButtonListEl,
+    eventName: "click",
+    handler: eventHandlerFunction,
   });
 };
 
