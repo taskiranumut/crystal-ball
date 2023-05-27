@@ -652,10 +652,10 @@ const getRemainingTimeUnits = (futureTimestamp = NaN, predictionId) => {
 
       return {
         units: {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
         },
         next: false,
       };
@@ -668,10 +668,10 @@ const getRemainingTimeUnits = (futureTimestamp = NaN, predictionId) => {
 
     return {
       units: {
-      days: diffDays,
-      hours: diffHours % 24,
-      minutes: diffMinutes % 60,
-      seconds: diffSeconds % 60,
+        days: diffDays,
+        hours: diffHours % 24,
+        minutes: diffMinutes % 60,
+        seconds: diffSeconds % 60,
       },
       next: true,
     };
@@ -864,16 +864,16 @@ const listPredictions = (predictionListEl, predictions) => {
  * @returns {string} A string of HTML representing each prediction as a card.
  */
 const generatePredictionCards = (predictions) => {
-    if (!Array.isArray(predictions)) {
+  if (!Array.isArray(predictions)) {
     throw new Error("Invalid type: predictions parameter has to be an array.");
-    }
+  }
 
   return predictions
-      .map((prediction) => {
-        const predictionData = createPredictionData(prediction);
-        return getPredictionCardTemplate(predictionData);
-      })
-      .join("");
+    .map((prediction) => {
+      const predictionData = createPredictionData(prediction);
+      return getPredictionCardTemplate(predictionData);
+    })
+    .join("");
 };
 
 /**
@@ -1454,13 +1454,13 @@ const filterPredictionsAfterClickTagButton = async (options) => {
   const tagQuery = clickedBtn.getAttribute("data-tag-value");
 
   const response = await fetchAndListPredictions(predictionListEl, () =>
-        getPredictionsFromApiWithTagQuery(tagQuery)
-      );
+    getPredictionsFromApiWithTagQuery(tagQuery)
+  );
 
   if (!response.isFetched) {
     clickedBtn.disabled = false;
     return;
-    }
+  }
 
   const oldActiveBtn = getElement("#tag-buttons-container .btn--active");
   oldActiveBtn.classList.remove("btn--active");
