@@ -40,6 +40,37 @@
   box-sizing: border-box;
 }
 
+/*#region scrollbar*/
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--button-secondary-color)
+    var(--background-secondary-color);
+}
+
+/* Chrome, Safari, Edge */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-secondary-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--button-secondary-color);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--button-secondary-hover-color);
+}
+/*#endregion scrollbar*/
+
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body,
 #app-root {
