@@ -856,13 +856,16 @@ const fetchAndListPredictions = async (
   fetchPredictionsFunc
 ) => {
   try {
-    const predictions = await fetchPredictionsFunc();
     stopCountdowns();
-
     removeChildElements(predictionListEl);
+    toggleLoader(true, "#main-loader");
+
+    const predictions = await fetchPredictionsFunc();
+
+    toggleLoader(false, "#main-loader");
     listPredictions(predictionListEl, predictions);
-    addClickEventToPredictionList(predictionListEl);
     startCountdowns(predictions);
+    addClickEventToPredictionList(predictionListEl);
 
     return { isFetched: true };
   } catch (error) {
