@@ -1105,6 +1105,11 @@ const getVoteButtonTemplate = (voteValue, voteTypeKey, options) => {
 
   const disabledAttr = isDisabled === true ? "disabled" : "";
 
+  const titleText =
+    isDisabled === true
+      ? `You have already voted the prediction.`
+      : `Vote ${voteType}!`;
+
   return `
     <button
       type="button"
@@ -1112,6 +1117,7 @@ const getVoteButtonTemplate = (voteValue, voteTypeKey, options) => {
       data-vote-type="${voteType}"
       ${dataPredictionIdAttr}
       ${disabledAttr}
+      title="${titleText}"
     >
       <span class="predictions__item-vote-button-item-icon"
         ><i class="fa-regular fa-thumbs-${voteType}"></i>
