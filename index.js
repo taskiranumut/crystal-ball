@@ -1,4 +1,5 @@
 let globalCountdownInterval;
+const eventTracker = {};
 
 /**
  * @typedef {Object} RequestResult
@@ -207,6 +208,46 @@ const addAnimation = (element, animation, options) => {
 
     node.addEventListener("animationend", handleAnimationEnd, { once: true });
   });
+};
+
+/**
+ * Adds an event listener to an element and keeps track of it. If `onceAdd` is set to true, the event listener is not added if it already exists.
+ * @param {Object} options - An object containing the necessary properties.
+ * @param {Element} options.element - The DOM element to which the event will be attached.
+ * @param {String} options.eventName - The name of the event.
+ * @param {Function} options.handler - The callback function that will be executed when the event is triggered.
+ * @param {Boolean} [options.onceAdd=true] - A flag to specify whether the event should only be added if it doesn't already exist.
+ */
+const addEvent = (options) => {
+  const { element, eventName, handler, onceAdd = true } = options;
+
+  if (onceAdd) {
+    const hasEvent = checkEvent({ element, eventName });
+    if (hasEvent) return;
+  }
+
+  if (!eventTracker[eventName]) {
+    eventTracker[eventName] = [];
+  }
+
+  eventTracker[eventName].push({ element, handler });
+  element.addEventListener(eventName, handler);
+};
+
+/**
+ * Checks whether a particular event is already attached to an element.
+ * @param {Object} options - An object containing the necessary properties.
+ * @param {Element} options.element - The DOM element to which the event is attached.
+ * @param {String} options.eventName - The name of the event.
+ * @returns {Boolean} Returns true if the event is already attached to the element, false otherwise.
+ */
+const checkEvent = (options) => {
+  const { element, eventName } = options;
+
+  return (
+    eventTracker[eventName] &&
+    eventTracker[eventName].some((item) => item.element === element)
+  );
 };
 
 /**
