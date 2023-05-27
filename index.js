@@ -120,6 +120,9 @@ const getPredictionsFromApiWithTagQuery = async (tagQuery = null) => {
     "politics",
     "science",
     "magazine",
+    "finance",
+    "humanity",
+    "society",
   ];
 
   const isValidTagQuery = validTagQueries.some(
