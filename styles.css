@@ -65,6 +65,7 @@ body {
     "header header"
     "sidebar main"
     "footer footer";
+  gap: 0;
   height: 100%;
   width: 100%;
 }
@@ -83,6 +84,11 @@ body {
 
 .sidebar {
   grid-area: sidebar;
+  align-self: flex-start;
+  position: sticky;
+  top: 176px;
+  z-index: 10000;
+  background-color: var(--background-primary-color);
 }
 
 .main {
@@ -121,10 +127,6 @@ body {
 
 @media (max-width: 767px) {
   .grid-container {
-    gap: 1.5rem;
-  }
-
-  .grid-container {
     grid-template-columns: 100%;
     grid-template-rows: auto auto 1fr auto;
     grid-template-areas:
@@ -132,7 +134,6 @@ body {
       "sidebar"
       "main"
       "footer";
-    gap: 1.5rem;
   }
 }
 
