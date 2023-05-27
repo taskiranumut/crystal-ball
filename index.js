@@ -803,7 +803,7 @@ const goToNewPredictionForm = (options) => {
   removeChildElements(predictionListEl);
 };
 
-const goToPredictionList = (options) => {
+const goToPredictionList = (options, isAll) => {
   Object.entries(options).forEach(([key, value]) =>
     validateIsHtmlElement(value, key)
   );
@@ -811,7 +811,18 @@ const goToPredictionList = (options) => {
 
   hideElement(newPredictionCardEl);
   showElement(predictionListEl);
-  fetchAndListPredictions(predictionListEl, getPredictionsFromApi);
+
+  const tagBtnEl = getActiveTagBtn(isAll);
+  filterPredictionsAfterClickTagButton({
+    predictionListEl,
+    tagBtnEl,
+  });
+};
+
+const getActiveTagBtn = (isAll = null) => {
+  return isAll
+    ? getElement("#tag-buttons-container [data-tag-value='all']")
+    : getElement("#tag-buttons-container .btn--active");
 };
 
 /**
@@ -1313,7 +1324,7 @@ const handleClickFormCancelButton = (options) => {
   const { formCancelBtnEl, newPredictionCardEl, predictionListEl } = options;
 
   const eventHandlerFunction = () => {
-    goToPredictionList({ newPredictionCardEl, predictionListEl });
+    goToPredictionList({ newPredictionCardEl, predictionListEl }, false);
   };
 
   addEvent({
@@ -1348,7 +1359,7 @@ const handleSubmitPredictionForm = (options) => {
 
     if (!response.isSuccessful) throw new Error(response.error.message);
 
-    goToPredictionList({ newPredictionCardEl, predictionListEl });
+    goToPredictionList({ newPredictionCardEl, predictionListEl }, true);
     newPredictionFormEl.reset();
   };
 
@@ -1370,7 +1381,7 @@ const handleClickTagButtons = (options) => {
     validateIsHtmlElement(value, key)
   );
 
-  const { tagButtonListEl, predictionListEl } = options;
+  const { tagButtonListEl, predictionListEl, newPredictionCardEl } = options;
 
   const eventHandlerFunction = (e) => {
     const targetClassList = [...e.target.classList];
@@ -1378,9 +1389,16 @@ const handleClickTagButtons = (options) => {
       targetClassList.includes("btn") &&
       !targetClassList.includes("btn--active");
 
-    if (isValidTarget) {
-      filterPredictionsAfterClickTagButton(predictionListEl, e);
+    if (!isValidTarget) {
+      return;
     }
+
+    hideElement(newPredictionCardEl);
+    showElement(predictionListEl);
+    filterPredictionsAfterClickTagButton({
+      predictionListEl,
+      event: e,
+    });
   };
 
   addEvent({
@@ -1397,14 +1415,17 @@ const handleClickTagButtons = (options) => {
  * @param {Event} event - The event object from the tag button click event.
  * @throws {Error} Throws an error if the predictionListEl is not a valid HTML element or fetching predictions fails.
  */
-const filterPredictionsAfterClickTagButton = async (
-  predictionListEl,
-  event
-) => {
+const filterPredictionsAfterClickTagButton = async (options) => {
+  const { predictionListEl, event = null, tagBtnEl = null } = options;
+
   validateIsHtmlElement(predictionListEl);
 
-  const clickedBtn = event.target;
-  clickedBtn.disabled = true;
+  const clickedBtn = event ? event.target : tagBtnEl;
+  if (!clickedBtn) {
+    throw new Error(`Invalid tag buton element, clickedBtn: ${clickedBtn}`);
+  }
+
+  if (!tagBtnEl) clickedBtn.disabled = true;
   const tagQuery = clickedBtn.getAttribute("data-tag-value");
 
   const response = await fetchAndListPredictions(predictionListEl, () =>
@@ -1420,7 +1441,7 @@ const filterPredictionsAfterClickTagButton = async (
   oldActiveBtn.classList.remove("btn--active");
 
   clickedBtn.classList.add("btn--active");
-  clickedBtn.disabled = false;
+  if (!tagBtnEl) clickedBtn.disabled = false;
 };
 
 window.addEventListener("load", () => {
@@ -1466,5 +1487,6 @@ window.addEventListener("load", () => {
   handleClickTagButtons({
     tagButtonListEl: elements.tagButtonListEl,
     predictionListEl: elements.predictionListEl,
+    newPredictionCardEl: elements.newPredictionCardEl,
   });
 });
