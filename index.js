@@ -1112,10 +1112,13 @@ const fillTagButtonList = (tagButtonListEl) => {
 
   const TAGS_DATA = [
     { value: "all", display: "All", isActive: true },
-    { value: "technology", display: "Technology", isActive: false },
     { value: "politics", display: "Politics", isActive: false },
-    { value: "science", display: "Science", isActive: false },
     { value: "magazine", display: "Magazine", isActive: false },
+    { value: "finance", display: "Finance", isActive: false },
+    { value: "technology", display: "Technology", isActive: false },
+    { value: "science", display: "Science", isActive: false },
+    { value: "humanity", display: "Humanity", isActive: false },
+    { value: "society", display: "Society", isActive: false },
   ];
 
   const tagButtons = TAGS_DATA.map((data) => getTagButtonTemplate(data)).join(
