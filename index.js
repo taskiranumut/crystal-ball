@@ -850,7 +850,7 @@ const getActiveTagBtn = (isAll = null) => {
 };
 
 /**
- * Adds prediction cards to the specified HTML element.
+ * Adds prediction cards to the specified HTML element. If there are no predictions, it displays an "empty content" message.
  * @param {HTMLElement} predictionListEl - The HTML element to which prediction cards will be appended.
  * @param {Array} predictions - An array of predictions to be listed.
  * @throws Will throw an error if predictionListEl is not an instance of HTMLElement.
@@ -859,7 +859,11 @@ const listPredictions = (predictionListEl, predictions) => {
   validateIsHtmlElement(predictionListEl);
 
   const predictionCards = generatePredictionCards(predictions);
-  appendStringAsChildElement(predictionListEl, predictionCards);
+
+  const template = predictionCards
+    ? predictionCards
+    : getEmptyContentTemplate();
+  appendStringAsChildElement(predictionListEl, template);
 };
 
 /**
@@ -1303,6 +1307,21 @@ const getTagButtonTemplate = (data) => {
     <button type="button" data-tag-value="${value}" class="btn btn--lg btn--tag-secondary ${
     isActive ? "btn--active" : ""
   }">${display}</button>
+  `;
+};
+
+/**
+ * Returns a template string representing an "empty content" message.
+ * @returns {string} A string containing HTML structure for displaying an empty content message.
+ */
+const getEmptyContentTemplate = () => {
+  return `
+    <div class="empty-content">
+      <div class="empty-content__icon">
+        <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+      </div>
+      <p class="empty-content__text">There is no prediction!</p>
+    </div>
   `;
 };
 
