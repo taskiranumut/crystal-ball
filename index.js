@@ -439,25 +439,30 @@ const hideElement = (el) => {
 };
 
 /**
- * Toggles the visibility of a loader element based on the provided activity state.
- * @param {Boolean} isActive - A flag to specify whether the loader should be active or not.
- * @param {HTMLElement|string} loader - The loader DOM element or a query selector string to select the loader element.
- * @throws Will throw an error if `isActive` is not a boolean.
- * @throws Will throw an error if `loader` is not a valid HTMLElement or a valid query selector string.
+ * Toggles visibility of an element based on the specified action type.
+ * @param {('show'|'hide'|'true'|'false')} actionType - The action type to determine whether to show or hide the element.
+ * @param {(HTMLElement|string)} selector - The HTMLElement or a selector string that points to an element to be shown or hidden.
+ * @throws Will throw an error if the actionType parameter is not valid.
  */
-const toggleLoader = (isActive, loader) => {
+const toggleElement = (actionType, selector) => {
+  const actionTypeObj = {
+    show: true,
+    hide: false,
+    true: true,
+    false: false,
+  };
+
+  const isActive = actionTypeObj[actionType];
   if (typeof isActive !== "boolean") {
     throw new Error(
-      `Invalid parameter, isActive must be Boolean, isActive: ${isActive}`
+      `Invalid parameter, actionType must be "show", "hide", "true" or "false". actionType: ${actionType}`
     );
   }
 
-  const loaderEl = loader instanceof HTMLElement ? loader : getElement(loader);
-  if (!loaderEl) {
-    throw new Error(`Invalid loader element (loaderEl): ${loaderEl}`);
-  }
+  const element =
+    selector instanceof HTMLElement ? selector : getElement(selector);
 
-  isActive ? loaderEl.classList.remove("hide") : loaderEl.classList.add("hide");
+  isActive ? showElement(element) : hideElement(element);
 };
 
 /**
@@ -803,8 +808,8 @@ const goToNewPredictionForm = (options) => {
   );
   const { newPredictionCardEl, predictionListEl } = options;
 
-  hideElement(predictionListEl);
-  showElement(newPredictionCardEl);
+  toggleElement("hide", predictionListEl);
+  toggleElement("show", newPredictionCardEl);
   stopCountdowns();
   removeChildElements(predictionListEl);
 };
@@ -823,8 +828,8 @@ const goToPredictionList = (options, isAll) => {
   );
   const { newPredictionCardEl, predictionListEl } = options;
 
-  hideElement(newPredictionCardEl);
-  showElement(predictionListEl);
+  toggleElement("hide", newPredictionCardEl);
+  toggleElement("show", predictionListEl);
 
   const tagBtnEl = getActiveTagBtn(isAll);
   filterPredictionsAfterClickTagButton({
@@ -891,11 +896,11 @@ const fetchAndListPredictions = async (
   try {
     stopCountdowns();
     removeChildElements(predictionListEl);
-    toggleLoader(true, "#main-loader");
+    toggleElement("show", "#main-loader");
 
     const predictions = await fetchPredictionsFunc();
 
-    toggleLoader(false, "#main-loader");
+    toggleElement("hide", "#main-loader");
     listPredictions(predictionListEl, predictions);
     startCountdowns(predictions);
     addClickEventToPredictionList(predictionListEl);
@@ -1415,8 +1420,9 @@ const handleClickTagButtons = (options) => {
       return;
     }
 
-    hideElement(newPredictionCardEl);
-    showElement(predictionListEl);
+    toggleElement("hide", newPredictionCardEl);
+    toggleElement("show", predictionListEl);
+
     filterPredictionsAfterClickTagButton({
       predictionListEl,
       event: e,
