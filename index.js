@@ -213,6 +213,46 @@ const addAnimation = (element, animation, options) => {
 };
 
 /**
+ * Initializes a Choices.js instance with the provided parameters.
+ * @param {HTMLElement|string} initEl - The HTML element or the query selector string that the Choices.js instance will be attached to.
+ * @param {string} [optionsKey='defaultSelect'] - The key for the options object to use from the predefined option templates.
+ * @param {string} [placeholder=''] - The placeholder text to be used in the select input.
+ * @returns {Choices} A new Choices instance.
+ * @throws Will throw an error if the initEl parameter is not a valid HTML element or a string, or if the optionsKey is not a valid key in the optionTemplates object.
+ */
+const initChoicesItem = (
+  initEl,
+  optionsKey = "defaultSelect",
+  placeholder = ""
+) => {
+  const optionTemplates = {
+    defaultSelect: {
+      allowHTML: true,
+      removeItemButton: true,
+      duplicateItemsAllowed: false,
+      searchEnabled: false,
+      placeholder: true,
+      itemSelectText: "",
+    },
+  };
+
+  if (!initEl instanceof HTMLElement && typeof initEl !== "string") {
+    throw new Error(`(Choices) Invalid parameter, initEl: ${initEl}`);
+  }
+
+  const options = optionTemplates[optionsKey];
+
+  if (!options) {
+    throw new Error(`(Choices) Invalid parameter, optionsKey: ${optionsKey}`);
+  }
+
+  return new Choices(initEl, {
+    ...options,
+    placeholderValue: placeholder,
+  });
+};
+
+/**
  * Adds an event listener to an element and keeps track of it. If `onceAdd` is set to true, the event listener is not added if it already exists.
  * @param {Object} options - An object containing the necessary properties.
  * @param {Element} options.element - The DOM element to which the event will be attached.
