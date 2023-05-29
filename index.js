@@ -1,5 +1,6 @@
 let globalCountdownInterval;
 const eventTracker = {};
+const renderedChoices = {};
 
 /**
  * @typedef {Object} RequestResult
@@ -250,6 +251,20 @@ const initChoicesItem = (
     ...options,
     placeholderValue: placeholder,
   });
+};
+
+/**
+ * Initializes Choices.js instances for all select elements in the document.
+ * @returns {void}
+ */
+const initChoicesSelectBoxes = () => {
+  const selectElList = document.querySelectorAll("select");
+
+  if (!renderedChoices["select"]) renderedChoices["select"] = [];
+
+  selectElList.forEach((selectEl) =>
+    renderedChoices["select"].push(initChoicesItem(selectEl))
+  );
 };
 
 /**
@@ -1547,6 +1562,8 @@ window.addEventListener("load", () => {
     { elName: "sidebarEl", selector: "#sidebar" },
   ];
   fillElementsObject(elements, selectorList);
+
+  initChoicesSelectBoxes();
 
   fetchAndListPredictions(elements.predictionListEl, getPredictionsFromApi);
   fillTagButtonList(elements.tagButtonListEl);
