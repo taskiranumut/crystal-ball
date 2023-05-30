@@ -473,6 +473,33 @@ const getElement = (selector) => {
 };
 
 /**
+ * Iterates over a NodeList or an Array of Elements and runs a specified function for each Element.
+ * @param {NodeList|string} elements - A NodeList, an array of Elements or a string selector for the elements to iterate over.
+ * @param {Function} listFunction - The function to be run for each Element in the NodeList or array.
+ * @returns {void}
+ * @throws Will throw an error if the provided `elements` parameter is not an NodeList, array, or string.
+ * @throws Will throw an error if the provided `listFunction` parameter is not a function.
+ */
+const runFunctionForElementList = (elements, listFunction) => {
+  if (typeof elements !== "string" && !Array.isArray([...elements])) {
+    throw new Error(
+      `Invalid parameter, elements is not an array or a string. elements: ${elements}`
+    );
+  }
+
+  if (typeof listFunction !== "function") {
+    throw new Error(
+      `Invalid parameter, listFunction is not a function. function: ${listFunction}`
+    );
+  }
+
+  const elList = Array.isArray(elements)
+    ? elements
+    : document.querySelectorAll(elements);
+  elList.forEach((el) => listFunction(el));
+};
+
+/**
  * Increases a value in an object by a specified increment.
  * @param {Object} obj - The object that contains the value to be increased.
  * @param {string} key - The key of the value to be increased in the object.
