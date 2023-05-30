@@ -1,6 +1,7 @@
 let globalCountdownInterval;
 const eventTracker = {};
 const renderedChoices = {};
+const flatpickrInstances = {};
 
 /**
  * @typedef {Object} RequestResult
@@ -286,6 +287,21 @@ const initFlatpickrItem = (initEl) => {
   }
 
   return flatpickr(initEl, options);
+};
+
+/**
+ * Initializes Flatpickr instances for all date input elements with the class 'flatpickr' in the document.
+ * @returns {void}
+ */
+const initFlatpickrInputDates = () => {
+  const inputElList = document.querySelectorAll("input[type='date'].flatpickr");
+
+  if (!flatpickrInstances["input"]) flatpickrInstances["input"] = [];
+
+  inputElList.forEach((inputEl) => {
+    const fpIns = initFlatpickrItem(inputEl);
+    flatpickrInstances["input"].push(fpIns);
+  });
 };
 
 /**
@@ -1585,6 +1601,7 @@ window.addEventListener("load", () => {
   fillElementsObject(elements, selectorList);
 
   initChoicesSelectBoxes();
+  initFlatpickrInputDates();
 
   fetchAndListPredictions(elements.predictionListEl, getPredictionsFromApi);
   fillTagButtonList(elements.tagButtonListEl);
