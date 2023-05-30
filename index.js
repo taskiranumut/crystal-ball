@@ -259,13 +259,14 @@ const initChoicesItem = (
  * @returns {void}
  */
 const initChoicesSelectBoxes = () => {
-  const selectElList = document.querySelectorAll("select");
+  const selectElList = document.querySelectorAll("select.choices");
 
   if (!renderedChoices["select"]) renderedChoices["select"] = [];
 
-  selectElList.forEach((selectEl) =>
-    renderedChoices["select"].push(initChoicesItem(selectEl))
-  );
+  selectElList.forEach((selectEl) => {
+    const instance = initChoicesItem(selectEl);
+    renderedChoices["select"].push(instance);
+  });
 };
 
 /**
