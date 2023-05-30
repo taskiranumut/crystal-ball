@@ -1,6 +1,6 @@
 let globalCountdownInterval;
 const eventTracker = {};
-const renderedChoices = {};
+const choicesInstances = {};
 const flatpickrInstances = {};
 
 /**
@@ -248,25 +248,13 @@ const initChoicesItem = (
     throw new Error(`(Choices) Invalid parameter, optionsKey: ${optionsKey}`);
   }
 
-  return new Choices(initEl, {
+  const instance = new Choices(initEl, {
     ...options,
     placeholderValue: placeholder,
   });
-};
+  addToInstancesTracker(initEl, instance, choicesInstances);
 
-/**
- * Initializes Choices.js instances for all select elements in the document.
- * @returns {void}
- */
-const initChoicesSelectBoxes = () => {
-  const selectElList = document.querySelectorAll("select.choices");
-
-  if (!renderedChoices["select"]) renderedChoices["select"] = [];
-
-  selectElList.forEach((selectEl) => {
-    const instance = initChoicesItem(selectEl);
-    renderedChoices["select"].push(instance);
-  });
+  return instance;
 };
 
 /**
@@ -287,22 +275,10 @@ const initFlatpickrItem = (initEl) => {
     throw new Error(`(Flatpickr) Invalid parameter, initEl: ${initEl}`);
   }
 
-  return flatpickr(initEl, options);
-};
+  const instance = flatpickr(initEl, options);
+  addToInstancesTracker(initEl, instance, flatpickrInstances);
 
-/**
- * Initializes Flatpickr instances for all date input elements with the class 'flatpickr' in the document.
- * @returns {void}
- */
-const initFlatpickrInputDates = () => {
-  const inputElList = document.querySelectorAll("input[type='date'].flatpickr");
-
-  if (!flatpickrInstances["input"]) flatpickrInstances["input"] = [];
-
-  inputElList.forEach((inputEl) => {
-    const fpIns = initFlatpickrItem(inputEl);
-    flatpickrInstances["input"].push(fpIns);
-  });
+  return instance;
 };
 
 /**
@@ -1648,8 +1624,8 @@ window.addEventListener("load", () => {
   ];
   fillElementsObject(elements, selectorList);
 
-  initChoicesSelectBoxes();
-  initFlatpickrInputDates();
+  runFunctionForElementList("select.choices", initChoicesItem);
+  runFunctionForElementList("input[type='date'].flatpickr", initFlatpickrItem);
 
   fetchAndListPredictions(elements.predictionListEl, getPredictionsFromApi);
   fillTagButtonList(elements.tagButtonListEl);
