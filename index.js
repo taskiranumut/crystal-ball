@@ -346,6 +346,26 @@ const checkEvent = (options) => {
 };
 
 /**
+ * Adds an instance to the instances tracker object.
+ * @param {HTMLElement} initEl - The HTML Element related to the instance.
+ * @param {Object} instance - The instance that needs to be tracked.
+ * @param {Object} instancesTracker - The tracker object where the instance is stored.
+ * @returns {void}
+ * @throws Will throw an error if any of the parameters are missing or if `initEl` is not an HTMLElement.
+ */
+const addToInstancesTracker = (initEl, instance, instancesTracker) => {
+  validateIsHtmlElement(initEl);
+
+  if (!instance || !instancesTracker) {
+    throw new Error("Missing parameter, instance or instancesTracker.");
+  }
+
+  const tagName = initEl.tagName.toLowerCase();
+  if (!instancesTracker[tagName]) instancesTracker[tagName] = [];
+  instancesTracker[tagName].push(instance);
+};
+
+/**
  * Random ID generator function that generates IDs with a minimum and maximum length.
  * The IDs do not start with a number and include at least one number.
  * @param {number} [minLength=4] - The minimum length of the generated ID. Default is 4.
