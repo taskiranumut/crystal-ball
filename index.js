@@ -268,6 +268,27 @@ const initChoicesSelectBoxes = () => {
 };
 
 /**
+ * Initializes a Flatpickr instance for a given input element.
+ * @param {HTMLElement|string} initEl - The input element or a string selector to be initialized with Flatpickr.
+ * @returns {object} A Flatpickr instance.
+ * @throws Will throw an error if the provided `initEl` parameter is not an HTMLElement or string.
+ */
+const initFlatpickrItem = (initEl) => {
+  const options = {
+    altInput: true,
+    altFormat: "F j, Y",
+    dateFormat: "Y-m-d",
+    minDate: new Date(),
+  };
+
+  if (!initEl instanceof HTMLElement && typeof initEl !== "string") {
+    throw new Error(`(Flatpickr) Invalid parameter, initEl: ${initEl}`);
+  }
+
+  return flatpickr(initEl, options);
+};
+
+/**
  * Adds an event listener to an element and keeps track of it. If `onceAdd` is set to true, the event listener is not added if it already exists.
  * @param {Object} options - An object containing the necessary properties.
  * @param {Element} options.element - The DOM element to which the event will be attached.
