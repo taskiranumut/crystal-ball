@@ -614,6 +614,83 @@ const validateIsHtmlFormElement = (
 };
 
 /**
+ * Returns an object with validation methods for different types of data.
+ * @returns {Object} An object containing methods for different types of validations:
+ * - required: checks if a value is not null or undefined.
+ * - charLimit: checks if a string's length is within a specified range.
+ * - dateLimit: checks if a date is within a specified range.
+ * - validDate: checks if a string can be parsed into a valid date and optionally if it matches a given format.
+ * - format: checks if a string matches a specified format (regular expression).
+ * - validUrl: checks if a string can be parsed into a URL and optionally if it matches a given format.
+ * - checkList: checks if a value is in a list or if a list contains a value.
+ */
+const getValidations = () => {
+  return {
+    required: (value) => {
+      return value === 0 ? true : !value;
+    },
+    charLimit: (value, min = 0, max = Infinity) => {
+      if (typeof value !== "string") return false;
+
+      const minValue = Number(min);
+      const maxValue = Number(max);
+
+      if (isNaN(minValue) || isNaN(maxValue)) return false;
+
+      if (minValue > maxValue) {
+        console.error(
+          `Error: Invalid 'min' - 'max' parameters. 'min': ${min}, 'max': ${max}. 'min' value cannot be higher then 'max' value.`
+        );
+        return false;
+      }
+
+      const len = value.length;
+      return len >= minValue && len <= maxValue;
+    },
+    dateLimit: (value, min = null, max = null) => {
+      if (!validations.validDate(value)) return false;
+
+      value = Date.parse(value);
+      if (min !== null && value < Date.parse(min)) return false;
+      if (max !== null && value > Date.parse(max)) return false;
+
+      return true;
+    },
+    validDate: (value, regex) => {
+      const date = Date.parse(value);
+      const maxDate = Date.parse("2099-12-31");
+      const formatStatus = regex ? validations.format(value, regex) : true;
+
+      return formatStatus && !isNaN(date) && date <= maxDate;
+    },
+    format: (value, regex) => {
+      if (typeof value !== "string" || !(regex instanceof RegExp)) return false;
+
+      return regex.test(value);
+    },
+    validUrl: (value, regex = null) => {
+      if (regex) return validations.format(value, regex);
+
+      try {
+        const url = new URL(value);
+        return url.protocol === "https:";
+      } catch (_) {
+        return false;
+      }
+    },
+    checkList: (value, list, isExactly = true) => {
+      if (!Array.isArray(list)) return false;
+
+      return list.some((listItem) => {
+        return isExactly
+          ? listItem === value
+          : listItem.toString().includes(value.toString());
+      });
+    },
+  };
+};
+
+/**
  * Retrieves the list of prediction IDs that the user has already voted for.
  * @returns {Array<string>} An array of prediction IDs.
  */
