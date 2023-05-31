@@ -625,11 +625,13 @@ const validateIsHtmlFormElement = (
  * - checkList: checks if a value is in a list or if a list contains a value.
  */
 const getValidations = () => {
-  return {
+  const validations = {
     required: (value) => {
-      return value === 0 ? true : !value;
+      return value === 0 ? true : value;
     },
-    charLimit: (value, min = 0, max = Infinity) => {
+    charLimit: (value, options = {}) => {
+      const { min = 0, max = Infinity } = options;
+
       if (typeof value !== "string") return false;
 
       const minValue = Number(min);
@@ -647,7 +649,9 @@ const getValidations = () => {
       const len = value.length;
       return len >= minValue && len <= maxValue;
     },
-    dateLimit: (value, min = null, max = null) => {
+    dateLimit: (value, options = {}) => {
+      const { min = null, max = null } = options;
+
       if (!validations.validDate(value)) return false;
 
       value = Date.parse(value);
@@ -656,20 +660,28 @@ const getValidations = () => {
 
       return true;
     },
-    validDate: (value, regex) => {
+    validDate: (value, options = {}) => {
+      const { regex } = options;
+
       const date = Date.parse(value);
       const maxDate = Date.parse("2099-12-31");
-      const formatStatus = regex ? validations.format(value, regex) : true;
+      const formatStatus = regex ? validations.format(value, { regex }) : true;
 
       return formatStatus && !isNaN(date) && date <= maxDate;
     },
-    format: (value, regex) => {
+    format: (value, options = {}) => {
+      const { regex } = options;
+
       if (typeof value !== "string" || !(regex instanceof RegExp)) return false;
 
       return regex.test(value);
     },
-    validUrl: (value, regex = null) => {
-      if (regex) return validations.format(value, regex);
+    validUrl: (value, options = {}) => {
+      if (value === "") return true;
+
+      const { regex = null } = options;
+
+      if (regex) return validations.format(value, { regex });
 
       try {
         const url = new URL(value);
@@ -678,7 +690,9 @@ const getValidations = () => {
         return false;
       }
     },
-    checkList: (value, list, isExactly = true) => {
+    checkList: (value, options = {}) => {
+      const { list, isExactly = true } = options;
+
       if (!Array.isArray(list)) return false;
 
       return list.some((listItem) => {
@@ -688,6 +702,8 @@ const getValidations = () => {
       });
     },
   };
+
+  return validations;
 };
 
 /**
