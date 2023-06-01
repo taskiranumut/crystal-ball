@@ -1779,7 +1779,10 @@ const handleSubmitPredictionForm = (options) => {
   const eventHandlerFunction = async (e) => {
     e.preventDefault();
 
-    const validation = validateFormData(newPredictionFormEl, "asdas");
+    const validation = validateFormData(
+      newPredictionFormEl,
+      "newPredictionForm"
+    );
 
     if (!validation.isValid) {
       // TODO: print error messages to user.
