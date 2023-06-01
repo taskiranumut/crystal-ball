@@ -1092,6 +1092,10 @@ const validateFormData = (formEl, schemaName) => {
   };
 };
 
+/**
+ * Handles form errors according to the specified action (show or hide).
+ * @param {Object} options - An object containing the action to take, the form element, and an array of error messages.
+ */
 const handleFormErrors = (options) => {
   const { action: actionType, formEl, errors = null } = options;
 
@@ -1123,6 +1127,11 @@ const handleFormErrors = (options) => {
   addFormErrorItems(formEl, errors);
 };
 
+/**
+ * Adds error items to the form based on the provided errors.
+ * @param {HTMLFormElement} formEl - The form element to which the error messages will be added.
+ * @param {Array} errors - An array of error messages.
+ */
 const addFormErrorItems = (formEl, errors) => {
   validateIsHtmlFormElement(formEl);
 
@@ -1144,6 +1153,10 @@ const addFormErrorItems = (formEl, errors) => {
   });
 };
 
+/**
+ * Removes error items from the form.
+ * @param {HTMLFormElement} formEl - The form element from which the error messages will be removed.
+ */
 const removeFormErrorItems = (formEl) => {
   validateIsHtmlFormElement(formEl);
 
