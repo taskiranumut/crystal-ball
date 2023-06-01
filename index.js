@@ -1707,6 +1707,26 @@ const getEmptyContentTemplate = () => {
   `;
 };
 
+const getFormErrorTemplate = (messages) => {
+  if (!Array.isArray(messages)) {
+    console.error("Invalid parameter, messages must be an array.");
+    return "";
+  }
+
+  const errorContainers = messages
+    .map(
+      (message) => `<div class="error__container error--with-icon">
+      <span class="error__icon"><i class="fa-solid fa-circle-exclamation"></i></span>
+      <span class="error__text">${message}</span>
+    </div>`
+    )
+    .join("");
+
+  return `
+  <div class="error">${errorContainers}</div>
+  `;
+};
+
 /**
  * Attaches a click event handler to the 'new prediction' button.
  * @param {Object} options - The HTMLElements needed for this function.
