@@ -606,14 +606,26 @@ input.input.form__item {
   letter-spacing: 0;
   line-height: 1.2;
   color: var(--erorr-primary-color);
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.error__container {
+  margin-bottom: 1rem;
+}
+
+.error__container:last-of-type {
+  margin-bottom: unset;
 }
 
 .error--with-icon {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   gap: 0.5rem;
+}
+
+.error__icon {
+  margin-top: 2px;
 }
 
 .error__text {
