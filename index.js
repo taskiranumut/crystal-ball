@@ -1250,7 +1250,7 @@ const resetChoicesInstancesInForm = (formEl, tagName = "select") => {
 
   if (!choicesInstances[tagName]) return;
 
-  choicesInstances[tagName].forEach((instance) => {
+  choicesInstances[tagName].forEach(({ instance }) => {
     const el = instance.passedElement.element;
 
     if (el && formEl.contains(el)) {
@@ -1269,7 +1269,7 @@ const resetFlatpickrInstancesInForm = (formEl, tagName = "input") => {
 
   if (!flatpickrInstances[tagName]) return;
 
-  flatpickrInstances[tagName].forEach((instance) => {
+  flatpickrInstances[tagName].forEach(({ instance }) => {
     const el = instance.element;
 
     if (el && formEl.contains(el)) {
