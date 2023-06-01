@@ -493,6 +493,10 @@ input.input.form__item {
 }
 
 /*#region select box (choices)*/
+.choices {
+  margin-bottom: unset;
+}
+
 .choices__inner {
   font-family: "Sono", "Roboto", sans-serif;
   line-height: 1.4;
@@ -572,6 +576,7 @@ input.input.form__item {
 .choices__item--disabled {
   opacity: 1;
   color: var(--text-secondary-color);
+  display: none;
 }
 
 .choices__list.choices__list--dropdown {
