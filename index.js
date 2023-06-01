@@ -1779,6 +1779,13 @@ const handleSubmitPredictionForm = (options) => {
   const eventHandlerFunction = async (e) => {
     e.preventDefault();
 
+    const validation = validateFormData(newPredictionFormEl, "asdas");
+
+    if (!validation.isValid) {
+      // TODO: print error messages to user.
+      return;
+    }
+
     const newPredictionData = getNewPredictionData(newPredictionFormEl);
     const response = await postPredictionsToApi(newPredictionData);
 
