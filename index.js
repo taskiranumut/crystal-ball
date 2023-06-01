@@ -1278,10 +1278,14 @@ const goToPredictionList = (options, isAll) => {
   Object.entries(options).forEach(([key, value]) =>
     validateIsHtmlElement(value, key)
   );
-  const { newPredictionCardEl, predictionListEl } = options;
+  const { newPredictionCardEl, predictionListEl, newPredictionFormEl } =
+    options;
 
   toggleElement("hide", newPredictionCardEl);
   toggleElement("show", predictionListEl);
+
+  newPredictionFormEl.reset();
+  handleFormErrors({ action: "hide", formEl: newPredictionFormEl });
 
   const tagBtnEl = getActiveTagBtn(isAll);
   filterPredictionsAfterClickTagButton({
@@ -1825,10 +1829,18 @@ const handleClickFormCancelButton = (options) => {
     validateIsHtmlElement(value, key)
   );
 
-  const { formCancelBtnEl, newPredictionCardEl, predictionListEl } = options;
+  const {
+    formCancelBtnEl,
+    newPredictionCardEl,
+    predictionListEl,
+    newPredictionFormEl,
+  } = options;
 
   const eventHandlerFunction = () => {
-    goToPredictionList({ newPredictionCardEl, predictionListEl }, false);
+    goToPredictionList(
+      { newPredictionCardEl, predictionListEl, newPredictionFormEl },
+      false
+    );
   };
 
   addEvent({
@@ -1882,8 +1894,10 @@ const handleSubmitPredictionForm = (options) => {
 
     if (!response.isSuccessful) throw new Error(response.error.message);
 
-    goToPredictionList({ newPredictionCardEl, predictionListEl }, true);
-    newPredictionFormEl.reset();
+    goToPredictionList(
+      { newPredictionCardEl, predictionListEl, newPredictionFormEl },
+      true
+    );
   };
 
   addEvent({
@@ -1907,7 +1921,12 @@ const handleClickTagButtons = (options) => {
     validateIsHtmlElement(value, key)
   );
 
-  const { tagButtonListEl, predictionListEl, newPredictionCardEl } = options;
+  const {
+    tagButtonListEl,
+    predictionListEl,
+    newPredictionCardEl,
+    newPredictionFormEl,
+  } = options;
 
   const eventHandlerFunction = (e) => {
     const targetClassList = [...e.target.classList];
@@ -1921,6 +1940,9 @@ const handleClickTagButtons = (options) => {
 
     toggleElement("hide", newPredictionCardEl);
     toggleElement("show", predictionListEl);
+
+    newPredictionFormEl.reset();
+    handleFormErrors({ action: "hide", formEl: newPredictionFormEl });
 
     filterPredictionsAfterClickTagButton({
       predictionListEl,
@@ -2009,6 +2031,7 @@ window.addEventListener("load", () => {
     formCancelBtnEl: elements.formCancelBtnEl,
     newPredictionCardEl: elements.newPredictionCardEl,
     predictionListEl: elements.predictionListEl,
+    newPredictionFormEl: elements.newPredictionFormEl,
   });
 
   handleSubmitPredictionForm({
@@ -2021,5 +2044,6 @@ window.addEventListener("load", () => {
     tagButtonListEl: elements.tagButtonListEl,
     predictionListEl: elements.predictionListEl,
     newPredictionCardEl: elements.newPredictionCardEl,
+    newPredictionFormEl: elements.newPredictionFormEl,
   });
 });
