@@ -1235,46 +1235,44 @@ const removeFormErrorItems = (formEl) => {
 const resetFormData = (formEl) => {
   validateIsHtmlFormElement(formEl);
 
-  resetChoicesInstancesInForm(formEl);
-  resetFlatpickrInstancesInForm(formEl);
+  resetInstancesInForm(formEl);
   formEl.reset();
 };
 
 /**
- * Resets Choices instances within the form.
- * @param {HTMLFormElement} formEl - The form element that contains the Choices instances to be reset.
- * @param {string} tagName - The tag name of the Choices instances' elements (default is "select").
+ * Resets the state of instance elements contained within a specified form element.
+ * This function loops through each instance tracker, which contain functions to reset
+ * instances of a specific type (e.g., Choices or Flatpickr instances).
+ * @param {HTMLFormElement} formEl - The form element within which instance states will be reset.
  */
-const resetChoicesInstancesInForm = (formEl, tagName = "select") => {
+const resetInstancesInForm = (formEl) => {
   validateIsHtmlFormElement(formEl);
 
-  if (!choicesInstances[tagName]) return;
+  const INSTANCE_TRACKER_LIST = [
+    {
+      tracker: choicesInstances,
+      tagNames: Object.keys(choicesInstances),
+      resetFunc: (instance) => instance.setChoiceByValue(""),
+    },
+    {
+      tracker: flatpickrInstances,
+      tagNames: Object.keys(flatpickrInstances),
+      resetFunc: (instance) => instance.clear(),
+    },
+    ,
+  ];
 
-  choicesInstances[tagName].forEach(({ instance }) => {
-    const el = instance.passedElement.element;
+  INSTANCE_TRACKER_LIST.forEach(({ tracker, tagNames, resetFunc }) => {
+    tagNames.forEach((tagName) => {
+      if (tagName === "path") return;
 
-    if (el && formEl.contains(el)) {
-      instance.setChoiceByValue("");
-    }
-  });
-};
+      const tagTrackerList = tracker[tagName];
+      if (!tagTrackerList) return;
 
-/**
- * Resets Flatpickr instances within the form.
- * @param {HTMLFormElement} formEl - The form element that contains the Flatpickr instances to be reset.
- * @param {string} tagName - The tag name of the Flatpickr instances' elements (default is "input").
- */
-const resetFlatpickrInstancesInForm = (formEl, tagName = "input") => {
-  validateIsHtmlFormElement(formEl);
-
-  if (!flatpickrInstances[tagName]) return;
-
-  flatpickrInstances[tagName].forEach(({ instance }) => {
-    const el = instance.element;
-
-    if (el && formEl.contains(el)) {
-      instance.clear();
-    }
+      tagTrackerList.forEach(({ initEl, instance }) => {
+        if (initEl && formEl.contains(initEl)) resetFunc(instance);
+      });
+    });
   });
 };
 
