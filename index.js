@@ -1092,6 +1092,65 @@ const validateFormData = (formEl, schemaName) => {
   };
 };
 
+const handleFormErrors = (options) => {
+  const { action: actionType, formEl, errors = null } = options;
+
+  validateIsHtmlFormElement(formEl);
+
+  const actionTypeObj = {
+    show: true,
+    hide: false,
+    true: true,
+    false: false,
+  };
+
+  const isActive = actionTypeObj[actionType];
+  if (typeof isActive !== "boolean") {
+    throw new Error(
+      `Invalid parameter, actionType must be "show", "hide", "true" or "false". actionType: ${actionType}`
+    );
+  }
+
+  if (!isActive) {
+    removeFormErrorItems(formEl);
+    return;
+  }
+
+  if (!errors) {
+    return;
+  }
+
+  addFormErrorItems(formEl, errors);
+};
+
+const addFormErrorItems = (formEl, errors) => {
+  validateIsHtmlFormElement(formEl);
+
+  if (!Array.isArray(errors)) {
+    console.error("Invalid type: errors parameter must be an array.");
+    return;
+  }
+
+  errors.forEach((item) => {
+    const { formItemName: name, messages } = item;
+    const message = [messages[0]];
+
+    const formItemEl = formEl
+      .querySelector(`[name="${name}"]`)
+      .closest(".form__item-group");
+
+    const errorItem = getFormErrorTemplate(message);
+    appendStringAsChildElement(formItemEl, errorItem);
+  });
+};
+
+const removeFormErrorItems = (formEl) => {
+  validateIsHtmlFormElement(formEl);
+
+  const errorElList = formEl.querySelectorAll(".error");
+  errorElList.forEach((el) => el.remove());
+};
+
 /**
  * Retrieves form data from a given HTMLFormElement and adds additional properties.
  * @param {HTMLFormElement} newPredictionFormEl - The form element from which to retrieve data.
@@ -1804,8 +1863,17 @@ const handleSubmitPredictionForm = (options) => {
       "newPredictionForm"
     );
 
+    handleFormErrors({
+      action: "hide",
+      formEl: newPredictionFormEl,
+    });
+
     if (!validation.isValid) {
-      // TODO: print error messages to user.
+      handleFormErrors({
+        action: "show",
+        formEl: newPredictionFormEl,
+        errors: validation.errors,
+      });
       return;
     }
 
