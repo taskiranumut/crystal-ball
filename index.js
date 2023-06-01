@@ -467,6 +467,51 @@ const addToInstancesTracker = (initEl, instance, instancesTracker) => {
 };
 
 /**
+ * Retrieves a tracker object associated with a specific element.
+ * @param {HTMLElement} initEl - The element whose associated tracker object should be retrieved.
+ * @return {Object} The tracker object associated with the specified element.
+ */
+const getTrackerObj = (initEl) => {
+  validateIsHtmlElement(initEl);
+  const instanceTrackerList = [choicesInstances, flatpickrInstances];
+
+  const tagName = initEl.tagName.toLowerCase();
+
+  let trackerObj = null;
+  instanceTrackerList.forEach((list) => {
+    if (!list[tagName]) return;
+
+    trackerObj = list[tagName].find((item) => item.initEl === initEl);
+  });
+
+  return trackerObj;
+};
+
+/**
+ * Retrieves the instance element associated with a specific element.
+ * @param {HTMLElement} initEl - The element whose associated instance element should be retrieved.
+ * @return {HTMLElement} The instance element associated with the specified element.
+ */
+const getInstanceEl = (initEl) => {
+  validateIsHtmlElement(initEl);
+
+  const trackerObj = getTrackerObj(initEl);
+  return trackerObj ? trackerObj.instanceEl : null;
+};
+
+/**
+ * Retrieves the instance associated with a specific element.
+ * @param {HTMLElement} initEl - The element whose associated instance should be retrieved.
+ * @return {Object} The instance associated with the specified element.
+ */
+const getInstance = (initEl) => {
+  validateIsHtmlElement(initEl);
+
+  const trackerObj = getTrackerObj(initEl);
+  return trackerObj ? trackerObj.instance : null;
+};
+
+/**
  * Random ID generator function that generates IDs with a minimum and maximum length.
  * The IDs do not start with a number and include at least one number.
  * @param {number} [minLength=4] - The minimum length of the generated ID. Default is 4.
