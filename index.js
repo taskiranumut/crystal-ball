@@ -113,8 +113,12 @@ const VALIDATION_SCHEMAS = {
 
 let globalCountdownInterval;
 const eventTracker = {};
-const choicesInstances = {};
-const flatpickrInstances = {};
+const choicesInstances = {
+  path: ["containerInner", "element"],
+};
+const flatpickrInstances = {
+  path: ["altInput"],
+};
 
 /**
  * @typedef {Object} RequestResult
@@ -450,8 +454,16 @@ const addToInstancesTracker = (initEl, instance, instancesTracker) => {
   }
 
   const tagName = initEl.tagName.toLowerCase();
+
   if (!instancesTracker[tagName]) instancesTracker[tagName] = [];
-  instancesTracker[tagName].push(instance);
+
+  // The array in path represents the nested object. Array elements iterate sequentially and the instance element in the object is reached.
+  let instanceEl = null;
+  instancesTracker["path"].forEach((item) => {
+    instanceEl = instanceEl ? instanceEl[item] : instance[item];
+  });
+
+  instancesTracker[tagName].push({ initEl, instance, instanceEl });
 };
 
 /**
