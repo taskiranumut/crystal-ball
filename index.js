@@ -1259,7 +1259,6 @@ const resetInstancesInForm = (formEl) => {
       tagNames: Object.keys(flatpickrInstances),
       resetFunc: (instance) => instance.clear(),
     },
-    ,
   ];
 
   INSTANCE_TRACKER_LIST.forEach(({ tracker, tagNames, resetFunc }) => {
