@@ -1200,13 +1200,17 @@ const addFormErrorItems = (formEl, errors) => {
   errors.forEach((item) => {
     const { formItemName: name, messages } = item;
     const message = [messages[0]];
-
-    const formItemEl = formEl
-      .querySelector(`[name="${name}"]`)
-      .closest(".form__item-group");
-
     const errorItem = getFormErrorTemplate(message);
-    appendStringAsChildElement(formItemEl, errorItem);
+
+    // formItemEl represents initEl (in instance trackers).
+    const formItemEl = formEl.querySelector(`[name="${name}"]`);
+    const formItemContainerEl = formItemEl.closest(".form__item-group");
+    const instanceEl = getInstanceEl(formItemEl);
+
+    if (instanceEl) instanceEl.classList.add("error--border");
+    else formItemEl.classList.add("error--border");
+
+    appendStringAsChildElement(formItemContainerEl, errorItem);
   });
 };
 
@@ -1219,6 +1223,9 @@ const removeFormErrorItems = (formEl) => {
 
   const errorElList = formEl.querySelectorAll(".error");
   errorElList.forEach((el) => el.remove());
+
+  const errorBorderElList = formEl.querySelectorAll(".error--border");
+  errorBorderElList.forEach((el) => el.classList.remove("error--border"));
 };
 
 /**

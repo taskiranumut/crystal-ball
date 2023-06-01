@@ -640,7 +640,7 @@ input.input.form__item {
 
 .error--border,
 .error--border:focus {
-  border: 1px solid var(--erorr-primary-color);
+  border: 1px solid var(--erorr-primary-color) !important;
 }
 /*#endregion errors*/
 
