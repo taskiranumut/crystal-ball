@@ -1165,6 +1165,56 @@ const removeFormErrorItems = (formEl) => {
 };
 
 /**
+ * Resets form data.
+ * @param {HTMLFormElement} formEl - The form element whose data will be reset.
+ */
+const resetFormData = (formEl) => {
+  validateIsHtmlFormElement(formEl);
+
+  resetChoicesInstancesInForm(formEl);
+  resetFlatpickrInstancesInForm(formEl);
+  formEl.reset();
+};
+
+/**
+ * Resets Choices instances within the form.
+ * @param {HTMLFormElement} formEl - The form element that contains the Choices instances to be reset.
+ * @param {string} tagName - The tag name of the Choices instances' elements (default is "select").
+ */
+const resetChoicesInstancesInForm = (formEl, tagName = "select") => {
+  validateIsHtmlFormElement(formEl);
+
+  if (!choicesInstances[tagName]) return;
+
+  choicesInstances[tagName].forEach((instance) => {
+    const el = instance.passedElement.element;
+
+    if (el && formEl.contains(el)) {
+      instance.setChoiceByValue("");
+    }
+  });
+};
+
+/**
+ * Resets Flatpickr instances within the form.
+ * @param {HTMLFormElement} formEl - The form element that contains the Flatpickr instances to be reset.
+ * @param {string} tagName - The tag name of the Flatpickr instances' elements (default is "input").
+ */
+const resetFlatpickrInstancesInForm = (formEl, tagName = "input") => {
+  validateIsHtmlFormElement(formEl);
+
+  if (!flatpickrInstances[tagName]) return;
+
+  flatpickrInstances[tagName].forEach((instance) => {
+    const el = instance.element;
+
+    if (el && formEl.contains(el)) {
+      instance.clear();
+    }
+  });
+};
+
+/**
  * Retrieves form data from a given HTMLFormElement and adds additional properties.
  * @param {HTMLFormElement} newPredictionFormEl - The form element from which to retrieve data.
  * @returns {Object} - An object representing the form data along with additional properties.
@@ -1297,7 +1347,7 @@ const goToPredictionList = (options, isAll) => {
   toggleElement("hide", newPredictionCardEl);
   toggleElement("show", predictionListEl);
 
-  newPredictionFormEl.reset();
+  resetFormData(newPredictionFormEl);
   handleFormErrors({ action: "hide", formEl: newPredictionFormEl });
 
   const tagBtnEl = getActiveTagBtn(isAll);
@@ -1954,7 +2004,7 @@ const handleClickTagButtons = (options) => {
     toggleElement("hide", newPredictionCardEl);
     toggleElement("show", predictionListEl);
 
-    newPredictionFormEl.reset();
+    resetFormData(newPredictionFormEl);
     handleFormErrors({ action: "hide", formEl: newPredictionFormEl });
 
     filterPredictionsAfterClickTagButton({
