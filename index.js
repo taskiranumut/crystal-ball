@@ -1022,6 +1022,77 @@ const getFormData = (formEl) => {
 };
 
 /**
+ * Validates form data according to a provided validation schema.
+ * @param {Object} dataObj - The form data to be validated.
+ * @param {Object} schema - The validation schema that contains rules for each form item.
+ * @returns {Array} An array of validation result objects, each containing the name of the form item and any validation error messages.
+ */
+const getValidationErrors = (dataObj, schema) => {
+  const formItemNames = Object.keys(schema);
+
+  return formItemNames
+    .map((formItemName) => {
+      const value = dataObj[formItemName];
+      const rules = schema[formItemName].rules;
+      const messages = validateItem(value, rules);
+
+      if (Array.isArray(messages) && messages.length > 0) {
+        return { formItemName, messages };
+      }
+    })
+    .filter(Boolean);
+};
+
+/**
+ * Validates a form item value according to a list of rules.
+ * @param {string|number} value - The value of the form item to be validated.
+ * @param {Array} rules - An array of validation rules for the form item.
+ * @returns {Array|null} An array of validation error messages, or null if the item is valid.
+ */
+const validateItem = (value, rules) => {
+  if (!Array.isArray(rules)) return;
+  if (rules.length === 0) return;
+
+  const validations = getValidations();
+
+  return rules
+    .map(({ rule, options, message }) => {
+      const validationFunction = validations[rule];
+      const isValidValue = validationFunction(value, options);
+
+      if (!isValidValue) {
+        return message;
+      }
+    })
+    .filter(Boolean);
+};
+
+/**
+ * Validates form data according to a specified validation schema.
+ * @param {HTMLFormElement} formEl - The form element whose data is to be validated.
+ * @param {string} schemaName - The name of the validation schema to use. It is contained in VALIDATION_SCHEMAS.
+ * @returns {Object} An object containing a boolean indicating whether the form data is valid and an array of validation errors (or null if the data is valid).
+ */
+const validateFormData = (formEl, schemaName) => {
+  validateIsHtmlFormElement(formEl, "formEl");
+
+  const schema = VALIDATION_SCHEMAS[schemaName];
+  if (!schema) {
+    console.error(`Not found validation schema for ${schemaName}`);
+    return { isValid: true, errors: null };
+  }
+
+  const formData = getFormData(formEl);
+  const errors = getValidationErrors(formData, schema);
+
+  const isValid = errors.length === 0;
+  return {
+    isValid,
+    errors: isValid ? null : errors,
+  };
+};
+
+/**
  * Retrieves form data from a given HTMLFormElement and adds additional properties.
  * @param {HTMLFormElement} newPredictionFormEl - The form element from which to retrieve data.
  * @returns {Object} - An object representing the form data along with additional properties.
