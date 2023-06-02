@@ -386,6 +386,7 @@ const initFlatpickrItem = (initEl) => {
     altFormat: "F j, Y",
     dateFormat: "Y-m-d",
     minDate: new Date(),
+    disableMobile: "true",
   };
 
   if (!initEl instanceof HTMLElement && typeof initEl !== "string") {
