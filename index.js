@@ -1895,6 +1895,11 @@ const getEmptyContentTemplate = () => {
   `;
 };
 
+/**
+ * Returns an error HTML template that contains error messages.
+ * @param {string[]} messages - An array of error messages.
+ * @returns {string} - The error HTML template string.
+ */
 const getFormErrorTemplate = (messages) => {
   if (!Array.isArray(messages)) {
     console.error("Invalid parameter, messages must be an array.");
