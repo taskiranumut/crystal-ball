@@ -519,7 +519,7 @@ input.input.form__item {
 }
 
 .choices[data-type*="select-one"] .choices__button {
-  background-image: url(./assets/icons/xmark-solid.svg);
+  background-image: url(../icons/xmark-solid.svg);
   background-size: 0.75rem;
   opacity: 0.5;
   transition: opacity 0.2s;
