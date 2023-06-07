@@ -1,3 +1,5 @@
+import utils from "./utils/index.js";
+
 /**
  * An array of objects, each representing a tag to be used in the application.
  * Each tag object includes:
@@ -583,26 +585,6 @@ const setSidebarTopValueDynamically = (options) => {
 
   const { sidebarEl, headerEl } = options;
   syncTopStylingWithElementSize(sidebarEl, headerEl);
-};
-
-/**
- * Formats a date string into the standard US format ("Month Day, Year").
- * @param {string} dateStr - The date string to be formatted. It must be a string representing a valid date.
- * @returns {string} The formatted date string.
- * @throws {Error} If the input date string is invalid or can't be parsed into a date, an error will be thrown.
- */
-const formatDateUSA = (dateStr) => {
-  if (!Date.parse(dateStr)) {
-    throw new Error(`Invalid date: ${dateStr}`);
-  }
-
-  const dateObj = new Date(dateStr);
-
-  return dateObj.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 };
 
 /**
@@ -1338,7 +1320,7 @@ const createPredictionData = (prediction) => {
     votes: prediction["votes"],
     countdown: countdownData.units,
     countdownNext: countdownData.next,
-    realizationTime: formatDateUSA(prediction["realization_time"]),
+    realizationTime: utils.formatDateUSA(prediction["realization_time"]),
     username: prediction["username"],
     infoUrl: prediction["info_url"],
     hasVoted: hasVotedPrediction(prediction["id"]),
