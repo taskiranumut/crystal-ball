@@ -515,31 +515,6 @@ const getInstance = (initEl) => {
 };
 
 /**
- * Random ID generator function that generates IDs with a minimum and maximum length.
- * The IDs do not start with a number and include at least one number.
- * @param {number} [minLength=4] - The minimum length of the generated ID. Default is 4.
- * @param {number} [maxLength=16] - The maximum length of the generated ID. Default is 16.
- * @returns {string} A randomly generated ID.
- */
-function generateId(minLength = 4, maxLength = 16) {
-  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-  const length =
-    Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
-
-  let id = "";
-
-  do {
-    const char = chars[Math.floor(Math.random() * chars.length)];
-
-    if (id.length === 0 && /^\d$/.test(char)) continue;
-
-    id += char;
-  } while (id.length < length);
-
-  return id;
-}
-
-/**
  * Syncs the top CSS style of a sticky element with the height of a reference element.
  * This function uses the ResizeObserver API to watch for size changes in the reference element.
  * @param {Element} stickyElement - The element whose top style will be adjusted.
