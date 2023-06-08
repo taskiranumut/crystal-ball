@@ -1,3 +1,3 @@
-import { formatDateUSA } from "./date.js";
+import { formatDateUSA } from "./date";
 
 export default { formatDateUSA };

@@ -1,4 +1,4 @@
-import utils from "./utils/index.js";
+import utils from "./utils/index";
 
 /**
  * An array of objects, each representing a tag to be used in the application.

@@ -1,3 +1,4 @@
-import initApp from "./app.js";
+import initApp from "./app";
+import "./assets/css/styles.css";
 
 window.addEventListener("load", initApp);
