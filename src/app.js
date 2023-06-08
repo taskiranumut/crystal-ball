@@ -1,3 +1,4 @@
+import Choices from "choices.js";
 import utils from "./utils/index";
 
 /**
