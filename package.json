@@ -1,0 +1,24 @@
+{
+  "name": "crystal-ball",
+  "version": "0.1.0",
+  "description": "Share and Evaluate Insights on the Future",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taskiranumut/crystal-ball.git"
+  },
+  "keywords": [
+    "vanilla-js",
+    "single-page-application",
+    "js-to-next"
+  ],
+  "author": "Umut Taşkıran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/taskiranumut/crystal-ball/issues"
+  },
+  "homepage": "https://github.com/taskiranumut/crystal-ball#readme"
+}
