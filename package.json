@@ -4,6 +4,8 @@
   "description": "Share and Evaluate Insights on the Future",
   "main": "index.js",
   "scripts": {
+    "dev": "parcel public/index.html",
+    "build": "parcel build public/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/taskiranumut/crystal-ball/issues"
   },
-  "homepage": "https://github.com/taskiranumut/crystal-ball#readme"
+  "homepage": "https://github.com/taskiranumut/crystal-ball#readme",
+  "devDependencies": {
+    "parcel": "^2.9.1"
+  }
 }
