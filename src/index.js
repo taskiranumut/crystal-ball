@@ -5,4 +5,7 @@ import "./assets/css/styles.css";
 import "animate.css";
 import initApp from "./app";
 
-window.addEventListener("load", initApp);
+const root = document.getElementById("app-root");
+window.addEventListener("load", () => {
+  initApp(root);
+});

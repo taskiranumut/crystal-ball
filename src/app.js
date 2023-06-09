@@ -2084,7 +2084,9 @@ const filterPredictionsAfterClickTagButton = async (options) => {
   if (!tagBtnEl) clickedBtn.disabled = false;
 };
 
-const initApp = () => {
+const initApp = (root) => {
+  if (!root) return;
+
   const elements = {};
   const selectorList = [
     { elName: "newPredictionBtnEl", selector: "#new-prediction-btn" },
