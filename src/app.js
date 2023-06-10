@@ -1,5 +1,6 @@
 import Choices from "choices.js";
 import utils from "./utils/index";
+import appLogo from "./assets/images/main-logo.webp";
 
 /**
  * An array of objects, each representing a tag to be used in the application.
@@ -1878,6 +1879,195 @@ const getFormErrorTemplate = (messages) => {
   `;
 };
 
+const getHeaderTemplate = () => {
+  return `
+    <header id="header" class="header">
+      <div class="header__container">
+        <div class="header__logo-section">
+          <div class="header__logo">
+            <img
+              src="${appLogo}"
+              class="header__logo-image"
+              alt="Uygulama logosu"
+            />
+          </div>
+          <h1 class="header__title">Crystal Ball</h1>
+        </div>
+        <div class="header__navbar">
+          <button
+            type="button"
+            id="new-prediction-btn"
+            class="btn btn--xl btn--primary"
+          >
+            New Prediction
+          </button>
+        </div>
+      </div>
+    </header>
+  `;
+};
+
+const getSidebarTemplate = () => {
+  return `
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar__container">
+        <div
+          id="tag-buttons-container"
+          class="sidebar__tag-buttons"
+        ></div>
+      </div>
+    </aside>
+  `;
+};
+
+const getNewPredictionFormTemplate = () => {
+  return `
+    <div id="new-prediction-card" class="card card--full hide">
+      <div class="form">
+        <form id="new-prediction-form" action="#">
+          <div class="form__header">
+            <h2 class="form__title form__title--xl">
+              New Prediction
+            </h2>
+          </div>
+          <div class="form__content">
+            <div class="form__item-group">
+              <label class="form__label" for="idPredictionContent"
+                >Prediction Content<span class="form__sub-label"
+                  >*</span
+                ></label
+              >
+              <div>
+                <textarea
+                  class="form__item"
+                  id="id-prediction-content"
+                  name="prediction-content"
+                  rows="5"
+                ></textarea>
+              </div>
+            </div>
+            <div class="form__item-group">
+              <label class="form__label" for="idRealizationTime"
+                >Realization Time<span class="form__sub-label"
+                  >*</span
+                ></label
+              >
+              <input
+                type="date"
+                id="id-realization-time"
+                name="realization-time"
+                class="form__item flatpickr"
+                placeholder="Choose Date"
+              />
+            </div>
+            <div class="form__item-group">
+              <label class="form__label" for="idTag"
+                >Tag<span class="form__sub-label">*</span></label
+              >
+              <select
+                class="form__item choices"
+                id="id-tag"
+                name="tag"
+              >
+                <option value="" disabled selected>Choose Tag</option>
+                <option value="politics">Politics</option>
+                <option value="magazine">Magazine</option>
+                <option value="finance">Finance</option>
+                <option value="technology">Technology</option>
+                <option value="science">Science</option>
+                <option value="humanity">Humanity</option>
+                <option value="society">Society</option>
+              </select>
+            </div>
+            <div class="form__item-group">
+              <label class="form__label" for="idUsername"
+                >Username<span class="form__sub-label">*</span></label
+              >
+              <input
+                type="text"
+                id="id-username"
+                name="username"
+                class="form__item"
+              />
+            </div>
+            <div class="form__item-group">
+              <label class="form__label" for="idInfoAddress"
+                >Info Address<span
+                  class="form__sub-label form__sub-label--sm"
+                  >(optional)</span
+                ></label
+              >
+              <input
+                type="input"
+                id="id-info-address"
+                name="info-address"
+                class="form__item"
+                placeholder="Twitter, Linkedin, Email etc..."
+              />
+            </div>
+          </div>
+          <div class="form__actions">
+            <button class="btn btn--primary form__btn">Submit</button>
+            <button
+              type="button"
+              id="form-cancel-btn"
+              class="btn btn--secondary form__btn"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+};
+
+const getLoaderTemplate = () => {
+  return `
+    <div id="main-loader" class="loader">
+      <span class="loader__item loader__item--xl"></span>
+    </div>
+  `;
+};
+
+const getMainTemplate = () => {
+  return `
+    <main class="main">
+      <div class="main__container">
+      ${getLoaderTemplate()}
+      ${getNewPredictionFormTemplate()}
+      <div id="predictions" class="predictions"></div>
+      </div>
+    </main>
+  `;
+};
+
+const getFooterTemplate = () => {
+  return `
+    <footer class="footer">
+      <div class="footer__container"></div>
+    </footer>
+  `;
+};
+
+const getAppLayoutTemplate = () => {
+  return `
+    <div class="container">
+      <div class="grid-container">
+      ${getHeaderTemplate()}
+      ${getSidebarTemplate()}
+      ${getMainTemplate()}
+      ${getFooterTemplate()}
+      </div>
+    </div>
+  `;
+};
+
+const startAppLayout = (root) => {
+  const appLayout = getAppLayoutTemplate();
+  appendStringAsChildElement(root, appLayout);
+};
+
 /**
  * Attaches a click event handler to the 'new prediction' button.
  * @param {Object} options - The HTMLElements needed for this function.
@@ -2085,7 +2275,9 @@ const filterPredictionsAfterClickTagButton = async (options) => {
 };
 
 const initApp = (root) => {
-  if (!root) return;
+  if (!root) throw new Error("Invalid root element!");
+
+  startAppLayout(root);
 
   const elements = {};
   const selectorList = [
