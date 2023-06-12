@@ -1,3 +1,6 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-console */
+/* eslint-disable no-use-before-define */
 import Choices from "choices.js";
 import utils from "./utils/index";
 import appLogo from "./assets/images/main-logo.webp";
@@ -167,7 +170,7 @@ const sendRequest = async (method, endpoint, data = null, headers = {}) => {
 
     return { isSuccessful: true, data: responseData };
   } catch (error) {
-    return { isSuccessful: false, error: error };
+    return { isSuccessful: false, error };
   }
 };
 
@@ -187,7 +190,7 @@ const getResponseData = (response) => {
     throw new Error(response.error.message);
   }
 
-  const data = response.data;
+  const { data } = response;
 
   return data;
 };
@@ -268,7 +271,7 @@ const getPredictionsFromApiWithTagQuery = async (tagQuery = null) => {
  * @returns {Promise<Object>} The updated prediction data.
  * @throws {Error} Throws an error if the prediction ID is invalid, if the request is unsuccessful or if the data to send is incorrect.
  */
-const putUpdatedVoteToApi = async (predictionId = null, data) => {
+const putUpdatedVoteToApi = async (data, predictionId = null) => {
   if (!predictionId) {
     throw new Error(`Invalid query params, predictionId: ${predictionId}`);
   }
@@ -322,7 +325,7 @@ const addAnimation = (element, animation, options) => {
 
   animationClassList.forEach((className) => node.classList.add(className));
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const handleAnimationEnd = (e) => {
       e.stopPropagation();
       animationClassList.forEach((className) =>
@@ -359,7 +362,7 @@ const initChoicesItem = (
     },
   };
 
-  if (!initEl instanceof HTMLElement && typeof initEl !== "string") {
+  if (!(initEl instanceof HTMLElement) && typeof initEl !== "string") {
     throw new Error(`(Choices) Invalid parameter, initEl: ${initEl}`);
   }
 
@@ -393,10 +396,11 @@ const initFlatpickrItem = (initEl) => {
     disableMobile: "true",
   };
 
-  if (!initEl instanceof HTMLElement && typeof initEl !== "string") {
+  if (!(initEl instanceof HTMLElement) && typeof initEl !== "string") {
     throw new Error(`(Flatpickr) Invalid parameter, initEl: ${initEl}`);
   }
 
+  // eslint-disable-next-line no-undef
   const instance = flatpickr(initEl, options);
   addToInstancesTracker(initEl, instance, flatpickrInstances);
 
@@ -464,7 +468,7 @@ const addToInstancesTracker = (initEl, instance, instancesTracker) => {
 
   // The array in path represents the nested object. Array elements iterate sequentially and the instance element in the object is reached.
   let instanceEl = null;
-  instancesTracker["path"].forEach((item) => {
+  instancesTracker.path.forEach((item) => {
     instanceEl = instanceEl ? instanceEl[item] : instance[item];
   });
 
@@ -602,21 +606,21 @@ const runFunctionForElementList = (elements, listFunction) => {
  * @throws {Error} Throws an error if the object, key or increment is invalid, or if the value or increment to be increased is NaN.
  */
 const increaseObjectValue = (obj, key, increment) => {
-  if (!obj || !key || !obj.hasOwnProperty(key)) {
+  if (!obj || !key || !Object.prototype.hasOwnProperty.call(obj, key)) {
     throw new Error(`Invalid parameters: obj[${key}] does not exist.`);
   }
 
-  const value = parseInt(obj[key]);
+  const value = Number(obj[key]);
 
-  if (isNaN(value)) {
+  if (Number.isNaN(value)) {
     throw new Error(`Invalid or NaN object value: obj[${key}].`);
   }
 
-  if (isNaN(parseInt(increment))) {
+  if (Number.isNaN(Number(increment))) {
     throw new Error(`Invalid or NaN increment value: ${increment}.`);
   }
 
-  return { ...obj, [key]: value + parseInt(increment) };
+  return { ...obj, [key]: value + Number(increment) };
 };
 
 /**
@@ -696,6 +700,7 @@ const toggleElement = (actionType, selector) => {
   const element =
     selector instanceof HTMLElement ? selector : getElement(selector);
 
+  // eslint-disable-next-line no-unused-expressions
   isActive ? showElement(element) : hideElement(element);
 };
 
@@ -755,7 +760,7 @@ const getValidations = () => {
       const minValue = Number(min);
       const maxValue = Number(max);
 
-      if (isNaN(minValue) || isNaN(maxValue)) return false;
+      if (Number.isNaN(minValue) || Number.isNaN(maxValue)) return false;
 
       if (minValue > maxValue) {
         console.error(
@@ -785,7 +790,7 @@ const getValidations = () => {
       const maxDate = Date.parse("2099-12-31");
       const formatStatus = regex ? validations.format(value, { regex }) : true;
 
-      return formatStatus && !isNaN(date) && date <= maxDate;
+      return formatStatus && !Number.isNaN(date) && date <= maxDate;
     },
     format: (value, options = {}) => {
       const { regex } = options;
@@ -830,7 +835,7 @@ const getValidations = () => {
  */
 const getVotedPredictionIds = () => {
   let idList = document.cookie.replace(
-    /(?:(?:^|.*;\s*)pids\s*\=\s*([^;]*).*$)|^.*$/,
+    /(?:(?:^|.*;\s*)pids\s*=\s*([^;]*).*$)|^.*$/,
     "$1"
   );
 
@@ -873,7 +878,7 @@ const addVotedPredictionId = (predictionId) => {
 const hasVotedPrediction = (predictionId) => {
   if (!predictionId) {
     console.error(`Invalid parameter, predictionId: ${predictionId}`);
-    return;
+    return null;
   }
 
   const idList = getVotedPredictionIds();
@@ -897,9 +902,9 @@ const fillElementsObject = (elemenets, selectorList) => {
     );
   }
 
-  selectorList.forEach(
-    (item) => (elemenets[item.elName] = getElement(item.selector))
-  );
+  selectorList.forEach((item) => {
+    elemenets[item.elName] = getElement(item.selector);
+  });
 };
 
 /**
@@ -909,23 +914,19 @@ const fillElementsObject = (elemenets, selectorList) => {
  * @throws Will throw an error if the provided date string is not in the "YYYY-MM-DD" format or is not a valid date.
  */
 const getTimestampFromDateString = (dateString) => {
-  try {
-    const regex = /^\d{4}-\d{2}-\d{2}$/;
-    if (!regex.test(dateString)) {
-      throw new Error(
-        `Invalid date string format: ${dateString}. It has to be "YYYY-MM-DD" format.`
-      );
-    }
-
-    const date = new Date(dateString + "T23:59:59");
-    if (isNaN(date)) {
-      throw new Error(`Invalid date: ${dateString}`);
-    }
-
-    return date.getTime();
-  } catch (error) {
-    console.error(`Failed to get timestamp: ${error}`);
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!regex.test(dateString)) {
+    throw new Error(
+      `Invalid date string format: ${dateString}. It has to be "YYYY-MM-DD" format.`
+    );
   }
+
+  const date = new Date(`${dateString}T23:59:59`);
+  if (Number.isNaN(date)) {
+    throw new Error(`Invalid date: ${dateString}`);
+  }
+
+  return date.getTime();
 };
 
 /**
@@ -964,52 +965,48 @@ const setPredictionAsExpired = (predictionId) => {
  * @throws {Error} If the futureTimestamp is not a number.
  * @throws {Error} If the futureTimestamp is in the past.
  */
-const getRemainingTimeUnits = (futureTimestamp = NaN, predictionId) => {
-  try {
-    if (isNaN(futureTimestamp)) {
-      throw new Error("The future timestamp is not a number");
-    }
+const getRemainingTimeUnits = (predictionId, futureTimestamp = NaN) => {
+  if (Number.isNaN(futureTimestamp)) {
+    throw new Error("The future timestamp is not a number");
+  }
 
-    if (!predictionId) {
-      throw new Error(
-        `Missing or invalid parameter (predictionId): ${predictionId}`
-      );
-    }
+  if (!predictionId) {
+    throw new Error(
+      `Missing or invalid parameter (predictionId): ${predictionId}`
+    );
+  }
 
-    const diffMilliseconds = futureTimestamp - new Date().getTime();
+  const diffMilliseconds = futureTimestamp - new Date().getTime();
 
-    if (diffMilliseconds < 1000) {
-      console.warn("The realization time is in the past.");
-      setPredictionAsExpired(predictionId);
-
-      return {
-        units: {
-          days: 0,
-          hours: 0,
-          minutes: 0,
-          seconds: 0,
-        },
-        next: false,
-      };
-    }
-
-    const diffSeconds = Math.floor(diffMilliseconds / 1000);
-    const diffMinutes = Math.floor(diffSeconds / 60);
-    const diffHours = Math.floor(diffMinutes / 60);
-    const diffDays = Math.floor(diffHours / 24);
+  if (diffMilliseconds < 1000) {
+    console.warn("The realization time is in the past.");
+    setPredictionAsExpired(predictionId);
 
     return {
       units: {
-        days: diffDays,
-        hours: diffHours % 24,
-        minutes: diffMinutes % 60,
-        seconds: diffSeconds % 60,
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
       },
-      next: true,
+      next: false,
     };
-  } catch (error) {
-    console.error(`Error occurred: ${error}`);
   }
+
+  const diffSeconds = Math.floor(diffMilliseconds / 1000);
+  const diffMinutes = Math.floor(diffSeconds / 60);
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  return {
+    units: {
+      days: diffDays,
+      hours: diffHours % 24,
+      minutes: diffMinutes % 60,
+      seconds: diffSeconds % 60,
+    },
+    next: true,
+  };
 };
 
 /**
@@ -1038,12 +1035,14 @@ const getValidationErrors = (dataObj, schema) => {
   return formItemNames
     .map((formItemName) => {
       const value = dataObj[formItemName];
-      const rules = schema[formItemName].rules;
+      const { rules } = schema[formItemName];
       const messages = validateItem(value, rules);
 
       if (Array.isArray(messages) && messages.length > 0) {
         return { formItemName, messages };
       }
+
+      return null;
     })
     .filter(Boolean);
 };
@@ -1055,8 +1054,8 @@ const getValidationErrors = (dataObj, schema) => {
  * @returns {Array|null} An array of validation error messages, or null if the item is valid.
  */
 const validateItem = (value, rules) => {
-  if (!Array.isArray(rules)) return;
-  if (rules.length === 0) return;
+  if (!Array.isArray(rules)) return null;
+  if (rules.length === 0) return null;
 
   const validations = getValidations();
 
@@ -1068,6 +1067,8 @@ const validateItem = (value, rules) => {
       if (!isValidValue) {
         return message;
       }
+
+      return null;
     })
     .filter(Boolean);
 };
@@ -1238,9 +1239,8 @@ const getNewPredictionData = (newPredictionFormEl) => {
     info_url: formData["info-address"],
     prediction_content: formData["prediction-content"],
     realization_time: formData["realization-time"],
-    info_url: formData["info-address"],
-    tag: formData["tag"],
-    username: formData["username"],
+    tag: formData.tag,
+    username: formData.username,
     votes: { upCount: 0, downCount: 0 },
   };
 };
@@ -1274,21 +1274,21 @@ const createPredictionData = (prediction) => {
   });
 
   const countdownData = getCountdownData(
-    prediction["realization_time"],
-    prediction["id"]
+    prediction.realization_time,
+    prediction.id
   );
 
   return {
-    id: prediction["id"],
-    content: prediction["prediction_content"],
-    tag: prediction["tag"],
-    votes: prediction["votes"],
+    id: prediction.id,
+    content: prediction.prediction_content,
+    tag: prediction.tag,
+    votes: prediction.votes,
     countdown: countdownData.units,
     countdownNext: countdownData.next,
-    realizationTime: utils.formatDateUSA(prediction["realization_time"]),
-    username: prediction["username"],
-    infoUrl: prediction["info_url"],
-    hasVoted: hasVotedPrediction(prediction["id"]),
+    realizationTime: utils.formatDateUSA(prediction.realization_time),
+    username: prediction.username,
+    infoUrl: prediction.info_url,
+    hasVoted: hasVotedPrediction(prediction.id),
   };
 };
 
@@ -1300,7 +1300,7 @@ const createPredictionData = (prediction) => {
  */
 const getCountdownData = (realizationTime, predictionId) => {
   const realizationTimeTimestamp = getTimestampFromDateString(realizationTime);
-  return getRemainingTimeUnits(realizationTimeTimestamp, predictionId);
+  return getRemainingTimeUnits(predictionId, realizationTimeTimestamp);
 };
 
 /**
@@ -1388,9 +1388,7 @@ const listPredictions = (predictionListEl, predictions) => {
 
   const predictionCards = generatePredictionCards(predictions);
 
-  const template = predictionCards
-    ? predictionCards
-    : getEmptyContentTemplate();
+  const template = predictionCards || getEmptyContentTemplate();
   appendStringAsChildElement(predictionListEl, template);
 };
 
@@ -1440,7 +1438,7 @@ const fetchAndListPredictions = async (
     return { isFetched: true };
   } catch (error) {
     console.error(`Failed to fetch item: ${error}`);
-    return { isFetched: false, error: error };
+    return { isFetched: false, error };
   }
 };
 
@@ -1456,8 +1454,8 @@ const startCountdowns = (rawPredictions) => {
   globalCountdownInterval = setInterval(() => {
     rawPredictions.forEach((prediction) => {
       const countdownData = getCountdownData(
-        prediction["realization_time"],
-        prediction["id"]
+        prediction.realization_time,
+        prediction.id
       );
 
       const isEndedCountdown = endedCountdowns.includes(prediction.id);
@@ -1468,7 +1466,9 @@ const startCountdowns = (rawPredictions) => {
       const countdownItems = generateTemplateString(
         countdownData.units,
         getCountdownItemTemplate,
-        { next: countdownData.next }
+        {
+          next: countdownData.next,
+        }
       );
 
       const countdownItemsContainerEl = getElement(
@@ -1572,7 +1572,9 @@ const handleClickVoteBtn = async (
     const updatedVoteButtons = generateTemplateString(
       updatedVotes,
       getVoteButtonTemplate,
-      { isDisabled: true }
+      {
+        isDisabled: true,
+      }
     );
 
     removeChildElements(voteButtonsContainerEl);
@@ -1642,7 +1644,7 @@ const updateVoteCount = async (predictionId, currentVotes, voteType) => {
   );
   const data = { votes: inreasedVotes };
 
-  const { votes } = await putUpdatedVoteToApi(predictionId, data);
+  const { votes } = await putUpdatedVoteToApi(data, predictionId);
   return votes;
 };
 
@@ -1687,7 +1689,9 @@ const getPredictionCardTemplate = (data) => {
   const countdownItems = generateTemplateString(
     countdown,
     getCountdownItemTemplate,
-    { next: countdownNext }
+    {
+      next: countdownNext,
+    }
   );
   const voteButtons = generateTemplateString(votes, getVoteButtonTemplate, {
     predictionId: id,
