@@ -505,18 +505,6 @@ const getInstanceEl = (initEl) => {
 };
 
 /**
- * Retrieves the instance associated with a specific element.
- * @param {HTMLElement} initEl - The element whose associated instance should be retrieved.
- * @return {Object} The instance associated with the specified element.
- */
-const getInstance = (initEl) => {
-  validateIsHtmlElement(initEl);
-
-  const trackerObj = getTrackerObj(initEl);
-  return trackerObj ? trackerObj.instance : null;
-};
-
-/**
  * Syncs the top CSS style of a sticky element with the height of a reference element.
  * This function uses the ResizeObserver API to watch for size changes in the reference element.
  * @param {Element} stickyElement - The element whose top style will be adjusted.
@@ -1656,31 +1644,6 @@ const updateVoteCount = async (predictionId, currentVotes, voteType) => {
 
   const { votes } = await putUpdatedVoteToApi(predictionId, data);
   return votes;
-};
-
-/**
- * Toggles the disabled status of all vote buttons within the provided vote buttons container.
- * @param {boolean} shouldDisable - Determines whether the buttons should be disabled.
- * @param {HTMLElement} voteBtnEl - A button element within the vote buttons container.
- * @param {HTMLElement} voteButtonsContainerEl - The container element for the vote buttons.
- * @throws {Error} Throws an error if the provided elements are not valid or if 'shouldDisable' is not a boolean.
- */
-const toggleButtonsDisabledStatus = (
-  shouldDisable,
-  voteBtnEl,
-  voteButtonsContainerEl
-) => {
-  validateIsHtmlElement(voteBtnEl);
-  validateIsHtmlElement(voteButtonsContainerEl);
-
-  if (typeof shouldDisable !== "boolean") {
-    throw new Error("Invalid parameter: shouldDisable must be a boolean.");
-  }
-
-  const voteButtonElList = voteButtonsContainerEl.querySelectorAll(
-    ".predictions__item-vote-button-item"
-  );
-  voteButtonElList.forEach((btnEl) => (btnEl.disabled = shouldDisable));
 };
 
 /**
