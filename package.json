@@ -33,6 +33,7 @@
     "prettier": "^2.8.8"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.25.0",
     "animate.css": "^4.1.1",
     "choices.js": "^10.2.0",
     "flatpickr": "^4.6.13"
