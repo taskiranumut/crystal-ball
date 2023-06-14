@@ -4,6 +4,7 @@
 import Choices from "choices.js";
 import utils from "./utils/index";
 import appLogo from "./assets/images/main-logo.webp";
+import services from "./api/services";
 
 /**
  * An array of objects, each representing a tag to be used in the application.
@@ -193,16 +194,6 @@ const getResponseData = (response) => {
   const { data } = response;
 
   return data;
-};
-
-/**
- * Send a POST request to post predictions to the API.
- * @param {Object} data - The data to be sent with the request.
- * @returns {Promise<RequestResult>} The result of the request.
- */
-const postPredictionsToApi = (data) => {
-  const endpoint = `/`;
-  return sendRequest("POST", endpoint, data);
 };
 
 /**
@@ -1241,7 +1232,7 @@ const getNewPredictionData = (newPredictionFormEl) => {
     realization_time: formData["realization-time"],
     tag: formData.tag,
     username: formData.username,
-    votes: { upCount: 0, downCount: 0 },
+    votes: { up_count: 0, down_count: 0 },
   };
 };
 
@@ -1751,8 +1742,8 @@ const getCountdownItemTemplate = (itemValue, itemName, options) => {
  */
 const getVoteButtonTemplate = (voteValue, voteTypeKey, options) => {
   const voteTypes = {
-    upCount: "up",
-    downCount: "down",
+    up_count: "up",
+    down_count: "down",
   };
 
   const voteType = voteTypes[voteTypeKey];
@@ -2135,9 +2126,9 @@ const handleSubmitPredictionForm = (options) => {
     }
 
     const newPredictionData = getNewPredictionData(newPredictionFormEl);
-    const response = await postPredictionsToApi(newPredictionData);
+    const response = await services.postPrediction(newPredictionData);
 
-    if (!response.isSuccessful) throw new Error(response.error.message);
+    if (!response.isSuccessful) throw new Error(response.error);
 
     goToPredictionList(
       { newPredictionCardEl, predictionListEl, newPredictionFormEl },
