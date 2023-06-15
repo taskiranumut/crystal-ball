@@ -27,4 +27,27 @@ const insertIntoTable = async (tableName, body) => {
   }
 };
 
-export default { insertIntoTable };
+/**
+ * Retrieves all data from a specified table in the database.
+ * @param {string} tableName - The name of the table to retrieve data from.
+ * @returns {Promise<Array<Object>>} - The data retrieved from the table.
+ * @throws {Error} - If the retrieval operation fails.
+ */
+const getAllFromTable = async (tableName, query = "*") => {
+  try {
+    const { data, error } = await supabase.from(tableName).select(query);
+
+    if (error) throw error;
+
+    if (!data) {
+      throw new Error("No data returned from query");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error in getAllFromTable:", error.message);
+    throw error;
+  }
+};
+
+export default { insertIntoTable, getAllFromTable };
