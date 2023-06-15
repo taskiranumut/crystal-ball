@@ -197,17 +197,6 @@ const getResponseData = (response) => {
 };
 
 /**
- * @async
- * @returns {Array} The array of predictions obtained from the API.
- * @throws {Error} Throws an error if the request fails.
- */
-const getPredictionsFromApi = async () => {
-  const endpoint = `/`;
-  const response = await sendRequest("GET", endpoint);
-  return getResponseData(response);
-};
-
-/**
  * Fetches a specific prediction from the API using the provided prediction ID.
  * @async
  * @param {string} predictionId - The ID of the prediction to fetch.
@@ -1419,7 +1408,11 @@ const fetchAndListPredictions = async (
     removeChildElements(predictionListEl);
     toggleElement("show", "#main-loader");
 
-    const predictions = await fetchPredictionsFunc();
+    const { isSuccessful, data: predictions } = await fetchPredictionsFunc();
+
+    if (!isSuccessful) {
+      throw new Error(`${fetchPredictionsFunc} is not successful`);
+    }
 
     toggleElement("hide", "#main-loader");
     listPredictions(predictionListEl, predictions);
@@ -1747,7 +1740,10 @@ const getVoteButtonTemplate = (voteValue, voteTypeKey, options) => {
   };
 
   const voteType = voteTypes[voteTypeKey];
-  if (!voteType) throw new Error(`Invalid voteTypeKey: ${voteTypeKey}`);
+  if (!voteType) {
+    console.warn(`Invalid voteTypeKey: ${voteTypeKey}`);
+    return null;
+  }
 
   const { predictionId, isDisabled } = options;
 
@@ -2253,7 +2249,7 @@ const initApp = (root) => {
   runFunctionForElementList("select.choices", initChoicesItem);
   runFunctionForElementList("input[type='date'].flatpickr", initFlatpickrItem);
 
-  fetchAndListPredictions(elements.predictionListEl, getPredictionsFromApi);
+  fetchAndListPredictions(elements.predictionListEl, services.getPredictions);
   fillTagButtonList(elements.tagButtonListEl);
 
   setSidebarTopValueDynamically({
