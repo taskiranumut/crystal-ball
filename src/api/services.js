@@ -61,4 +61,36 @@ const postPrediction = async (body) => {
   }
 };
 
-export default { postPrediction };
+/**
+ * Retrieves all predictions from the database.
+ *
+ * This function fetches all predictions and their related votes from the 'predictions' table,
+ * and adjusts the format of the realization_time for each prediction.
+ *
+ * @returns {Promise<Object>} - An object indicating whether the operation was successful and containing either the array of fetched predictions or an error message.
+ * @throws {Error} - If the fetching from the 'predictions' table fails.
+ */
+const getPredictions = async () => {
+  try {
+    const predictions = await db.getAllFromTable(
+      "predictions",
+      `*, votes:votesId (*)`
+    );
+
+    if (!predictions) {
+      throw new Error("Failed to get predictions");
+    }
+
+    const rebasedPredictions = predictions.map((prediciton) => ({
+      ...prediciton,
+      realization_time: prediciton.realization_time.split("T")[0],
+    }));
+
+    return { isSuccessful: true, data: rebasedPredictions };
+  } catch (error) {
+    console.error("Error in postPrediction:", error.message);
+    return { isSuccessful: false, error: error.message };
+  }
+};
+
+export default { postPrediction, getPredictions };
