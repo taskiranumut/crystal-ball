@@ -67,7 +67,47 @@ const getFromTable = async (options) => {
   }
 };
 
+/**
+ * Updates a record in a specified table.
+ * This function is a general purpose function for updating records in any table,
+ * with the specific table and query parameters provided as arguments.
+ * @param {Object} options - The options for the update operation.
+ * @param {string} options.tableName - The name of the table to update.
+ * @param {Object} options.body - The data to update in the table.
+ * @param {Object} [options.query] - An object containing queryName and queryValue to specify the records to update.
+ * @param {string} options.query.queryName - The name of the field to be used in the query.
+ * @param {string} options.query.queryValue - The value of the field to be used in the query.
+ * @returns {Promise<Object>} - The first updated record.
+ * @throws {Error} - If the update operation fails for any reason.
+ */
+const updateInTable = async (options) => {
+  try {
+    const { tableName, body, query = {} } = options;
+
+    let queryBuilder = supabase.from(tableName).update(body);
+
+    const { queryName, queryValue } = query;
+    if ((queryName, queryValue)) {
+      queryBuilder = queryBuilder.eq(queryName, queryValue);
+    }
+
+    const { data: updatedData, error } = await queryBuilder.select();
+
+    if (error) throw error;
+
+    if (!updatedData) {
+      throw new Error("Updated data is null");
+    }
+
+    return updatedData[0];
+  } catch (error) {
+    console.error("Error in updateInTable:", error.message);
+    throw error;
+  }
+};
+
 export default {
   insertIntoTable,
   getFromTable,
+  updateInTable,
 };
