@@ -93,6 +93,14 @@ const getPredictions = async () => {
   }
 };
 
+/**
+ * Retrieves predictions from the database based on a provided tag.
+ * This function fetches predictions from the database and refines the returned data based on the provided query parameters.
+ * @param {string} queryName - The name of the query parameter, usually it should be "tag".
+ * @param {string} queryValue - The value of the query parameter, this specifies the tag of the prediction.
+ * @returns {Promise<Object>} - An object containing a boolean indicating success or failure, and the data retrieved or the error message.
+ * @throws {Error} - If the tag query is invalid or if fetching the predictions fails.
+ */
 const getPredictionsByTag = async (queryName, queryValue) => {
   try {
     const validTagQueries = [
