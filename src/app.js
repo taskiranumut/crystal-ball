@@ -1513,7 +1513,7 @@ const handleClickVoteBtn = async (
   try {
     const voteType = voteBtnEl.getAttribute("data-vote-type");
 
-    const currentVotes = await getCurrentVotes(predictionId);
+    const currentVotes = await services.getCurrentVotes(predictionId);
 
     const updatedVotes = await updateVoteCount(
       predictionId,
@@ -1593,12 +1593,22 @@ const updateVoteCount = async (predictionId, currentVotes, voteType) => {
 
   const inreasedVotes = increaseObjectValue(
     currentVotes.votes,
-    `${voteType}Count`,
+    `${voteType}_count`,
     1
   );
   const data = { votes: inreasedVotes };
 
-  const { votes } = await putUpdatedVoteToApi(data, predictionId);
+  const { data: votes, isSuccessful } = await services.updateVotes(
+    data,
+    predictionId
+  );
+
+  if (!isSuccessful) {
+    throw new Error(
+      `votes could not be updated, predictionId: ${predictionId}`
+    );
+  }
+
   return votes;
 };
 
