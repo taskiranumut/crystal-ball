@@ -143,4 +143,34 @@ const getPredictionsByTag = async (queryName, queryValue) => {
   }
 };
 
-export default { postPrediction, getPredictions, getPredictionsByTag };
+/**
+ * Gets the current vote counts for a given prediction.
+ * @param {string} predictionId - The ID of the prediction to fetch votes for.
+ * @returns {Promise<Object>} - An object containing the current vote counts.
+ * @throws {Error} - If predictionId is not provided or no prediction is found for the given ID.
+ */
+const getCurrentVotes = async (predictionId) => {
+  if (!predictionId) {
+    throw new Error("Invalid predictionId parameter: id is empty or invalid");
+  }
+
+  const [prediction] = await db.getFromTable({
+    tableName: "predictions",
+    fields: `*, votes:votesId (*)`,
+    query: { queryName: "id", queryValue: predictionId },
+  });
+
+  if (!prediction) {
+    throw new Error("Invalid data: data is empty or invalid");
+  }
+
+  const { up_count, down_count } = prediction.votes;
+  return { votes: { up_count, down_count } };
+};
+
+export default {
+  postPrediction,
+  getPredictions,
+  getPredictionsByTag,
+  getCurrentVotes,
+};
