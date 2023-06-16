@@ -2,7 +2,6 @@
   "name": "crystal-ball",
   "version": "0.1.0",
   "description": "Share and Evaluate Insights on the Future",
-  "main": "index.js",
   "scripts": {
     "dev": "parcel public/index.html",
     "build": "parcel build public/index.html",
