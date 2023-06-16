@@ -168,9 +168,59 @@ const getCurrentVotes = async (predictionId) => {
   return { votes: { up_count, down_count } };
 };
 
+/**
+ * Updates the vote counts for a given prediction.
+ * @param {Object} body - The new vote counts to update.
+ * @param {string} [predictionId] - The ID of the prediction to update votes for.
+ * @returns {Promise<Object>} - An object indicating the success of the update operation and the updated data.
+ * @throws {Error} - If predictionId is not provided, required fields are missing from body, or no prediction is found for the given ID.
+ */
+const updateVotes = async (body, predictionId = null) => {
+  try {
+    if (!predictionId) {
+      throw new Error(`Invalid query params, predictionId: ${predictionId}`);
+    }
+
+    const requiredFields = ["up_count", "down_count"];
+
+    const bodyKeys = Object.keys(body.votes);
+    const missingFields = requiredFields.filter(
+      (field) => !bodyKeys.includes(field)
+    );
+
+    if (missingFields.length > 0) {
+      throw new Error(
+        `Missing required fields in body: ${missingFields.join(", ")}`
+      );
+    }
+
+    const [{ votesId }] = await db.getFromTable({
+      tableName: "predictions",
+      fields: `votesId`,
+      query: { queryName: "id", queryValue: predictionId },
+    });
+
+    if (!votesId) {
+      throw new Error("Invalid votesId: votesId is empty or invalid");
+    }
+
+    const predictionData = await db.updateInTable({
+      tableName: "votes",
+      body: body.votes,
+      query: { queryName: "id", queryValue: votesId },
+    });
+
+    return { isSuccessful: true, data: predictionData };
+  } catch (error) {
+    console.error("Error in postPrediction:", error.message);
+    return { isSuccessful: false, error: error.message };
+  }
+};
+
 export default {
   postPrediction,
   getPredictions,
   getPredictionsByTag,
   getCurrentVotes,
+  updateVotes,
 };
