@@ -214,36 +214,6 @@ const getPredictionFromApiById = async (predictionId = null) => {
 };
 
 /**
- * @async
- * @param {string} [tagQuery=null] - The tag to query in the API.
- * @returns {Array} The array of predictions obtained from the API based on the tag query.
- * @throws {Error} Throws an error if the tagQuery is not valid or the request fails.
- */
-const getPredictionsFromApiWithTagQuery = async (tagQuery = null) => {
-  const validTagQueries = [
-    "all",
-    "technology",
-    "politics",
-    "science",
-    "magazine",
-    "finance",
-    "humanity",
-    "society",
-  ];
-
-  const isValidTagQuery = validTagQueries.some(
-    (requiredQuery) => requiredQuery === tagQuery
-  );
-  if (!isValidTagQuery) {
-    throw new Error(`Invalid query params, tagQuery: ${tagQuery}`);
-  }
-
-  const endpoint = tagQuery === "all" ? `/` : `?tag=${tagQuery}`;
-  const response = await sendRequest("GET", endpoint);
-  return getResponseData(response);
-};
-
-/**
  * Updates the vote count of a specific prediction in the API.
  * @async
  * @param {string} predictionId - The ID of the prediction to update.
@@ -2213,7 +2183,7 @@ const filterPredictionsAfterClickTagButton = async (options) => {
   const tagQuery = clickedBtn.getAttribute("data-tag-value");
 
   const response = await fetchAndListPredictions(predictionListEl, () =>
-    getPredictionsFromApiWithTagQuery(tagQuery)
+    services.getPredictionsByTag("tag", tagQuery)
   );
 
   if (!response.isFetched) {

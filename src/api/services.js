@@ -92,7 +92,32 @@ const getPredictions = async () => {
     return { isSuccessful: false, error: error.message };
   }
 };
+
+const getPredictionsByTag = async (queryName, queryValue) => {
+  try {
+    const validTagQueries = [
+      "all",
+      "technology",
+      "politics",
+      "science",
+      "magazine",
+      "finance",
+      "humanity",
+      "society",
+    ];
+
+    const isValidTagQuery = validTagQueries.some(
+      (requiredQuery) => requiredQuery === queryValue
     );
+    if (!isValidTagQuery) {
+      throw new Error(`Invalid query params, tagQuery: ${queryValue}`);
+    }
+
+    const predictions = await db.getFromTable({
+      tableName: "predictions",
+      fields: `*, votes:votesId (*)`,
+      query: queryValue === "all" ? {} : { queryName, queryValue },
+    });
 
     if (!predictions) {
       throw new Error("Failed to get predictions");
@@ -110,4 +135,4 @@ const getPredictions = async () => {
   }
 };
 
-export default { postPrediction, getPredictions };
+export default { postPrediction, getPredictions, getPredictionsByTag };
