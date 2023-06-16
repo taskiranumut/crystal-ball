@@ -72,9 +72,26 @@ const postPrediction = async (body) => {
  */
 const getPredictions = async () => {
   try {
-    const predictions = await db.getAllFromTable(
-      "predictions",
-      `*, votes:votesId (*)`
+    const predictions = await db.getFromTable({
+      tableName: "predictions",
+      fields: `*, votes:votesId (*)`,
+    });
+
+    if (!predictions) {
+      throw new Error("Failed to get predictions");
+    }
+
+    const rebasedPredictions = predictions.map((prediciton) => ({
+      ...prediciton,
+      realization_time: prediciton.realization_time.split("T")[0],
+    }));
+
+    return { isSuccessful: true, data: rebasedPredictions };
+  } catch (error) {
+    console.error("Error in postPrediction:", error.message);
+    return { isSuccessful: false, error: error.message };
+  }
+};
     );
 
     if (!predictions) {

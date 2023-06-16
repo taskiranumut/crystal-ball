@@ -28,14 +28,31 @@ const insertIntoTable = async (tableName, body) => {
 };
 
 /**
- * Retrieves all data from a specified table in the database.
- * @param {string} tableName - The name of the table to retrieve data from.
- * @returns {Promise<Array<Object>>} - The data retrieved from the table.
- * @throws {Error} - If the retrieval operation fails.
+ * Retrieves data from a specified table in the database with a potential query.
+ *
+ * This function fetches data from the provided table based on the provided options, which may contain fields to return and query to filter data.
+ *
+ * @param {Object} options - An object that holds all the necessary parameters.
+ * @param {string} options.tableName - The name of the table to fetch data from.
+ * @param {string} [options.fields="*"] - A string specifying which fields to return from the data. By default, all fields are returned.
+ * @param {Object} options.query - An object representing the query used to filter the data.
+ * @param {string} options.query.queryName - The name of the query parameter.
+ * @param {string|number} options.query.queryValue - The value of the query parameter.
+ * @returns {Promise<Array<Object>>} - An array of objects representing the fetched data.
+ * @throws {Error} - If fetching from the table fails or if no data is returned.
  */
-const getAllFromTable = async (tableName, query = "*") => {
+const getFromTable = async (options) => {
   try {
-    const { data, error } = await supabase.from(tableName).select(query);
+    const { tableName, fields = "*", query = {} } = options;
+
+    let queryBuilder = supabase.from(tableName).select(fields);
+
+    const { queryName, queryValue } = query;
+    if ((queryName, queryValue)) {
+      queryBuilder = queryBuilder.eq(queryName, queryValue);
+    }
+
+    const { data, error } = await queryBuilder;
 
     if (error) throw error;
 
@@ -45,9 +62,12 @@ const getAllFromTable = async (tableName, query = "*") => {
 
     return data;
   } catch (error) {
-    console.error("Error in getAllFromTable:", error.message);
+    console.error("Error in getFromTable:", error.message);
     throw error;
   }
 };
 
-export default { insertIntoTable, getAllFromTable };
+export default {
+  insertIntoTable,
+  getFromTable,
+};
