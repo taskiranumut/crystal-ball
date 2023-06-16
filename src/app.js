@@ -832,7 +832,7 @@ const hasVotedPrediction = (predictionId) => {
   }
 
   const idList = getVotedPredictionIds();
-  return idList.includes(predictionId);
+  return idList.includes(predictionId.toString());
 };
 
 /**
