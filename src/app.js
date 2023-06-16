@@ -136,102 +136,6 @@ const flatpickrInstances = {
  */
 
 /**
- * Send a request to a specified URL.
- * @async
- * @param {string} method - The HTTP method of the request (e.g., "GET", "POST").
- * @param {string} endpoint - The endpoint of the API where the request will be sent.
- * @param {Object} [data] - The data to be sent with the request.
- * @param {Object} [headers] - Additional headers for the request.
- * @returns {Promise<RequestResult>} The result of the request.
- * @throws {Error} Throws an error if the request is not successful.
- */
-const sendRequest = async (method, endpoint, data = null, headers = {}) => {
-  const API_URL = "https://64671255ba7110b663aeb19c.mockapi.io/predictions";
-
-  try {
-    const url = `${API_URL}${endpoint}`;
-
-    const response = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        ...headers,
-      },
-      body: data ? JSON.stringify(data) : null,
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        errorData.message || `HTTP error! status: ${response.status}`
-      );
-    }
-
-    const responseData = await response.json();
-
-    return { isSuccessful: true, data: responseData };
-  } catch (error) {
-    return { isSuccessful: false, error };
-  }
-};
-
-/**
- * Processes the response from a request and retrieves the data.
- * @param {Object} response - The response object to be processed.
- * @returns {Object} The data extracted from the response.
- * @throws {TypeError} Throws an error if 'response' is not an object.
- * @throws {Error} Throws an error if 'response.isSuccessful' is false.
- */
-const getResponseData = (response) => {
-  if (!response || typeof response !== "object" || Array.isArray(response)) {
-    throw new TypeError("'response' has to be an object.");
-  }
-
-  if (!response.isSuccessful) {
-    throw new Error(response.error.message);
-  }
-
-  const { data } = response;
-
-  return data;
-};
-
-/**
- * Fetches a specific prediction from the API using the provided prediction ID.
- * @async
- * @param {string} predictionId - The ID of the prediction to fetch.
- * @returns {Promise<Object>} The prediction data.
- * @throws {Error} Throws an error if the prediction ID is invalid or if the request is unsuccessful.
- */
-const getPredictionFromApiById = async (predictionId = null) => {
-  if (!predictionId) {
-    throw new Error(`Invalid query params, predictionId: ${predictionId}`);
-  }
-
-  const endpoint = `/${predictionId}`;
-  const response = await sendRequest("GET", endpoint);
-  return getResponseData(response);
-};
-
-/**
- * Updates the vote count of a specific prediction in the API.
- * @async
- * @param {string} predictionId - The ID of the prediction to update.
- * @param {Object} data - The data to send in the request body, typically the updated vote count.
- * @returns {Promise<Object>} The updated prediction data.
- * @throws {Error} Throws an error if the prediction ID is invalid, if the request is unsuccessful or if the data to send is incorrect.
- */
-const putUpdatedVoteToApi = async (data, predictionId = null) => {
-  if (!predictionId) {
-    throw new Error(`Invalid query params, predictionId: ${predictionId}`);
-  }
-
-  const endpoint = `/${predictionId}`;
-  const response = await sendRequest("PUT", endpoint, data);
-  return getResponseData(response);
-};
-
-/**
  * Adds an animation to a given HTML element. This function is based on the animate.css library.
  * @param {(HTMLElement|string)} element - A HTML element or a query selector for the element to be animated.
  * @param {string} animation - The name of the animation to be applied (based on animate.css).
@@ -1544,27 +1448,6 @@ const handleClickVoteBtn = async (
     console.error(`Failed to update vote: ${error}`);
     return { isCompleted: false };
   }
-};
-
-/**
- * Fetches the current votes for a prediction from the API.
- * @async
- * @param {string} predictionId - The id of the prediction.
- * @returns {Object} The current votes of the prediction.
- * @throws {Error} Throws an error if the predictionId is empty or invalid, or if the fetched data is invalid.
- */
-const getCurrentVotes = async (predictionId) => {
-  if (!predictionId) {
-    throw new Error("Invalid predictionId parameter: id is empty or invalid");
-  }
-
-  const prediction = await getPredictionFromApiById(predictionId);
-
-  if (!prediction) {
-    throw new Error("Invalid data: data is empty or invalid");
-  }
-
-  return { votes: prediction.votes };
 };
 
 /**
