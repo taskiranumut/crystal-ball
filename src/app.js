@@ -1847,6 +1847,34 @@ const getLoaderTemplate = () => {
   `;
 };
 
+/**
+ * Creates a modal template.
+ * @param {Object} options - Configuration options for the modal.
+ * @param {string} [options.title=""] - The title for the modal.
+ * @param {string} [options.content=""] - The content for the modal.
+ * @param {string} [options.closeBtnText="OK"] - The text for the close button.
+ * @returns {string} - A string representing the HTML structure of the modal.
+ */
+const getModalTemplate = (options) => {
+  const { title = "", content = "", closeBtnText = "OK" } = options;
+
+  return `
+    <div class="modal__overlay">
+      <div class="modal__body card">
+        <div class="modal__header">
+          <h2>${title}</h2>
+        </div>
+        <div class="modal__content">
+          <p>${content}</p>
+        </div>
+        <div class="modal__footer">
+          <button id="close-modal" class="modal__close btn btn--primary ">${closeBtnText}</button>
+        </div>
+      </div>
+    </div>
+    `;
+};
+
 const getMainTemplate = () => {
   return `
     <main class="main">
@@ -1870,6 +1898,7 @@ const getFooterTemplate = () => {
 const getAppLayoutTemplate = () => {
   return `
     <div class="container">
+    <div id="modal-container" class="modal"></div>
       <div class="grid-container">
       ${getHeaderTemplate()}
       ${getSidebarTemplate()}
@@ -1883,6 +1912,31 @@ const getAppLayoutTemplate = () => {
 const startAppLayout = (root) => {
   const appLayout = getAppLayoutTemplate();
   appendStringAsChildElement(root, appLayout);
+};
+
+/**
+ * Displays a modal with the provided options.
+ * @param {Object} options - Configuration options for the modal.
+ * @param {string} [options.title=""] - The title for the modal.
+ * @param {string} [options.content=""] - The content for the modal.
+ * @param {string} [options.closeBtnText="OK"] - The text for the close button.
+ */
+const showModal = (options) => {
+  const modalContainerEl = getElement("#modal-container");
+
+  const modal = getModalTemplate(options);
+  appendStringAsChildElement(modalContainerEl, modal);
+
+  const closeBtnEl = getElement("#close-modal");
+  closeBtnEl.addEventListener("click", (e) => {
+    e.stopPropagation();
+    removeChildElements(modalContainerEl);
+  });
+
+  const modalOverlayEl = getElement(".modal__overlay");
+  modalOverlayEl.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
 };
 
 /**
