@@ -2044,6 +2044,13 @@ const handleSubmitPredictionForm = (options) => {
 
     if (!response.isSuccessful) throw new Error(response.error);
 
+    showModal({
+      title: "Prediction Will Be Reviewed",
+      content:
+        "Prediction was submitted successfully. It will be listed after the review is done.",
+      closeBtnText: "OK",
+    });
+
     goToPredictionList(
       { newPredictionCardEl, predictionListEl, newPredictionFormEl },
       true
