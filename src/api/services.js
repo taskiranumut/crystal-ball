@@ -19,6 +19,7 @@ const postPrediction = async (body) => {
       "tag",
       "username",
       "info_url",
+      "is_reviewed",
     ];
 
     const bodyKeys = Object.keys(body);
@@ -48,6 +49,7 @@ const postPrediction = async (body) => {
       username: body.username,
       info_url: body.info_url,
       votesId: votesData.id,
+      is_reviewed: body.is_reviewed,
     });
 
     if (!predictionData) {
@@ -73,7 +75,7 @@ const postPrediction = async (body) => {
 const getPredictions = async () => {
   try {
     const predictions = await db.getFromTable({
-      tableName: "predictions",
+      tableName: "reviewed_predictions",
       fields: `*, votes:votesId (*)`,
     });
 
@@ -122,7 +124,7 @@ const getPredictionsByTag = async (queryName, queryValue) => {
     }
 
     const predictions = await db.getFromTable({
-      tableName: "predictions",
+      tableName: "reviewed_predictions",
       fields: `*, votes:votesId (*)`,
       query: queryValue === "all" ? {} : { queryName, queryValue },
     });
@@ -155,7 +157,7 @@ const getCurrentVotes = async (predictionId) => {
   }
 
   const [prediction] = await db.getFromTable({
-    tableName: "predictions",
+    tableName: "reviewed_predictions",
     fields: `*, votes:votesId (*)`,
     query: { queryName: "id", queryValue: predictionId },
   });
@@ -195,7 +197,7 @@ const updateVotes = async (body, predictionId = null) => {
     }
 
     const [{ votesId }] = await db.getFromTable({
-      tableName: "predictions",
+      tableName: "reviewed_predictions",
       fields: `votesId`,
       query: { queryName: "id", queryValue: predictionId },
     });

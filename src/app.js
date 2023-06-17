@@ -1096,6 +1096,7 @@ const getNewPredictionData = (newPredictionFormEl) => {
     tag: formData.tag,
     username: formData.username,
     votes: { up_count: 0, down_count: 0 },
+    is_reviewed: false,
   };
 };
 

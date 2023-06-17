@@ -45,7 +45,10 @@ const getFromTable = async (options) => {
   try {
     const { tableName, fields = "*", query = {} } = options;
 
-    let queryBuilder = supabase.from(tableName).select(fields);
+    let queryBuilder = supabase
+      .from(tableName)
+      .select(fields)
+      .eq("is_reviewed", true);
 
     const { queryName, queryValue } = query;
     if ((queryName, queryValue)) {
