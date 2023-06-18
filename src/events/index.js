@@ -17,7 +17,7 @@ import {
   showModal,
   toggleElement,
 } from "../utils";
-import { newPredictionFormSchema, validateFormData } from "../validations";
+import { validateFormData } from "../validations";
 import { addVotedPredictionId, hasVotedPrediction } from "../votes";
 import { addEvent } from "./utils";
 
@@ -248,7 +248,7 @@ export const handleSubmitPredictionForm = (options) => {
 
     const validation = validateFormData(
       newPredictionFormEl,
-      newPredictionFormSchema
+      "newPredictionForm"
     );
 
     handleFormErrors({

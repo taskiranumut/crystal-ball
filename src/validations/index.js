@@ -2,8 +2,7 @@
 /* eslint-disable no-param-reassign */
 import { validateIsHtmlFormElement } from "../utils/index";
 import { getFormData } from "../forms/index";
-
-export { newPredictionFormSchema } from "./schemas";
+import { validationSchemas } from "./schemas";
 
 /**
  * Returns an object with validation methods for different types of data.
@@ -154,9 +153,10 @@ const getValidationErrors = (dataObj, schema) => {
  * @param {string} schemaName - The name of the validation schema to use. It is contained in VALIDATION_SCHEMAS.
  * @returns {Object} An object containing a boolean indicating whether the form data is valid and an array of validation errors (or null if the data is valid).
  */
-export const validateFormData = (formEl, schema) => {
+export const validateFormData = (formEl, schemaName) => {
   validateIsHtmlFormElement(formEl, "formEl");
 
+  const schema = validationSchemas[schemaName];
   if (!schema) {
     console.error(`Not found validation schema for ${schema}`);
     return { isValid: true, errors: null };
