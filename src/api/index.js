@@ -10,7 +10,7 @@ import db from "./db";
  * @returns {Promise<Object>} - An object indicating whether the operation was successful and containing either the inserted prediction data or an error message.
  * @throws {Error} - If any required fields are missing in the body of the request or if insertion into the 'votes' or 'predictions' table fails.
  */
-const postPrediction = async (body) => {
+export const postPrediction = async (body) => {
   try {
     const requiredFields = [
       "votes",
@@ -72,7 +72,7 @@ const postPrediction = async (body) => {
  * @returns {Promise<Object>} - An object indicating whether the operation was successful and containing either the array of fetched predictions or an error message.
  * @throws {Error} - If the fetching from the 'predictions' table fails.
  */
-const getPredictions = async () => {
+export const getPredictions = async () => {
   try {
     const predictions = await db.getFromTable({
       tableName: "reviewed_predictions",
@@ -103,7 +103,7 @@ const getPredictions = async () => {
  * @returns {Promise<Object>} - An object containing a boolean indicating success or failure, and the data retrieved or the error message.
  * @throws {Error} - If the tag query is invalid or if fetching the predictions fails.
  */
-const getPredictionsByTag = async (queryName, queryValue) => {
+export const getPredictionsByTag = async (queryName, queryValue) => {
   try {
     const validTagQueries = [
       "all",
@@ -151,7 +151,7 @@ const getPredictionsByTag = async (queryName, queryValue) => {
  * @returns {Promise<Object>} - An object containing the current vote counts.
  * @throws {Error} - If predictionId is not provided or no prediction is found for the given ID.
  */
-const getCurrentVotes = async (predictionId) => {
+export const getCurrentVotes = async (predictionId) => {
   if (!predictionId) {
     throw new Error("Invalid predictionId parameter: id is empty or invalid");
   }
@@ -177,7 +177,7 @@ const getCurrentVotes = async (predictionId) => {
  * @returns {Promise<Object>} - An object indicating the success of the update operation and the updated data.
  * @throws {Error} - If predictionId is not provided, required fields are missing from body, or no prediction is found for the given ID.
  */
-const updateVotes = async (body, predictionId = null) => {
+export const updateVotes = async (body, predictionId = null) => {
   try {
     if (!predictionId) {
       throw new Error(`Invalid query params, predictionId: ${predictionId}`);
@@ -217,12 +217,4 @@ const updateVotes = async (body, predictionId = null) => {
     console.error("Error in postPrediction:", error.message);
     return { isSuccessful: false, error: error.message };
   }
-};
-
-export default {
-  postPrediction,
-  getPredictions,
-  getPredictionsByTag,
-  getCurrentVotes,
-  updateVotes,
 };
