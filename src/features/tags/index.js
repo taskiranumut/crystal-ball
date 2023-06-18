@@ -1,11 +1,11 @@
 /* eslint-disable import/prefer-default-export */
-import TAGS_DATA from "../constants";
-import { getTagButtonTemplate } from "../templates";
+import TAGS_DATA from "../../constants";
+import { getTagButtonTemplate } from "../../templates";
 import {
   getElement,
   validateIsHtmlElement,
   appendStringAsChildElement,
-} from "../utils";
+} from "../../utils";
 
 /**
  * Returns the active tag button from the tag button container.

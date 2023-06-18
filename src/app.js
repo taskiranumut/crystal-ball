@@ -12,8 +12,8 @@ import {
 } from "./events";
 import { setSidebarTopValueDynamically } from "./layout";
 import { runFunctionForElementList, fillElementsObject } from "./utils";
-import { fetchAndListPredictions } from "./predictions";
-import { fillTagButtonList } from "./tags";
+import { fetchAndListPredictions } from "./features/predictions";
+import { fillTagButtonList } from "./features/tags";
 import { startAppLayout } from "./templates";
 
 const initApp = (root) => {

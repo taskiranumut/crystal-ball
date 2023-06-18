@@ -1,19 +1,19 @@
 /* eslint-disable no-console */
-import { getPredictionsByTag } from "../api";
+import { getPredictionsByTag } from "../../api";
 import { startCountdowns, stopCountdowns } from "../countdown";
-import { addClickEventToPredictionList } from "../events";
-import { createPredictionData } from "../forms";
+import { addClickEventToPredictionList } from "../../events";
+import { createPredictionData } from "../../forms";
 import {
   getEmptyContentTemplate,
   getPredictionCardTemplate,
-} from "../templates";
+} from "../../templates";
 import {
   validateIsHtmlElement,
   appendStringAsChildElement,
   removeChildElements,
   toggleElement,
   getElement,
-} from "../utils";
+} from "../../utils";
 
 /**
  * Generates HTML string of prediction cards from the provided predictions array.

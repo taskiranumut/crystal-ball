@@ -1,10 +1,10 @@
 // Virtual Routing
 // -------------------------
 
-import { stopCountdowns } from "../countdown";
+import { stopCountdowns } from "../features/countdown";
 import { handleFormErrors, resetFormData } from "../forms";
-import { filterPredictionsAfterClickTagButton } from "../predictions";
-import { getActiveTagBtn } from "../tags";
+import { filterPredictionsAfterClickTagButton } from "../features/predictions";
+import { getActiveTagBtn } from "../features/tags";
 import {
   toggleElement,
   validateIsHtmlElement,

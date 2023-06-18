@@ -1,13 +1,15 @@
-/* eslint-disable import/prefer-default-export */
 /* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
-import store from "../store";
-import { generateTemplateString, getCountdownItemTemplate } from "../templates";
+import store from "../../store";
+import {
+  generateTemplateString,
+  getCountdownItemTemplate,
+} from "../../templates";
 import {
   getElement,
   removeChildElements,
   appendStringAsChildElement,
-} from "../utils";
+} from "../../utils";
 
 /**
  * Takes a date string in the "YYYY-MM-DD" format, and returns the corresponding timestamp at 23:59:59.

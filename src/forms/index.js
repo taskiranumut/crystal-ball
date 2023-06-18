@@ -8,8 +8,8 @@ import {
   formatDateUSA,
 } from "../utils";
 
-import { getCountdownData } from "../countdown";
-import { hasVotedPrediction } from "../votes";
+import { getCountdownData } from "../features/countdown";
+import { hasVotedPrediction } from "../features/votes";
 
 /**
  * Removes error items from the form.

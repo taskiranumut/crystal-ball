@@ -5,7 +5,7 @@ import {
   handleFormErrors,
   resetFormData,
 } from "../forms";
-import { filterPredictionsAfterClickTagButton } from "../predictions";
+import { filterPredictionsAfterClickTagButton } from "../features/predictions";
 import { goToNewPredictionForm, goToPredictionList } from "../routes";
 import { addAnimation } from "../services";
 import { generateTemplateString, getVoteButtonTemplate } from "../templates";
@@ -18,7 +18,7 @@ import {
   toggleElement,
 } from "../utils";
 import { validateFormData } from "../validations";
-import { addVotedPredictionId, hasVotedPrediction } from "../votes";
+import { addVotedPredictionId, hasVotedPrediction } from "../features/votes";
 import { addEvent } from "./utils";
 
 export { addEvent, checkEvent } from "./utils";
