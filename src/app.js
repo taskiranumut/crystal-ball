@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-use-before-define */
 import { getPredictions } from "./api";
+import store from "./store";
 import { initChoicesItem, initFlatpickrItem } from "./services";
 import {
   handleClickFormCancelButton,
@@ -18,21 +19,10 @@ import { startAppLayout } from "./templates";
 const initApp = (root) => {
   if (!root) throw new Error("Invalid root element!");
 
+  const { elements, selectorList } = store;
+
   startAppLayout(root);
-
-  const elements = {};
-  const selectorList = [
-    { elName: "newPredictionBtnEl", selector: "#new-prediction-btn" },
-    { elName: "newPredictionCardEl", selector: "#new-prediction-card" },
-    { elName: "predictionListEl", selector: "#predictions" },
-    { elName: "newPredictionFormEl", selector: "#new-prediction-form" },
-    { elName: "formCancelBtnEl", selector: "#form-cancel-btn" },
-    { elName: "tagButtonListEl", selector: "#tag-buttons-container" },
-    { elName: "headerEl", selector: "#header" },
-    { elName: "sidebarEl", selector: "#sidebar" },
-  ];
   fillElementsObject(elements, selectorList);
-
   runFunctionForElementList("select.choices", initChoicesItem);
   runFunctionForElementList("input[type='date'].flatpickr", initFlatpickrItem);
 
