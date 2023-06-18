@@ -1,0 +1,40 @@
+/*#region errors*/
+.error {
+  width: 100%;
+  font-family: "Sono", "Roboto", sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--erorr-primary-color);
+  margin-top: 0.5rem;
+}
+
+.error__container {
+  margin-bottom: 1rem;
+}
+
+.error__container:last-of-type {
+  margin-bottom: unset;
+}
+
+.error--with-icon {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.error__icon {
+  margin-top: 2px;
+}
+
+.error__text {
+  font-family: inherit;
+  display: inline-block;
+}
+
+.error--border,
+.error--border:focus {
+  border: 1px solid var(--erorr-primary-color) !important;
+}
+/*#endregion errors*/

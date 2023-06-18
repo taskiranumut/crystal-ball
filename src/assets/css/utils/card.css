@@ -1,0 +1,17 @@
+/*#region card*/
+.card {
+  padding: 1.25rem 1.75rem;
+  border-radius: 0.75rem;
+  background-color: var(--background-secondary-color);
+}
+
+.card--full {
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .card {
+    padding: 1.25rem;
+  }
+}
+/*#endregion card*/

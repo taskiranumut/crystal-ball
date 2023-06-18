@@ -1,0 +1,150 @@
+/*#region buttons*/
+.btn,
+.btn-md {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  min-height: 2.5rem;
+  font-family: "Coiny", "Roboto", sans-serif;
+  line-height: 1;
+  font-size: 1.25rem;
+  text-decoration: none;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  background-color: var(--button-text-color);
+  color: var(--background-secondary-color);
+}
+
+.btn:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn:active {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.btn:disabled,
+.btn--disabled {
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.5;
+}
+
+.btn:disabled:hover,
+.btn--disabled:hover {
+  box-shadow: none;
+}
+
+.btn--xl {
+  font-size: 2rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+}
+
+.btn--lg {
+  font-size: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+}
+
+.btn--primary {
+  background-color: var(--button-primary-color);
+  color: var(--button-text-color);
+}
+
+.btn--primary:hover {
+  background-color: var(--button-primary-hover-color);
+  color: var(--button-text-color);
+}
+
+.btn--primary:active {
+  background-color: var(--button-primary-active-color);
+  color: var(--button-text-color);
+}
+
+.btn--primary.btn--disabled:hover,
+.btn--primary.btn--disabled:active,
+.btn--primary:disabled:hover,
+.btn--primary:disabled:active {
+  background-color: var(--button-primary-color);
+  color: var(--button-text-color);
+}
+
+.btn--secondary {
+  background-color: var(--button-secondary-color);
+  color: var(--button-text-color);
+}
+
+.btn--secondary:hover {
+  background-color: var(--button-secondary-hover-color);
+  color: var(--button-text-color);
+}
+
+.btn--secondary:active {
+  background-color: var(--button-secondary-active-color);
+  color: var(--button-text-color);
+}
+
+.btn--secondary.btn--disabled:hover,
+.btn--secondary.btn--disabled:active,
+.btn--secondary:disabled:hover,
+.btn--secondary:disabled:active {
+  background-color: var(--button-secondary-color);
+  color: var(--button-text-color);
+}
+
+.btn--tag-primary {
+  background-color: var(--tag-button-primary-color);
+  color: var(--button-text-color);
+}
+
+.btn--tag-primary:hover {
+  background-color: var(--tag-button-primary-hover-color);
+  color: var(--button-text-color);
+}
+
+.btn--tag-primary:active {
+  background-color: var(--tag-button-primary-active-color);
+  color: var(--button-text-color);
+}
+
+.btn--tag-primary.btn--disabled:hover,
+.btn--tag-primary.btn--disabled:active,
+.btn--tag-primary:disabled:hover,
+.btn--tag-primary:disabled:active {
+  background-color: var(--tag-button-primary-color);
+  color: var(--button-text-color);
+}
+
+.btn--tag-secondary {
+  background-color: var(--tag-button-secondary-color);
+  color: var(--button-text-color);
+}
+
+.btn--tag-secondary:hover {
+  background-color: var(--tag-button-primary-color);
+  color: var(--button-text-color);
+}
+
+.btn--tag-secondary:active {
+  background-color: var(--tag-button-primary-active-color);
+  color: var(--button-text-color);
+}
+
+.btn--tag-secondary.btn--disabled:hover,
+.btn--tag-secondary.btn--disabled:active,
+.btn--tag-secondary:disabled:hover,
+.btn--tag-secondary:disabled:active {
+  background-color: var(--tag-button-secondary-color);
+  color: var(--button-text-color);
+}
+
+.btn--active {
+  background-color: var(--tag-button-primary-color);
+  pointer-events: none;
+}
+/*#endregion buttons*/

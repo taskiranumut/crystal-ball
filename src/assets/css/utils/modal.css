@@ -1,0 +1,42 @@
+/*#region modal*/
+.modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 100000;
+}
+
+.modal__body {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Sono", "Roboto", sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 0;
+  line-height: 1.4;
+  padding: 1rem 2rem;
+  width: 80%;
+  max-width: 600px;
+  border: 1px solid var(--text-secondary-color);
+}
+
+.modal__header,
+.modal__content,
+.modal__footer {
+  padding: 1rem 0;
+}
+
+.modal__close {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .modal__body {
+    padding: 0.5rem 1.5rem;
+  }
+}
+/*#endregion modal*/
