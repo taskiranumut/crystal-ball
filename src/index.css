@@ -2,7 +2,7 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@400;600&display=swap");
 
-@import "./layout/index.css";
-@import "./form/index.css";
-@import "./utils/index.css";
-@import "./lib/index.css";
+@import "./assets/css/layout/index.css";
+@import "./assets/css/form/index.css";
+@import "./assets/css/utils/index.css";
+@import "./assets/css/lib/index.css";
