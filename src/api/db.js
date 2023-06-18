@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import supabase from "./supabaseClient";
 
 /**

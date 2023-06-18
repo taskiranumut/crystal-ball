@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { getCurrentVotes, postPrediction, updateVotes } from "../api";
 import {
   getNewPredictionData,

@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable no-param-reassign */
 import { validateIsHtmlElement } from "../utils/index";
 
 /**

@@ -1,6 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-expressions */
 import { getModalTemplate } from "../templates";
 
 /**

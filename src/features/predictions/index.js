@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { getPredictionsByTag } from "../../api";
 import { startCountdowns, stopCountdowns } from "../countdown";
 import { addClickEventToPredictionList } from "../../events";

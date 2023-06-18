@@ -1,6 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable no-console */
-/* eslint-disable no-param-reassign */
 import { validateIsHtmlFormElement } from "../utils/index";
 import { getFormData } from "../forms/index";
 import { validationSchemas } from "./schemas";

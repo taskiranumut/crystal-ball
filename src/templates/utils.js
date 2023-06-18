@@ -18,7 +18,6 @@ export const generateTemplateString = (
     : "";
 };
 
-/* eslint-disable no-console */
 /**
  * Returns an error HTML template that contains error messages.
  * @param {string[]} messages - An array of error messages.

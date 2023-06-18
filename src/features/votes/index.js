@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * Retrieves the list of prediction IDs that the user has already voted for.
  * @returns {Array<string>} An array of prediction IDs.

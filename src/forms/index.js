@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { getInstanceEl } from "../services";
 import store from "../store";
 import { getFormErrorTemplate } from "../templates";

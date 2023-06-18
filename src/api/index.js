@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-/* eslint-disable no-console */
 import db from "./db";
 
 /**

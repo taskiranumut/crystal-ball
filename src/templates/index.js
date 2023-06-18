@@ -1,6 +1,3 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-console */
-/* eslint-disable import/prefer-default-export */
 import { appendStringAsChildElement } from "../utils";
 import { generateTemplateString, getLoaderTemplate } from "./utils";
 import appLogo from "../assets/images/main-logo.webp";

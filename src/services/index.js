@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-param-reassign */
 import Choices from "choices.js";
 import store from "../store/index";
 import { validateIsHtmlElement } from "../utils/index";
@@ -94,7 +92,6 @@ export const initFlatpickrItem = (initEl) => {
     throw new Error(`(Flatpickr) Invalid parameter, initEl: ${initEl}`);
   }
 
-  // eslint-disable-next-line no-undef
   const instance = flatpickr(initEl, options);
   addToInstancesTracker(initEl, instance, store.flatpickrInstances);
 

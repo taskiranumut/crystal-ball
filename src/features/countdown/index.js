@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-param-reassign */
 import store from "../../store";
 import {
   generateTemplateString,

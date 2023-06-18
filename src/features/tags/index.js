@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import TAGS_DATA from "../../constants";
 import { getTagButtonTemplate } from "../../templates";
 import {

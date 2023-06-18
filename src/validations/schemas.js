@@ -11,7 +11,6 @@ import TAGS_DATA from "../constants/index";
  *
  * Note: You can add more schemas to this object following the described structure.
  */
-// eslint-disable-next-line import/prefer-default-export
 export const validationSchemas = {
   newPredictionForm: {
     "prediction-content": {

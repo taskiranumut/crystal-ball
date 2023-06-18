@@ -1,6 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-console */
-/* eslint-disable no-use-before-define */
 import { getPredictions } from "./api";
 import store from "./store";
 import { initChoicesItem, initFlatpickrItem } from "./services";
