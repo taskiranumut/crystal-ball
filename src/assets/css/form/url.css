@@ -1,0 +1,50 @@
+/*#region url (anchor)*/
+.url {
+  font-family: "Sono", "Roboto", sans-serif;
+  font-size: 1.25rem;
+  text-decoration: unset;
+  transition: color 0.2s;
+}
+
+.url--inherit {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+.url:link {
+  cursor: pointer;
+}
+
+.url--primary {
+  color: var(--url-text-primary-color);
+}
+
+.url--primary:is([href]):visited {
+  color: var(--url-text-primary-visited-color);
+}
+
+.url--primary:is([href]):hover {
+  color: var(--url-text-primary-hover-color);
+}
+
+.url--primary:is([href]):active {
+  color: var(--url-text-primary-active-color);
+}
+
+.url--secondary {
+  color: var(--url-text-secondary-color);
+}
+
+.url--secondary:is([href]):visited {
+  color: var(--url-text-secondary-visited-color);
+}
+
+.url--secondary:is([href]):hover {
+  color: var(--url-text-secondary-hover-color);
+}
+
+.url--secondary:is([href]):active {
+  color: var(--url-text-secondary-active-color);
+}
+/*#endregion url (anchor)*/
