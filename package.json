@@ -1,6 +1,6 @@
 {
   "name": "crystal-ball",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Share and Evaluate Insights on the Future",
   "scripts": {
     "dev": "parcel public/index.html",
